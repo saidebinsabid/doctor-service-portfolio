@@ -375,3 +375,27 @@
     transition-duration: .01ms !important;
   }
 }
+
+/* ============================================================
+   নেভবার scrollspy — যে সেকশন দেখছেন তার লিংকের নিচে আন্ডারলাইন
+   ============================================================ */
+@layer components {
+  .nav-link { position: relative; color: var(--color-slate-600); }
+  .nav-link:hover { color: var(--color-brand-900); }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: .75rem;          /* px-3 এর সমান, যাতে লেখার নিচে বসে */
+    right: .75rem;
+    bottom: .3rem;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--color-brand-900);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform .22s ease;
+  }
+  .nav-link:hover::after { transform: scaleX(.45); }
+  .nav-link.active { color: var(--color-brand-900); }
+  .nav-link.active::after { transform: scaleX(1); }
+}

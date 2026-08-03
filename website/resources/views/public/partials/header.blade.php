@@ -35,9 +35,8 @@
 
             <nav class="hidden lg:flex items-center gap-1" aria-label="{{ __('nav.menu') }}">
                 @foreach($nav as [$href, $label])
-                    <a href="{{ $href }}"
-                       class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600
-                              hover:text-brand-900 hover:bg-brand-50 transition">{{ $label }}</a>
+                    <a href="{{ $href }}" data-spy-link
+                       class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition">{{ $label }}</a>
                 @endforeach
             </nav>
 

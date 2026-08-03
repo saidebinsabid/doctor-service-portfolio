@@ -4,9 +4,9 @@
 
 @section('content')
 
-    <p class="text-sm text-slate-500 mb-4 max-w-2xl">হোমপেজের নাম, পরিচিতি, যোগাযোগ, ফি ও অন্যান্য টেক্সট এখান থেকে বদলান। দ্বিভাষিক ঘরে ইংরেজি খালি রাখলে সাইটে বাংলাটাই দেখাবে।</p>
+    <p class="text-sm text-slate-500 mb-4 max-w-3xl mx-auto text-center">হোমপেজের নাম, পরিচিতি, যোগাযোগ, ফি ও অন্যান্য টেক্সট এখান থেকে বদলান। দ্বিভাষিক ঘরে ইংরেজি খালি রাখলে সাইটে বাংলাটাই দেখাবে।</p>
 
-    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="space-y-6 max-w-3xl">
+    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" class="space-y-6 max-w-3xl mx-auto">
         @csrf @method('PUT')
 
         @foreach($groupLabels as $groupKey => $groupLabel)

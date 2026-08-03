@@ -68,3 +68,49 @@ document.querySelectorAll('[data-faq] details').forEach((d) => {
             .forEach((other) => { if (other !== d) other.open = false; });
     });
 });
+
+/* ---------- নেভবার scrollspy ----------
+   স্ক্রল করে যে সেকশনে আছেন, নেভবারে তার লিংকের নিচে আন্ডারলাইন দেখায়।
+   scroll ইভেন্ট + getBoundingClientRect দিয়ে (requestAnimationFrame-এ throttled)। */
+const spyLinks = Array.from(document.querySelectorAll('[data-spy-link]'));
+
+if (spyLinks.length) {
+    /* লিংক ↔ সেকশন, পেজে যে ক্রমে আছে সেভাবে সাজানো */
+    const items = spyLinks
+        .map((link) => {
+            const id = (link.getAttribute('href') || '').replace('#', '');
+            const section = id ? document.getElementById(id) : null;
+            return section ? { link, section } : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.section.offsetTop - b.section.offsetTop);
+
+    /* স্টিকি হেডারের উচ্চতা (~4.5rem) + সামান্য মার্জিন */
+    const HEADER_OFFSET = 110;
+
+    const setActive = (link) => {
+        spyLinks.forEach((l) => l.classList.toggle('active', l === link));
+    };
+
+    const update = () => {
+        let current = null;
+        for (const { section, link } of items) {
+            /* সেকশনের উপরের কিনারা হেডারের নিচে চলে এলে সেটিই "চলমান";
+               সবচেয়ে নিচেরটা (সর্বশেষ পার হওয়া) জেতে */
+            if (section.getBoundingClientRect().top - HEADER_OFFSET <= 1) current = link;
+            else break;
+        }
+        setActive(current);   // একদম উপরে (হিরো) থাকলে current=null → কিছুই active নয়
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => { update(); ticking = false; });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+}
