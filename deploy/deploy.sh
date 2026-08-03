@@ -12,6 +12,11 @@ DOCROOT=/home/drabusuf/public_html
 PHP=/opt/alt/php82/usr/bin/php
 
 echo "==> Deploy shuru | APPDIR=$APPDIR | PHP=$PHP"
+
+# chmod -R tracked .gitignore-er file-mode bodlay; core.filemode=true hole git
+# seta "modified" dhore -> tree "dirty" -> porer deploy block hoy. Mode ignore koro.
+git -C "$REPO" config core.filemode false 2>/dev/null || true
+
 cd "$APPDIR"
 
 # ---- 1) composer.phar (server-e composer nei) ----
