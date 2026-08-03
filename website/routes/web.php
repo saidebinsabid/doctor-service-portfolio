@@ -55,6 +55,35 @@ Route::prefix('{locale?}')
 
 /*
 |--------------------------------------------------------------------------
+| একই পাবলিক রুট — প্রিফিক্স ছাড়া (বাংলা ডিফল্ট) ম্যাচিংয়ের জন্য
+|--------------------------------------------------------------------------
+| Laravel-এর optional prefix {locale?} URL-এর শেষে না থাকায় প্রিফিক্স-ছাড়া
+| রূপ (যেমন /booking) কোনো রুটে ম্যাচ করে না — শুধু /en/booking করে। অথচ
+| route() ও URL::defaults ঠিকঠাক /booking তৈরি করে, ফলে হোমপেজের বুকিং লিংক
+| 404 হতো। সমাধান: একই রুটগুলো প্রিফিক্স ছাড়া আবার রেজিস্টার করা।
+|
+| এগুলো ইচ্ছাকৃতভাবে নামহীন — URL তৈরি ও locale-awareness আগের নামযুক্ত
+| {locale?} group থেকেই আসে; এই group শুধু বাংলা (প্রিফিক্স-ছাড়া) ঠিকানা
+| ম্যাচ করিয়ে কন্ট্রোলারে পাঠায়। '/' হোম আগের group-এই ম্যাচ করে, তাই এখানে নেই।
+*/
+Route::group([], function () {
+
+    Route::get('privacy', [HomeController::class, 'privacy']);
+    Route::get('terms', [HomeController::class, 'terms']);
+
+    Route::get('booking', [BookingController::class, 'create']);
+    Route::post('booking', [BookingController::class, 'store'])->middleware('throttle:booking');
+    Route::get('booking/success/{code}', [BookingController::class, 'success']);
+    Route::get('booking/status', [BookingController::class, 'statusForm']);
+    Route::post('booking/status', [BookingController::class, 'statusLookup'])->middleware('throttle:30,1');
+    Route::get('booking/calendar', [BookingController::class, 'calendar']);
+    Route::get('booking/slots', [BookingController::class, 'slots']);
+
+    Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:10,1');
+});
+
+/*
+|--------------------------------------------------------------------------
 | SEO — ভাষা প্রিফিক্স ছাড়া
 |--------------------------------------------------------------------------
 */
