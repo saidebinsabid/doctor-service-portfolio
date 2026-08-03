@@ -36,6 +36,9 @@ yarn-error.log
 # --- cPanel ডেপ্লয়মেন্ট: রানটাইমে তৈরি, কখনো ট্র্যাক নয় ---
 # এগুলো ট্র্যাক করলে সার্ভারে git tree "নোংরা" হয়ে ভবিষ্যতের deploy আটকে যায়।
 /composer.phar
+# composer.lock server-e resolve hoy (proper platform: php 8.2); track korle
+# fileinfo missing-er karone local-server platform mismatch hote pare.
+/composer.lock
 /bootstrap/cache/*
 !/bootstrap/cache/.gitignore
 /storage/framework

@@ -28,7 +28,10 @@ chmod -R 775 storage bootstrap/cache || true
 
 # ---- 3) PHP dependencies ----
 echo "==> composer install --no-dev"
-$PHP -d memory_limit=-1 composer.phar install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+# --ignore-platform-req=ext-fileinfo: CloudLinux PHP Selector-e fileinfo bondho.
+# Public site-e fileinfo runtime-e lage na. Admin upload-er age cPanel UI theke
+# (Select PHP Version -> Extensions -> fileinfo) chalu korle eta ar dorkar hobe na.
+$PHP -d memory_limit=-1 composer.phar install --no-dev --optimize-autoloader --no-interaction --prefer-dist --ignore-platform-req=ext-fileinfo
 
 # ---- 4) .env thakte hobe (File Manager/API die aage bosano) ----
 if [ ! -f .env ]; then
