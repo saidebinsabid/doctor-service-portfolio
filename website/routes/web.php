@@ -131,18 +131,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         /* ---- সময়সূচি ও ছুটি ---- */
         Route::resource('chambers', Admin\ChamberController::class)->except('show');
+
+        /* TODO: এই কন্ট্রোলারগুলো এখনো তৈরি হয়নি — schedule/holiday/blocked-slot ব্যবস্থাপনা।
+                 তৈরি করার পর নিচের লাইনগুলো আবার চালু করুন।
         Route::resource('schedules', Admin\ScheduleController::class)->except('show', 'create');
         Route::resource('holidays', Admin\HolidayController::class)->except('show');
-
         Route::controller(Admin\BlockedSlotController::class)->prefix('blocked-slots')
             ->name('blocked-slots.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::delete('{blockedSlot}', 'destroy')->name('destroy');
             });
-
         Route::post('holiday-mode', [Admin\HolidayController::class, 'toggleMode'])
             ->name('holiday-mode');
+        */
 
         /* ---- কনটেন্ট ---- */
         Route::resource('services', Admin\ServiceController::class)->except('show');
@@ -156,25 +158,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
         /* ড্র্যাগ করে ক্রম বদলানো — সব কনটেন্ট তালিকায় একই এন্ডপয়েন্ট */
         Route::post('reorder/{type}', [Admin\ContentController::class, 'reorder'])->name('reorder');
 
-        /* ---- বার্তা ---- */
+        /* ---- বার্তা ---- (TODO: ContactMessageController / MessageLogController এখনো তৈরি হয়নি)
         Route::get('messages', [Admin\ContactMessageController::class, 'index'])->name('messages.index');
         Route::get('messages/{contactMessage}', [Admin\ContactMessageController::class, 'show'])->name('messages.show');
         Route::delete('messages/{contactMessage}', [Admin\ContactMessageController::class, 'destroy'])->name('messages.destroy');
-
         Route::get('message-logs', [Admin\MessageLogController::class, 'index'])->name('message-logs.index');
+        */
 
         /* ---- শুধু অ্যাডমিন ---- */
         Route::middleware('admin')->group(function () {
             Route::get('settings', [Admin\SettingController::class, 'index'])->name('settings.index');
             Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
 
+            /* TODO: User/ActivityLog/Backup কন্ট্রোলার এখনো তৈরি হয়নি
             Route::resource('users', Admin\UserController::class)->except('show');
-
             Route::get('activity', [Admin\ActivityLogController::class, 'index'])->name('activity.index');
-
             Route::post('backup', [Admin\BackupController::class, 'run'])->name('backup.run');
             Route::get('backup', [Admin\BackupController::class, 'index'])->name('backup.index');
             Route::get('backup/{file}', [Admin\BackupController::class, 'download'])->name('backup.download');
+            */
         });
 
         /* ---- নিজের প্রোফাইল ---- */

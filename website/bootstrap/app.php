@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);
+
+        /* লগইন না করা অবস্থায় অ্যাডমিন পেজে গেলে অ্যাডমিন লগইনে পাঠাও
+           (ডিফল্ট 'login' route এখানে নেই, তাই আগে 500 হতো) */
+        $middleware->redirectGuestsTo(fn () => route('admin.login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

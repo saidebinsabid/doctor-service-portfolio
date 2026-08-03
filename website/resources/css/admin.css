@@ -1,9 +1,120 @@
 @import "tailwindcss";
 
 /* ============================================================
-   অ্যাডমিন প্যানেলের স্টাইল — placeholder
-   ------------------------------------------------------------
-   vite.config.js-এ এই entry declared আছে, তাই production build
-   সফল হতে এই ফাইলটির অস্তিত্ব দরকার। অ্যাডমিন UI তৈরি করার সময়
-   এখানে অ্যাডমিন-নির্দিষ্ট স্টাইল যোগ করুন।
+   অ্যাডমিন প্যানেল — ডিজাইন টোকেন (পাবলিক সাইটের ব্র্যান্ড রঙ)
    ============================================================ */
+@theme {
+  --color-brand-50:  #f1f6fc;
+  --color-brand-100: #e0ecf8;
+  --color-brand-200: #c8dcf2;
+  --color-brand-300: #a1c5e8;
+  --color-brand-400: #73a6db;
+  --color-brand-500: #5288cd;
+  --color-brand-600: #3e6cbc;
+  --color-brand-700: #3559aa;
+  --color-brand-800: #2f4b8b;
+  --color-brand-900: #1b3a6b;
+  --color-brand-950: #12264a;
+
+  --color-sky2-50:  #f1f9fd;
+  --color-sky2-100: #e1f2fb;
+  --color-sky2-200: #bde5f6;
+  --color-sky2-400: #45b7e4;
+  --color-sky2-500: #2e8bc0;
+  --color-sky2-700: #1f6187;
+
+  --color-wa-500: #25d366;
+  --color-wa-600: #1eb855;
+
+  --font-bn: "Hind Siliguri", "Noto Sans Bengali", "Nirmala UI", sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-bn);
+    color: var(--color-slate-700);
+    background: var(--color-slate-50);
+    -webkit-font-smoothing: antialiased;
+  }
+  html[lang="bn"] body { line-height: 1.7; }
+  h1, h2, h3, h4 { color: var(--color-brand-900); font-weight: 700; }
+  :focus-visible { outline: 3px solid var(--color-sky2-400); outline-offset: 2px; border-radius: 6px; }
+}
+
+@layer components {
+
+  /* ---------- বাটন ---------- */
+  .a-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .6rem 1.1rem; border-radius: .6rem; font-weight: 600; font-size: .9rem;
+    line-height: 1.2; white-space: nowrap; cursor: pointer;
+    transition: background-color .15s ease, box-shadow .2s ease, transform .1s ease;
+  }
+  .a-btn:active { transform: translateY(1px); }
+  .a-btn-primary { background: var(--color-brand-900); color: #fff; }
+  .a-btn-primary:hover { background: var(--color-brand-800); }
+  .a-btn-light { background: #fff; color: var(--color-brand-900); border: 1.5px solid var(--color-brand-200); }
+  .a-btn-light:hover { background: var(--color-brand-50); border-color: var(--color-brand-400); }
+  .a-btn-danger { background: #fef2f2; color: #b91c1c; border: 1.5px solid #fecaca; }
+  .a-btn-danger:hover { background: #fee2e2; }
+  .a-btn-sm { padding: .4rem .7rem; font-size: .8rem; border-radius: .5rem; }
+
+  /* ---------- কার্ড ---------- */
+  .a-card {
+    background: #fff; border: 1px solid var(--color-brand-100);
+    border-radius: .9rem; box-shadow: 0 1px 2px rgb(27 58 107 / .04), 0 8px 24px -12px rgb(27 58 107 / .12);
+  }
+
+  /* ---------- ফর্ম ---------- */
+  .a-label { display: block; font-size: .82rem; font-weight: 600; color: var(--color-brand-900); margin-bottom: .35rem; }
+  .a-input, .a-textarea, .a-select {
+    width: 100%; padding: .6rem .8rem; border-radius: .55rem;
+    border: 1.5px solid var(--color-brand-100); background: #fff; font-family: inherit;
+    font-size: .92rem; color: var(--color-slate-800);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .a-input:focus, .a-textarea:focus, .a-select:focus {
+    outline: none; border-color: var(--color-sky2-500); box-shadow: 0 0 0 3px var(--color-sky2-100);
+  }
+  .a-textarea { min-height: 6rem; resize: vertical; line-height: 1.6; }
+  .a-hint { font-size: .75rem; color: var(--color-slate-500); margin-top: .3rem; }
+  .a-error { font-size: .78rem; color: #dc2626; margin-top: .3rem; font-weight: 500; }
+
+  /* ---------- সাইডবার ---------- */
+  .side-link {
+    display: flex; align-items: center; gap: .7rem; padding: .6rem .85rem;
+    border-radius: .6rem; font-size: .9rem; font-weight: 500; color: var(--color-brand-100);
+    transition: background-color .15s ease, color .15s ease;
+  }
+  .side-link:hover { background: rgb(255 255 255 / .08); color: #fff; }
+  .side-link.active { background: #fff; color: var(--color-brand-900); font-weight: 600; }
+  .side-link svg { width: 1.15rem; height: 1.15rem; flex-shrink: 0; }
+  .side-head { padding: .5rem .85rem .3rem; font-size: .68rem; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase; color: var(--color-brand-300); }
+
+  /* ---------- স্ট্যাট টাইল ---------- */
+  .stat-tile { background: #fff; border: 1px solid var(--color-brand-100); border-radius: .8rem; padding: 1rem 1.1rem; }
+  .stat-num { font-size: 1.75rem; font-weight: 700; color: var(--color-brand-900); line-height: 1; }
+  .stat-cap { font-size: .78rem; color: var(--color-slate-500); margin-top: .35rem; }
+
+  /* ---------- টেবিল ---------- */
+  .a-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .a-table th { text-align: start; font-weight: 600; color: var(--color-slate-500); font-size: .76rem;
+    text-transform: uppercase; letter-spacing: .03em; padding: .6rem .75rem; border-bottom: 1.5px solid var(--color-brand-100); }
+  .a-table td { padding: .7rem .75rem; border-bottom: 1px solid var(--color-slate-100); vertical-align: middle; }
+  .a-table tr:hover td { background: var(--color-brand-50); }
+
+  /* ---------- ব্যাজ ---------- */
+  .badge { display: inline-flex; align-items: center; gap: .3rem; padding: .2rem .6rem;
+    border-radius: 999px; font-size: .72rem; font-weight: 600; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-amber { background: #fef3c7; color: #b45309; }
+  .badge-red   { background: #fee2e2; color: #b91c1c; }
+  .badge-slate { background: var(--color-slate-100); color: var(--color-slate-600); }
+  .badge-blue  { background: var(--color-sky2-100); color: var(--color-sky2-700); }
+
+  /* ---------- ফ্ল্যাশ ---------- */
+  .flash { border-radius: .7rem; padding: .8rem 1rem; font-size: .9rem; font-weight: 500; display: flex; gap: .6rem; align-items: center; }
+  .flash-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .flash-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+}

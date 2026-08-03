@@ -54,6 +54,16 @@
                     <x-icon name="clock" class="w-4 h-4"/> {{ __('nav.book') }}
                 </a>
 
+                {{-- ডক্টর/অ্যাডমিন লগইন — লগইন করা থাকলে ড্যাশবোর্ড --}}
+                <a href="{{ auth()->check() ? route('admin.dashboard') : route('admin.login') }}"
+                   class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-brand-100
+                          text-sm font-semibold text-brand-900 hover:bg-brand-50 transition"
+                   title="{{ auth()->check() ? 'ড্যাশবোর্ড' : 'ডক্টর লগইন' }}">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+                    {{ auth()->check() ? 'ড্যাশবোর্ড' : 'লগইন' }}
+                </a>
+
                 <button type="button" id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-brand-50"
                         aria-label="{{ __('nav.menu') }}" aria-expanded="false" aria-controls="mobile-nav">
                     <svg class="w-6 h-6 text-brand-900" viewBox="0 0 24 24" fill="none"
