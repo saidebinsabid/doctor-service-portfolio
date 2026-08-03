@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export REPO=/home/drabusuf/doctor-service-portfolio
+    - /bin/bash $REPO/deploy/deploy.sh

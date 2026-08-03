@@ -1,0 +1,38 @@
+{
+  "resources/css/admin.css": {
+    "file": "assets/admin-Bdpkt2El.css",
+    "src": "resources/css/admin.css",
+    "isEntry": true,
+    "name": "admin",
+    "names": [
+      "admin.css"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-CNcXbnpt.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/admin.js": {
+    "file": "assets/admin-l0sNRNKZ.js",
+    "name": "admin",
+    "src": "resources/js/admin.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BxVMiay_.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/booking.js": {
+    "file": "assets/booking-BbOBA9ho.js",
+    "name": "booking",
+    "src": "resources/js/booking.js",
+    "isEntry": true
+  }
+}

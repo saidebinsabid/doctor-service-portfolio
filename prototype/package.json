@@ -1,0 +1,20 @@
+{
+  "name": "dr-abu-sufian-prototype",
+  "version": "1.0.0",
+  "description": "ফ্রন্টএন্ড প্রোটোটাইপ — প্রফেসর ডা. আবু সুফিয়ান",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./dist/style.css --minify",
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/style.css --watch",
+    "serve": "npx --yes http-server . -p 5173 -c-1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "private": true
+}

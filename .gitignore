@@ -1,0 +1,18 @@
+# ডিপেন্ডেন্সি — `npm install` / `composer install` দিয়ে আবার তৈরি হয়
+node_modules/
+vendor/
+
+# এনভায়রনমেন্ট ও গোপন তথ্য
+.env
+.env.*
+!.env.example
+
+# লোকাল ডাটাবেস
+*.sqlite
+*.sqlite-journal
+
+# OS ও এডিটরের আবর্জনা
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log

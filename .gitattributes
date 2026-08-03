@@ -1,0 +1,4 @@
+# ডেপ্লয় ফাইল সবসময় LF রাখুন — CRLF হলে সার্ভারে bash/YAML নীরবে ভাঙে
+*.sh                              text eol=lf
+*.yml                             text eol=lf
+deploy/public_html-index.php      text eol=lf
