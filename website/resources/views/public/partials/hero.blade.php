@@ -46,9 +46,9 @@
                         <x-icon name="clock" class="w-4.5 h-4.5"/> {{ __('common.bookNow') }}
                     </a>
                     @if($hotline = Setting::get('hotline'))
-                        <a href="tel:{{ $hotline }}" class="btn btn-ghost">
-                            <x-icon name="phone" class="w-4.5 h-4.5"/>
-                            {{ __('common.callConfirm') }}
+                        <a href="tel:{{ $hotline }}" class="btn btn-ghost whitespace-normal text-center leading-snug">
+                            <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/>
+                            {{ __('common.callConfirm') }} · {{ $hotline }}
                         </a>
                     @endif
                 </div>

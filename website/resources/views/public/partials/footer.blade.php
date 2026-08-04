@@ -53,12 +53,12 @@
                 <ul class="space-y-2 text-sm">
                     @if($h = Setting::get('hotline'))
                         <li><a href="tel:{{ $h }}" class="hover:text-white transition flex items-center gap-2">
-                            <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($h) }}</a></li>
+                            <x-icon name="phone" class="w-4 h-4"/> {{ $h }}</a></li>
                     @endif
                     @if($w = Setting::get('whatsapp'))
                         <li><a href="https://wa.me/{{ intl_bd_phone($w) }}" target="_blank" rel="noopener"
                                class="hover:text-white transition flex items-center gap-2">
-                            <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($w) }}</a></li>
+                            <x-icon name="phone" class="w-4 h-4"/> {{ $w }}</a></li>
                     @endif
                     @if($e = Setting::get('email'))
                         <li><a href="mailto:{{ $e }}" class="hover:text-white transition flex items-center gap-2">

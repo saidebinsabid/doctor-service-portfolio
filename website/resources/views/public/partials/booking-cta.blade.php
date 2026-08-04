@@ -30,8 +30,8 @@
                     <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
                 </a>
                 @if($hotline = Setting::get('hotline'))
-                    <a href="tel:{{ $hotline }}" class="btn btn-ghost !py-3.5 justify-center">
-                        <x-icon name="phone" class="w-5 h-5"/> {{ __('common.callConfirm') }}
+                    <a href="tel:{{ $hotline }}" class="btn btn-ghost !py-3.5 justify-center whitespace-normal text-center leading-snug">
+                        <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callConfirm') }} · {{ $hotline }}
                     </a>
                 @endif
                 <a href="{{ route('booking.status') }}"

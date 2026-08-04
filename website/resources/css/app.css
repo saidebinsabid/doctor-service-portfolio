@@ -116,12 +116,13 @@
   }
   .btn:active { transform: translateY(1px); }
 
+  /* ক্লায়েন্টের অনুরোধে সব primary বাটন লাল */
   .btn-primary {
-    background: var(--color-brand-900);
+    background: #dc2626;
     color: #fff;
-    box-shadow: 0 8px 20px -8px rgb(27 58 107 / .6);
+    box-shadow: 0 8px 20px -8px rgb(220 38 38 / .55);
   }
-  .btn-primary:hover { background: var(--color-brand-800); }
+  .btn-primary:hover { background: #b91c1c; }
 
   .btn-wa {
     background: var(--color-wa-500);
