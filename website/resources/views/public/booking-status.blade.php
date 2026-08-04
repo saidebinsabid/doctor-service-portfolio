@@ -20,11 +20,19 @@
             <form method="POST" action="{{ route('booking.status.lookup') }}" class="card p-5 sm:p-6 space-y-3.5">
                 @csrf
 
-                <div>
-                    <label class="label req" for="s-code">{{ __('status.code') }}</label>
-                    <input class="input font-mono" id="s-code" name="booking_code" required
-                           value="{{ old('booking_code') }}" placeholder="ASF-260805-04" maxlength="20">
-                    @error('booking_code')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                <div class="grid sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="label req" for="s-serial">{{ __('booking.f_serial') }}</label>
+                        <input class="input" id="s-serial" name="serial_no" type="number" min="1" max="999"
+                               required inputmode="numeric" value="{{ old('serial_no') }}" placeholder="4">
+                        @error('serial_no')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                    </div>
+                    <div>
+                        <label class="label req" for="s-date">{{ __('booking.f_date') }}</label>
+                        <input class="input" id="s-date" name="appointment_date" type="date"
+                               required value="{{ old('appointment_date') }}">
+                        @error('appointment_date')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                    </div>
                 </div>
 
                 <div>
@@ -51,14 +59,14 @@
                 @php $tone = $appointment->statusTone(); @endphp
                 <div class="mt-6 card p-6">
                     <div class="flex items-center justify-between gap-3 pb-4 border-b border-brand-100">
-                        <p class="font-mono font-bold text-brand-900">{{ $appointment->booking_code }}</p>
+                        <p class="font-bold text-brand-900">
+                            {{ __('booking.f_serial') }}: <span class="text-lg">{{ bn_number($appointment->serial_no) }}</span></p>
                         <span class="text-xs font-semibold px-2.5 py-1 rounded-full ring-1
                                      {{ badge_classes($tone) }}">{{ $appointment->statusLabel() }}</span>
                     </div>
 
                     <dl class="divide-y divide-brand-100">
                         @foreach([
-                            [__('booking.f_serial'),  bn_number($appointment->serial_no)],
                             [__('booking.f_date'),    fmt_date($appointment->appointment_date) . ' (' . fmt_day($appointment->appointment_date) . ')'],
                             [__('booking.f_time'),    fmt_time($appointment->slotHm())],
                             [__('booking.f_patient'), $appointment->patient_name],

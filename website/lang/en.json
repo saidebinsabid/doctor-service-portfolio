@@ -131,9 +131,9 @@
     "booking.invalid_date": "That date is not valid.",
 
     "status.title": "Check Your Serial",
-    "status.sub": "Enter your booking code and mobile number to see the current status",
+    "status.sub": "Enter your serial number, date and mobile number to see the current status",
     "status.code": "Booking code",
-    "status.not_found": "No serial found with those details. Please check the code and number.",
+    "status.not_found": "No serial found with those details. Please check the serial number, date and number.",
 
     "contact.name": "Your name",
     "contact.subject": "Subject",

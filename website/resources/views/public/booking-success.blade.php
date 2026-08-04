@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', __('booking.ok_title') . ' — ' . $a->booking_code)
+@section('title', __('booking.ok_title') . ' — ' . __('booking.f_serial') . ' ' . bn_number($a->serial_no))
 
 @push('head')
     {{-- রোগীর তথ্যসহ পাতা — গুগলে আসা উচিত নয় --}}
@@ -25,7 +25,6 @@
 
                 <dl class="mt-7 divide-y divide-brand-100 border-y border-brand-100">
                     @foreach([
-                        [__('booking.f_code'),   $a->booking_code, true],
                         [__('booking.f_serial'), bn_number($a->serial_no), true],
                         [__('booking.f_date'),   fmt_date($a->appointment_date) . ' (' . fmt_day($a->appointment_date) . ')', false],
                         [__('booking.f_time'),   fmt_time($a->slotHm()), false],
@@ -83,7 +82,7 @@
                     <p class="font-semibold text-brand-900">{{ $a->chamber->name }}</p>
                     <p class="mt-1">{{ $a->chamber->address }}</p>
                     @if($a->chamber->hotline)
-                        <p class="mt-1">{{ __('chm.hotline') }}: {{ bn_number($a->chamber->hotline) }}</p>
+                        <p class="mt-1">{{ __('chm.hotline') }}: {{ $a->chamber->hotline }}</p>
                     @endif
                 </div>
             </div>

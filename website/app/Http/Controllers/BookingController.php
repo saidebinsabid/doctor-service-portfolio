@@ -172,20 +172,23 @@ class BookingController extends Controller
     }
 
     /**
-     * বুকিং কোড + মোবাইল নম্বর দিয়ে অবস্থা দেখা।
+     * সিরিয়াল নম্বর + তারিখ + মোবাইল নম্বর দিয়ে অবস্থা দেখা।
      *
-     * ⚠️ দুটোই মিলতে হবে। শুধু কোড দিয়ে দেখা গেলে কেউ কোড অনুমান করে
-     *    অন্য রোগীর নাম ও ফোন নম্বর দেখে ফেলতে পারত।
+     * ⚠️ তিনটিই মিলতে হবে। সিরিয়াল নম্বর প্রতিদিন ঘুরে আসে, তাই তারিখ ছাড়া
+     *    সেটি একক নয়; আর ফোন নম্বরের মিল ছাড়া কেউ সিরিয়াল অনুমান করে
+     *    অন্য রোগীর নাম দেখে ফেলতে পারত।
      */
     public function statusLookup(Request $request): View
     {
         $data = $request->validate([
-            'booking_code' => ['required', 'string', 'max:20'],
-            'phone'        => ['required', 'string', 'max:20'],
+            'serial_no'        => ['required', 'integer', 'min:1', 'max:999'],
+            'appointment_date' => ['required', 'date'],
+            'phone'            => ['required', 'string', 'max:20'],
         ]);
 
         $appointment = Appointment::query()
-            ->where('booking_code', trim($data['booking_code']))
+            ->where('serial_no', (int) $data['serial_no'])
+            ->whereDate('appointment_date', $data['appointment_date'])
             ->where('patient_phone', normalize_bd_phone($data['phone']))
             ->with('chamber')
             ->first();
@@ -266,7 +269,7 @@ class BookingController extends Controller
             'text'   => Setting::get('doctor_short') . ' — ' . __('booking.f_serial') . ' ' . $a->serial_no,
             'dates'  => $start->utc()->format('Ymd\THis\Z') . '/' . $end->utc()->format('Ymd\THis\Z'),
             'location' => $a->chamber->address,
-            'details'  => __('booking.f_code') . ': ' . $a->booking_code,
+            'details'  => __('booking.f_serial') . ': ' . $a->serial_no,
         ]);
     }
 }

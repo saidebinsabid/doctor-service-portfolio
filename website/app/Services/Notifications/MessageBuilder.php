@@ -84,7 +84,7 @@ class MessageBuilder
         return $this->withLocale($a, fn () => implode("\n", [
             __('booking.msg_cancelled_head', ['name' => $a->patient_name]),
             '',
-            '▸ ' . __('booking.f_code') . ': ' . $a->booking_code,
+            '▸ ' . __('booking.f_serial') . ': ' . bn_number($a->serial_no),
             '▸ ' . __('booking.f_date') . ': ' . fmt_date($a->appointment_date),
             '▸ ' . __('booking.f_time') . ': ' . fmt_time($a->slotHm()),
             '',
@@ -118,7 +118,6 @@ class MessageBuilder
     protected function details(Appointment $a): array
     {
         $rows = [
-            __('booking.f_code')    => $a->booking_code,
             __('booking.f_patient') => $a->patient_name,
         ];
 
