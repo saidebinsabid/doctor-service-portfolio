@@ -25,12 +25,15 @@ class StoreBookingRequest extends FormRequest
                নানা ফরম্যাটে লেখা নম্বর আগেই এক রূপে আনা হয় (prepareForValidation)। */
             'patient_phone'    => ['required', 'string', 'regex:/^01[3-9]\d{8}$/'],
 
-            'patient_age'      => ['required', 'integer', 'min:0', 'max:200'],
-            'patient_age_unit' => ['required', Rule::in(['day', 'month', 'year'])],
+            /* ক্লায়েন্টের অনুরোধে ফর্মে এখন শুধু নাম ও ফোন — বাকিগুলো ঐচ্ছিক।
+               না পাঠালে BookingService নিরাপদ ডিফল্ট বসায় (age=null, unit=year,
+               visit_type=new)। */
+            'patient_age'      => ['nullable', 'integer', 'min:0', 'max:200'],
+            'patient_age_unit' => ['nullable', Rule::in(['day', 'month', 'year'])],
             'gender'           => ['nullable', Rule::in(['male', 'female'])],
             'guardian_name'    => ['nullable', 'string', 'max:100'],
             'address'          => ['nullable', 'string', 'max:200'],
-            'visit_type'       => ['required', Rule::in(['new', 'followup', 'report'])],
+            'visit_type'       => ['nullable', Rule::in(['new', 'followup', 'report'])],
             'problem'          => ['nullable', 'string', 'max:500'],
 
             /* হানিপট — মানুষ দেখতেই পায় না, বট পূরণ করে ফেলে।

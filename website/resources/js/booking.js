@@ -111,7 +111,6 @@ if (grid && slotWrap && form) {
 
         if (!form.patient_name.value.trim()) problems.push(form.dataset.errName);
         else if (!/^01[3-9]\d{8}$/.test(phone)) problems.push(form.dataset.errPhone);
-        else if (form.patient_age.value === '') problems.push(form.dataset.errAge);
         else if (!fTime.value) problems.push(form.dataset.errTime);
 
         if (problems.length) {
