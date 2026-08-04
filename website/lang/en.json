@@ -9,6 +9,7 @@
     "nav.status": "Check Serial",
 
     "common.call": "Call Now",
+    "common.callConfirm": "Confirm your serial by calling",
     "common.whatsapp": "WhatsApp",
     "common.email": "Email",
     "common.bookNow": "Book a Serial Online",
@@ -64,7 +65,7 @@
     "cnt.sub": "For serials, advice or any other need",
 
     "booking.title": "Book a Serial Online",
-    "booking.sub": "Pick a date and time, then fill in the form — it takes about a minute",
+    "booking.sub": "Book a serial online, and confirm it by calling.",
     "booking.step1": "Choose a date",
     "booking.step2": "Choose a time",
     "booking.step3": "Patient details",

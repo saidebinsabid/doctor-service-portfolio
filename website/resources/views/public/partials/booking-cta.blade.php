@@ -31,9 +31,7 @@
                 </a>
                 @if($hotline = Setting::get('hotline'))
                     <a href="tel:{{ $hotline }}" class="btn btn-ghost !py-3.5 justify-center">
-                        <x-icon name="phone" class="w-5 h-5"/>
-                        {{ app()->getLocale() === 'en' ? 'Call to book a serial' : 'সিরিয়াল নিয়ে আপনি কল করুন' }}
-                        · {{ bn_number($hotline) }}
+                        <x-icon name="phone" class="w-5 h-5"/> {{ __('common.callConfirm') }}
                     </a>
                 @endif
                 <a href="{{ route('booking.status') }}"

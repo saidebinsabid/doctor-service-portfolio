@@ -86,8 +86,7 @@
         {{-- সরাসরি ফোনে সিরিয়াল --}}
         @if($hotline = Setting::get('hotline'))
             <a href="tel:{{ $hotline }}" class="btn btn-wa w-full !py-3 justify-center">
-                <x-icon name="phone" class="w-4.5 h-4.5"/>
-                {{ $en ? 'Call to book a serial' : 'সিরিয়াল নিয়ে আপনি কল করুন' }}
+                <x-icon name="phone" class="w-4.5 h-4.5"/> {{ __('common.callConfirm') }}
             </a>
         @endif
 

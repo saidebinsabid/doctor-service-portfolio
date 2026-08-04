@@ -48,7 +48,7 @@
                     @if($hotline = Setting::get('hotline'))
                         <a href="tel:{{ $hotline }}" class="btn btn-ghost">
                             <x-icon name="phone" class="w-4.5 h-4.5"/>
-                            {{ __('common.call') }} · {{ bn_number($hotline) }}
+                            {{ __('common.callConfirm') }}
                         </a>
                     @endif
                 </div>
@@ -101,6 +101,15 @@
                         </div>
                     @endif
                 </div>
+
+                {{-- ছবির নিচে চেম্বারের নাম ও ঠিকানা (ক্লায়েন্টের অনুরোধে) --}}
+                <p class="mt-8 sm:mt-7 text-center text-sky2-100 text-sm font-medium
+                          flex items-center justify-center gap-1.5">
+                    <x-icon name="pin" class="w-4 h-4 shrink-0"/>
+                    {{ app()->getLocale() === 'en'
+                        ? 'Ibn Sina Diagnostic, Badda, Dhaka'
+                        : 'ইবনে সিনা ডায়াগনস্টিক, বাড্ডা, ঢাকা' }}
+                </p>
             </div>
 
         </div>
