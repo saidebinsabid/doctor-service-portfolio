@@ -157,6 +157,14 @@
   }
   .btn-yellow:hover { background: #eab308; }
 
+  /* ক্লায়েন্টের অনুরোধে "স্যারকে মেসেজ" বাটন — গাঢ় নীল */
+  .btn-deepblue {
+    background: #1e3a8a;
+    color: #fff;
+    box-shadow: 0 8px 20px -8px rgb(30 58 138 / .6);
+  }
+  .btn-deepblue:hover { background: #1e40af; }
+
   /* ---------- সেকশন ---------- */
   .section { padding-block: 3.5rem; }
   @media (min-width: 768px) { .section { padding-block: 5rem; } }
@@ -370,7 +378,13 @@
 /* প্রিন্ট — সিরিয়াল স্লিপ */
 @media print {
   .no-print { display: none !important; }
+
+  /* প্রিন্টে শুধু সিরিয়াল স্লিপ চাই — সাইটের মেনু, নোটিশ-বার, ফুটার ও
+     নিচের অ্যাকশন-বার সব লুকানো হয়, নইলে স্লিপের বদলে পুরো পেজ ছাপা হতো। */
+  #site-header, #notice-bar, footer, .mobile-bar { display: none !important; }
+
   body { background: #fff; }
+  .section { padding-block: 0 !important; }
   .print-slip {
     box-shadow: none !important;
     border: 1.5px solid #333 !important;

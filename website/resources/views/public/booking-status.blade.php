@@ -20,19 +20,12 @@
             <form method="POST" action="{{ route('booking.status.lookup') }}" class="card p-5 sm:p-6 space-y-3.5">
                 @csrf
 
-                <div class="grid sm:grid-cols-2 gap-3.5">
-                    <div>
-                        <label class="label req" for="s-serial">{{ __('booking.f_serial') }}</label>
-                        <input class="input" id="s-serial" name="serial_no" type="number" min="1" max="999"
-                               required inputmode="numeric" value="{{ old('serial_no') }}" placeholder="4">
-                        @error('serial_no')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label class="label req" for="s-date">{{ __('booking.f_date') }}</label>
-                        <input class="input" id="s-date" name="appointment_date" type="date"
-                               required value="{{ old('appointment_date') }}">
-                        @error('appointment_date')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
-                    </div>
+                <div>
+                    <label class="label req" for="s-name">{{ __('booking.patient_name') }}</label>
+                    <input class="input" id="s-name" name="name" required maxlength="100"
+                           value="{{ old('name') }}"
+                           placeholder="{{ app()->getLocale() === 'en' ? "Enter the patient's name" : 'রোগীর নাম লিখুন' }}">
+                    @error('name')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
                 <div>

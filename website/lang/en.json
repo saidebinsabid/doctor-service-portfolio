@@ -12,6 +12,11 @@
     "common.callConfirm": "Confirm your serial by calling",
     "common.callOperator": "Press this button to talk to the operator",
     "common.bookGuide": "Pick a date & time — you'll get an SMS/WhatsApp confirmation on your mobile.",
+    "common.msgDoctor": "Press this button to message the doctor for urgent needs",
+    "common.msgDoctorNote": "Write the patient's problem and send the doctor's prescription and all reports. Please do not call.",
+    "common.msgDoctorPrefill": "Assalamu Alaikum. I'm describing the patient's problem and sending the prescription and reports:\n",
+    "common.feeInfo": "For patients' convenience the fee is 800 taka. Pay via bKash and get a serial for 700 taka. Show the payment copy at the chamber.",
+    "common.bkash": "bKash",
     "common.hotlineBtn": "Call the hotline",
     "common.whatsapp": "WhatsApp",
     "common.whatsapp": "WhatsApp",
@@ -133,9 +138,9 @@
     "booking.invalid_date": "That date is not valid.",
 
     "status.title": "Check Your Serial",
-    "status.sub": "Enter your serial number, date and mobile number to see the current status",
+    "status.sub": "Enter your name and mobile number to see the current status",
     "status.code": "Booking code",
-    "status.not_found": "No serial found with those details. Please check the serial number, date and number.",
+    "status.not_found": "No serial found with those details. Please check the name and mobile number.",
 
     "contact.name": "Your name",
     "contact.subject": "Subject",

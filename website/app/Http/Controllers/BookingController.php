@@ -172,25 +172,29 @@ class BookingController extends Controller
     }
 
     /**
-     * সিরিয়াল নম্বর + তারিখ + মোবাইল নম্বর দিয়ে অবস্থা দেখা।
+     * নাম + মোবাইল নম্বর দিয়ে অবস্থা দেখা।
      *
-     * ⚠️ তিনটিই মিলতে হবে। সিরিয়াল নম্বর প্রতিদিন ঘুরে আসে, তাই তারিখ ছাড়া
-     *    সেটি একক নয়; আর ফোন নম্বরের মিল ছাড়া কেউ সিরিয়াল অনুমান করে
-     *    অন্য রোগীর নাম দেখে ফেলতে পারত।
+     * ক্লায়েন্টের অনুরোধে সহজ করা হয়েছে — রোগীর কোড/সিরিয়াল মনে রাখার
+     * দরকার নেই। ফোন নম্বর হুবহু মিলতে হয় (গোপনীয়তার জন্য), নাম বড়/ছোট
+     * হাতের ফারাক ও আংশিক লেখাতেও মিলে যায়। একই নাম+ফোনে একাধিক থাকলে
+     * সবচেয়ে সাম্প্রতিক অ্যাপয়েন্টমেন্টটি দেখানো হয়।
      */
     public function statusLookup(Request $request): View
     {
         $data = $request->validate([
-            'serial_no'        => ['required', 'integer', 'min:1', 'max:999'],
-            'appointment_date' => ['required', 'date'],
-            'phone'            => ['required', 'string', 'max:20'],
+            'name'  => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:20'],
         ]);
 
+        $name = mb_strtolower(trim($data['name']));
+        $like = '%' . addcslashes($name, '%_\\') . '%';
+
         $appointment = Appointment::query()
-            ->where('serial_no', (int) $data['serial_no'])
-            ->whereDate('appointment_date', $data['appointment_date'])
             ->where('patient_phone', normalize_bd_phone($data['phone']))
+            ->whereRaw('LOWER(patient_name) LIKE ?', [$like])
             ->with('chamber')
+            ->orderByDesc('appointment_date')
+            ->orderByDesc('id')
             ->first();
 
         return view('public.booking-status', [
