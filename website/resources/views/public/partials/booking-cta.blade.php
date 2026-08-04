@@ -26,12 +26,16 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <a href="{{ route('booking.create') }}" class="btn btn-wa !py-3.5 justify-center">
+                <a href="{{ route('booking.create') }}" class="btn btn-primary !py-3.5 justify-center">
                     <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
                 </a>
+                <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
+                    <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
+                    {{ __('common.bookGuide') }}
+                </p>
                 @if($hotline = Setting::get('hotline'))
-                    <a href="tel:{{ $hotline }}" class="btn btn-ghost !py-3.5 justify-center whitespace-normal text-center leading-snug">
-                        <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callConfirm') }} · {{ $hotline }}
+                    <a href="tel:{{ $hotline }}" class="btn btn-yellow !py-3.5 justify-center whitespace-normal text-center leading-snug">
+                        <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
                     </a>
                 @endif
                 <a href="{{ route('booking.status') }}"

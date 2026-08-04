@@ -85,8 +85,8 @@
 
         {{-- সরাসরি ফোনে সিরিয়াল --}}
         @if($hotline = Setting::get('hotline'))
-            <a href="tel:{{ $hotline }}" class="btn btn-wa w-full !py-3 justify-center whitespace-normal text-center leading-snug">
-                <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/> {{ __('common.callConfirm') }} · {{ $hotline }}
+            <a href="tel:{{ $hotline }}" class="btn btn-yellow w-full !py-3 justify-center whitespace-normal text-center leading-snug">
+                <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/> {{ __('common.callOperator') }}
             </a>
         @endif
 

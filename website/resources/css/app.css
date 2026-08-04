@@ -148,6 +148,15 @@
   }
   .btn-ghost:hover { background: rgb(255 255 255 / .22); }
 
+  /* ক্লায়েন্টের অনুরোধে কল/অপারেটর বাটন হলুদ।
+     গাঢ় লেখা রাখা হয়েছে যেন হিরোর গাঢ় ও কার্ডের সাদা — দুই ব্যাকগ্রাউন্ডেই পড়া যায়। */
+  .btn-yellow {
+    background: #facc15;
+    color: var(--color-brand-900);
+    box-shadow: 0 8px 20px -8px rgb(234 179 8 / .6);
+  }
+  .btn-yellow:hover { background: #eab308; }
+
   /* ---------- সেকশন ---------- */
   .section { padding-block: 3.5rem; }
   @media (min-width: 768px) { .section { padding-block: 5rem; } }
