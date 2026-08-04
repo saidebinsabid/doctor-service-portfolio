@@ -52,13 +52,13 @@
                 <div class="flex flex-wrap gap-2.5">
                     @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
                         <a href="tel:{{ $hotline }}" class="btn btn-primary !py-2.5 !text-sm">
-                            <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($hotline) }}
+                            <x-icon name="phone" class="w-4 h-4"/> {{ __('common.hotlineBtn') }}
                         </a>
                     @endif
                     @if($wa = Setting::get('whatsapp'))
                         <a href="https://wa.me/{{ intl_bd_phone($wa) }}" target="_blank" rel="noopener"
                            class="btn btn-wa !py-2.5 !text-sm">
-                            <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($wa) }}
+                            <x-icon name="phone" class="w-4 h-4"/> {{ __('common.whatsapp') }}
                         </a>
                     @endif
                 </div>
