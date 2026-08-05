@@ -168,6 +168,18 @@ class SettingsSeeder extends Seeder
                 'label_bn' => 'ফলো-আপের মেয়াদ (দিন)', 'label_en' => 'Follow-up validity (days)',
                 'value_bn' => '15',                                       // ⚠️ ডেমো
             ],
+            [
+                'key' => 'bkash_number', 'group' => 'fees', 'type' => 'text', 'sort_order' => 60,
+                'label_bn' => 'বিকাশ নম্বর (পেমেন্টের জন্য)', 'label_en' => 'bKash number (for payment)',
+                'value_bn' => '01327084433', 'value_en' => '01327084433',
+            ],
+            [
+                'key' => 'fee_notice', 'group' => 'fees', 'type' => 'textarea', 'sort_order' => 70,
+                'label_bn' => 'ফি/বিকাশ বার্তা (বুকিং সেকশনের বক্সে)',
+                'label_en' => 'Fee / bKash notice (booking section box)',
+                'value_bn' => 'রোগীদের সাশ্রয়ের জন্য ফি ৮০০ টাকা। বিকাশ করলে ৭০০ টাকায় সিরিয়াল নিতে পারবেন। চেম্বারে পেমেন্ট কপি দেখাবেন।',
+                'value_en' => "For patients' convenience the fee is 800 taka. Pay via bKash and get a serial for 700 taka. Show the payment copy at the chamber.",
+            ],
 
             /* ==================== SEO ==================== */
             [

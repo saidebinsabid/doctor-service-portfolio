@@ -32,12 +32,18 @@
         <p class="-mt-1 text-xs text-white/70 text-center leading-relaxed">{{ __('common.msgDoctorNote') }}</p>
     @endif
 
-    {{-- ৪. ফি ও বিকাশ তথ্য — সাদা বক্স, লাল লেখা --}}
-    <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
-        <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ __('common.feeInfo') }}</p>
-        <p class="mt-2 text-base font-extrabold text-red-700 tracking-wide">
-            {{ __('common.bkash') }}: 01327084433
-        </p>
-    </div>
+    {{-- ৪. ফি ও বিকাশ তথ্য — সাদা বক্স, লাল লেখা।
+         লেখা ও বিকাশ নম্বর দুটোই অ্যাডমিন সেটিংস থেকে আসে (Settings → ভিজিট ফি),
+         তাই ক্লায়েন্ট নিজে যেকোনো সময় বদলাতে পারবেন। সেটিং খালি থাকলে বক্সটি দেখাবে না। --}}
+    @if($feeNotice = Setting::get('fee_notice'))
+        <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
+            <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ $feeNotice }}</p>
+            @if($bkashNo = Setting::get('bkash_number'))
+                <p class="mt-2 text-base font-extrabold text-red-700 tracking-wide">
+                    {{ __('common.bkash') }}: {{ $bkashNo }}
+                </p>
+            @endif
+        </div>
+    @endif
 
 </div>
