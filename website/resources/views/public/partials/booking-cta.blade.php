@@ -26,51 +26,12 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <a href="{{ route('booking.create') }}" class="btn btn-primary !py-3.5 justify-center">
-                    <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
-                </a>
-                <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
-                    <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
-                    {{ __('common.bookGuide') }}
-                </p>
-                @if($hotline = Setting::get('hotline'))
-                    <a href="tel:{{ $hotline }}" class="btn btn-yellow !py-3.5 justify-center whitespace-normal text-center leading-snug">
-                        <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
-                    </a>
-                @endif
+                @include('public.partials.action-stack')
                 <a href="{{ route('booking.status') }}"
-                   class="text-center text-sm text-white/70 hover:text-white underline underline-offset-4">
+                   class="w-full max-w-sm text-center text-sm text-white/70 hover:text-white underline underline-offset-4">
                     {{ __('nav.status') }}
                 </a>
             </div>
         </div>
-    </div>
-
-    {{-- ক্লায়েন্টের অনুরোধে যোগ করা দুটি বাটন — বুকিং কার্ডের নিচে, হালকা
-         ব্যাকগ্রাউন্ডে (গাঢ় নীল বাটন ও লাল-লেখা সাদা বক্স গাঢ় কার্ডে মিশে যেত)। --}}
-    <div class="mt-5 grid gap-3 max-w-2xl mx-auto">
-
-        {{-- জরুরি প্রয়োজনে স্যারকে সরাসরি WhatsApp মেসেজ (গাঢ় নীল) --}}
-        @if($wa = Setting::get('whatsapp'))
-            <div>
-                <a href="https://wa.me/{{ intl_bd_phone($wa) }}?text={{ rawurlencode(__('common.msgDoctorPrefill')) }}"
-                   target="_blank" rel="noopener"
-                   class="btn btn-deepblue w-full !py-3.5 whitespace-normal text-center leading-snug">
-                    <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.msgDoctor') }}
-                </a>
-                <p class="mt-1.5 text-xs text-slate-500 text-center leading-relaxed">
-                    {{ __('common.msgDoctorNote') }}
-                </p>
-            </div>
-        @endif
-
-        {{-- ফি ও বিকাশ তথ্য — সাদা বক্স, লাল লেখা --}}
-        <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
-            <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ __('common.feeInfo') }}</p>
-            <p class="mt-2 text-base font-extrabold text-red-700 tracking-wide">
-                {{ __('common.bkash') }}: 01327084433
-            </p>
-        </div>
-
     </div>
 </div>

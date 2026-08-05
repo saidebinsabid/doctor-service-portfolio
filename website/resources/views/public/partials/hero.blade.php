@@ -41,23 +41,10 @@
                     <p class="mt-5 text-white/85 leading-relaxed max-w-xl text-[0.97rem]">{{ $tagline }}</p>
                 @endif
 
-                <div class="mt-7 flex flex-wrap gap-3">
-                    <a href="{{ route('booking.create') }}" class="btn btn-primary">
-                        <x-icon name="clock" class="w-4.5 h-4.5"/> {{ __('common.bookNow') }}
-                    </a>
-                    @if($hotline = Setting::get('hotline'))
-                        <a href="tel:{{ $hotline }}" class="btn btn-yellow whitespace-normal text-center leading-snug">
-                            <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/>
-                            {{ __('common.callOperator') }}
-                        </a>
-                    @endif
+                {{-- সব অ্যাকশন বাটন এক স্ট্যাকে (শেয়ার্ড পার্শিয়াল) --}}
+                <div class="mt-7">
+                    @include('public.partials.action-stack')
                 </div>
-
-                {{-- বুকিং বাটনের নিচে ছোট নির্দেশনা (ক্লায়েন্টের অনুরোধে) --}}
-                <p class="mt-3 text-sm text-white/75 flex items-start gap-1.5 max-w-md">
-                    <x-icon name="clock" class="w-4 h-4 shrink-0 mt-0.5 text-sky2-200"/>
-                    {{ __('common.bookGuide') }}
-                </p>
 
                 <dl class="mt-9 grid sm:grid-cols-3 gap-3 max-w-2xl">
                     @foreach($trust as [$icon, $label])

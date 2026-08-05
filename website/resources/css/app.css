@@ -157,10 +157,12 @@
   }
   .btn-yellow:hover { background: #eab308; }
 
-  /* ক্লায়েন্টের অনুরোধে "স্যারকে মেসেজ" বাটন — গাঢ় নীল */
+  /* ক্লায়েন্টের অনুরোধে "স্যারকে মেসেজ" বাটন — গাঢ় নীল।
+     হালকা নীল বর্ডার যেন গাঢ় নেভি হিরোতেও বাটনের কিনারা স্পষ্ট থাকে। */
   .btn-deepblue {
     background: #1e3a8a;
     color: #fff;
+    border: 1.5px solid #3b82f6;
     box-shadow: 0 8px 20px -8px rgb(30 58 138 / .6);
   }
   .btn-deepblue:hover { background: #1e40af; }

@@ -1,0 +1,43 @@
+@php use App\Models\Setting; @endphp
+
+{{-- সব অ্যাকশন বাটন একসাথে, একটার পর একটা (ক্লায়েন্টের অনুরোধে)।
+     হিরো ও বুকিং সেকশন — দুই জায়গাতেই এই একই পার্শিয়াল ব্যবহার হয়, তাই
+     এক জায়গায় বদলালেই দুটোই আপডেট হয়। দুটোই গাঢ় ব্যাকগ্রাউন্ড। --}}
+<div class="flex flex-col gap-3 w-full max-w-sm">
+
+    {{-- ১. অনলাইনে সিরিয়াল বুক (লাল) + নির্দেশনা --}}
+    <a href="{{ route('booking.create') }}" class="btn btn-primary w-full !py-3.5 justify-center">
+        <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
+    </a>
+    <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
+        <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
+        {{ __('common.bookGuide') }}
+    </p>
+
+    {{-- ২. অপারেটরকে কল (হলুদ) --}}
+    @if($hotline = Setting::get('hotline'))
+        <a href="tel:{{ $hotline }}"
+           class="btn btn-yellow w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
+            <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
+        </a>
+    @endif
+
+    {{-- ৩. জরুরি প্রয়োজনে স্যারকে WhatsApp মেসেজ (গাঢ় নীল) + নোট --}}
+    @if($wa = Setting::get('whatsapp'))
+        <a href="https://wa.me/{{ intl_bd_phone($wa) }}?text={{ rawurlencode(__('common.msgDoctorPrefill')) }}"
+           target="_blank" rel="noopener"
+           class="btn btn-deepblue w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
+            <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.msgDoctor') }}
+        </a>
+        <p class="-mt-1 text-xs text-white/70 text-center leading-relaxed">{{ __('common.msgDoctorNote') }}</p>
+    @endif
+
+    {{-- ৪. ফি ও বিকাশ তথ্য — সাদা বক্স, লাল লেখা --}}
+    <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
+        <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ __('common.feeInfo') }}</p>
+        <p class="mt-2 text-base font-extrabold text-red-700 tracking-wide">
+            {{ __('common.bkash') }}: 01327084433
+        </p>
+    </div>
+
+</div>
