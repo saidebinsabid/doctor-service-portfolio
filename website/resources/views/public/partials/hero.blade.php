@@ -45,16 +45,6 @@
                 <div class="mt-7">
                     @include('public.partials.action-stack')
                 </div>
-
-                <dl class="mt-9 grid sm:grid-cols-3 gap-3 max-w-2xl">
-                    @foreach($trust as [$icon, $label])
-                        <div class="flex items-center gap-2.5 rounded-xl bg-white/10 backdrop-blur
-                                    px-3.5 py-3 border border-white/15">
-                            <span class="text-sky2-200 shrink-0"><x-icon :name="$icon" class="w-5 h-5"/></span>
-                            <dt class="text-[0.8rem] text-white/90 leading-snug">{{ $label }}</dt>
-                        </div>
-                    @endforeach
-                </dl>
             </div>
 
             <div class="relative">
@@ -110,5 +100,17 @@
             </div>
 
         </div>
+
+        {{-- ট্রাস্ট আইকন — হিরোর সবশেষে, বাটন ও ছবির নিচে (ক্লায়েন্টের অনুরোধে)।
+             লেখা আগে একটু ফ্যাকাশে ছিল — স্পষ্ট করা হলো। --}}
+        <dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto">
+            @foreach($trust as [$icon, $label])
+                <div class="flex items-center gap-2.5 rounded-xl bg-white/15 backdrop-blur
+                            px-4 py-3 border border-white/20">
+                    <span class="text-sky2-100 shrink-0"><x-icon :name="$icon" class="w-5 h-5"/></span>
+                    <dt class="text-[0.85rem] font-medium text-white leading-snug">{{ $label }}</dt>
+                </div>
+            @endforeach
+        </dl>
     </div>
 </section>

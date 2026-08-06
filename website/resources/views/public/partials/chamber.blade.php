@@ -75,6 +75,7 @@
                    class="btn btn-outline w-full !py-2.5 !text-sm">
                     <x-icon name="pin" class="w-4 h-4"/> {{ __('common.getDirection') }}
                 </a>
+                <p class="mt-1.5 text-[0.7rem] text-slate-500 text-center">{{ __('common.getDirectionHint') }}</p>
             </div>
         </div>
 
