@@ -37,20 +37,32 @@
         {{-- একাধিক চেম্বার — প্রথমে হসপিটাল বাছাই। বাছাই করলে ওই চেম্বারের
              নিজস্ব ক্যালেন্ডার ও সময়সূচি দেখায় (রোগীর জন্য সবচেয়ে সহজ)। --}}
         @if($chambers->count() > 1)
+            @php
+                /* প্রতিটি চেম্বার আলাদা রঙে (ক্লায়েন্টের অনুরোধে)।
+                   লিটারেল ক্লাস-স্ট্রিং — Tailwind ফাইল স্ক্যান করে এগুলো তৈরি করে। */
+                $chamberPalette = [
+                    ['idle' => 'border-sky2-200 hover:border-sky2-400',   'active' => 'border-sky2-500 bg-sky2-50',    'icon' => 'bg-sky2-500 text-white'],
+                    ['idle' => 'border-emerald-200 hover:border-emerald-400', 'active' => 'border-emerald-500 bg-emerald-50', 'icon' => 'bg-emerald-600 text-white'],
+                    ['idle' => 'border-amber-200 hover:border-amber-400', 'active' => 'border-amber-500 bg-amber-50',    'icon' => 'bg-amber-500 text-white'],
+                ];
+            @endphp
             <div class="card p-4 sm:p-5 mb-6">
-                <p class="font-bold text-brand-900 flex items-center gap-2 mb-3">
+                <p class="font-bold text-brand-900 flex items-center gap-2">
                     <span class="grid place-items-center w-7 h-7 rounded-lg bg-brand-900 text-white shrink-0">
                         <x-icon name="pin" class="w-4 h-4"/></span>
                     {{ __('booking.pick_chamber') }}
                 </p>
+                <p class="text-xs text-slate-500 mt-1 mb-3 ms-9">{{ __('booking.pick_chamber_hint') }}</p>
                 <div class="grid sm:grid-cols-2 gap-3">
                     @foreach($chambers as $c)
-                        @php $active = $c->id === $chamber->id; @endphp
+                        @php
+                            $active = $c->id === $chamber->id;
+                            $p = $chamberPalette[$loop->index % count($chamberPalette)];
+                        @endphp
                         <a href="{{ route('booking.create', ['chamber' => $c->id]) }}"
                            class="rounded-xl border-2 p-3.5 flex items-start gap-3 transition
-                                  {{ $active ? 'border-brand-900 bg-brand-50' : 'border-brand-100 hover:border-brand-300' }}">
-                            <span class="grid place-items-center w-9 h-9 rounded-lg shrink-0
-                                         {{ $active ? 'bg-brand-900 text-white' : 'bg-brand-50 text-brand-700' }}">
+                                  {{ $active ? $p['active'] : $p['idle'] }}">
+                            <span class="grid place-items-center w-9 h-9 rounded-lg shrink-0 {{ $p['icon'] }}">
                                 <x-icon name="pin" class="w-4.5 h-4.5"/></span>
                             <span class="min-w-0">
                                 <span class="block font-bold text-brand-900 text-sm leading-snug">{{ $c->name }}</span>

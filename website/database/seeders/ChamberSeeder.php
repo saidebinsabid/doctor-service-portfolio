@@ -67,8 +67,8 @@ class ChamberSeeder extends Seeder
             ['name_bn' => 'অ্যাপন হেলথকেয়ার লিমিটেড, বসুন্ধরা'],
             [
                 'name_en'    => 'APON Healthcare Ltd., Bashundhara',
-                'address_bn' => 'বসুন্ধরা, ঢাকা',
-                'address_en' => 'Bashundhara, Dhaka',
+                'address_bn' => 'বসুন্ধরা, ঢাকা (এভারকেয়ার এর পাশে)',
+                'address_en' => 'Bashundhara, Dhaka (beside Evercare)',
                 'hotline'    => '09610987121',
                 'map_query'  => 'APON Healthcare Bashundhara Dhaka',
                 'is_active'  => true,
