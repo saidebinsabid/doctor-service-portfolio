@@ -1,6 +1,6 @@
 {
   "resources/css/admin.css": {
-    "file": "assets/admin-NH9RHGrO.css",
+    "file": "assets/admin-DDcClym6.css",
     "src": "resources/css/admin.css",
     "isEntry": true,
     "name": "admin",
@@ -9,7 +9,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-B_4dcpaV.css",
+    "file": "assets/app-8KHtAL_H.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -30,7 +30,7 @@
     "isEntry": true
   },
   "resources/js/booking.js": {
-    "file": "assets/booking-SKothXEY.js",
+    "file": "assets/booking-rylXqd89.js",
     "name": "booking",
     "src": "resources/js/booking.js",
     "isEntry": true

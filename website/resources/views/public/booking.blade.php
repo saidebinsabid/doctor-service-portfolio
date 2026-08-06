@@ -34,6 +34,34 @@
             </div>
         @else
 
+        {{-- একাধিক চেম্বার — প্রথমে হসপিটাল বাছাই। বাছাই করলে ওই চেম্বারের
+             নিজস্ব ক্যালেন্ডার ও সময়সূচি দেখায় (রোগীর জন্য সবচেয়ে সহজ)। --}}
+        @if($chambers->count() > 1)
+            <div class="card p-4 sm:p-5 mb-6">
+                <p class="font-bold text-brand-900 flex items-center gap-2 mb-3">
+                    <span class="grid place-items-center w-7 h-7 rounded-lg bg-brand-900 text-white shrink-0">
+                        <x-icon name="pin" class="w-4 h-4"/></span>
+                    {{ __('booking.pick_chamber') }}
+                </p>
+                <div class="grid sm:grid-cols-2 gap-3">
+                    @foreach($chambers as $c)
+                        @php $active = $c->id === $chamber->id; @endphp
+                        <a href="{{ route('booking.create', ['chamber' => $c->id]) }}"
+                           class="rounded-xl border-2 p-3.5 flex items-start gap-3 transition
+                                  {{ $active ? 'border-brand-900 bg-brand-50' : 'border-brand-100 hover:border-brand-300' }}">
+                            <span class="grid place-items-center w-9 h-9 rounded-lg shrink-0
+                                         {{ $active ? 'bg-brand-900 text-white' : 'bg-brand-50 text-brand-700' }}">
+                                <x-icon name="pin" class="w-4.5 h-4.5"/></span>
+                            <span class="min-w-0">
+                                <span class="block font-bold text-brand-900 text-sm leading-snug">{{ $c->name }}</span>
+                                <span class="block text-xs text-slate-500 mt-0.5">{{ $c->address }}</span>
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         <div class="grid lg:grid-cols-2 gap-6 items-start">
 
             {{-- ================= ধাপ ১ ও ২: তারিখ ও সময় ================= --}}
@@ -48,7 +76,7 @@
 
                     <div class="flex items-center gap-1 ms-auto">
                         @if($prevMonth)
-                            <a href="{{ route('booking.create', ['month' => $prevMonth]) }}"
+                            <a href="{{ route('booking.create', ['month' => $prevMonth, 'chamber' => $chamber->id]) }}"
                                class="p-1.5 rounded-lg hover:bg-brand-50" aria-label="{{ __('booking.prev_month') }}">
                                 <svg class="w-5 h-5 text-brand-900" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -67,7 +95,7 @@
                         </span>
 
                         @if($nextMonth)
-                            <a href="{{ route('booking.create', ['month' => $nextMonth]) }}"
+                            <a href="{{ route('booking.create', ['month' => $nextMonth, 'chamber' => $chamber->id]) }}"
                                class="p-1.5 rounded-lg hover:bg-brand-50" aria-label="{{ __('booking.next_month') }}">
                                 <svg class="w-5 h-5 text-brand-900" viewBox="0 0 24 24" fill="none"
                                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -102,7 +130,7 @@
                     @foreach($calendar as $d)
                         @if($d['selectable'])
                             {{-- খোলা তারিখ — ক্লিকযোগ্য (খালি-সিরিয়াল সংখ্যা আর দেখানো হয় না, ক্লায়েন্টের অনুরোধে) --}}
-                            <a href="{{ route('booking.create', ['month' => $month->format('Y-m'), 'date' => $d['date']]) }}"
+                            <a href="{{ route('booking.create', ['month' => $month->format('Y-m'), 'date' => $d['date'], 'chamber' => $chamber->id]) }}"
                                class="cal-day" data-date="{{ $d['date'] }}"
                                aria-pressed="{{ $selected && $selected->toDateString() === $d['date'] ? 'true' : 'false' }}"
                                title="{{ $d['label'] }}" aria-label="{{ $d['label'] }}">
@@ -138,6 +166,7 @@
                 {{-- ---------- ধাপ ২: সময় ---------- --}}
                 <div id="slot-wrap" class="mt-5 pt-5 border-t border-brand-100"
                      data-slots-url="{{ route('booking.slots') }}"
+                     data-chamber="{{ $chamber->id }}"
                      data-step-two="{{ bn_number(2) }}"
                      data-step-two-label="{{ __('booking.step2') }}">
                     @if(! $selected)

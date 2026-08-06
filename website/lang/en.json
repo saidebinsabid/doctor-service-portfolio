@@ -80,6 +80,7 @@
 
     "booking.title": "Book a Serial Online",
     "booking.sub": "Book a serial online, and confirm it by calling.",
+    "booking.pick_chamber": "First, choose a chamber / hospital",
     "booking.step1": "Click the date you want to visit",
     "booking.step2": "Click the time you prefer",
     "booking.step3": "Patient details",

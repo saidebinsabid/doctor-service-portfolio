@@ -35,7 +35,10 @@ class BookingController extends Controller
      */
     public function create(Request $request): View
     {
-        $chamber = $this->chamber();
+        /* একাধিক চেম্বার — রোগী কোন হসপিটাল বাছল সেটা ঠিকানার ?chamber= থেকে;
+           না বাছলে প্রথমটি। প্রতিটি চেম্বারের নিজস্ব সময়সূচি/ক্যালেন্ডার। */
+        $chambers = Chamber::forPublic()->with('schedules')->get();
+        $chamber = $chambers->firstWhere('id', $request->integer('chamber')) ?? $chambers->first();
         $today = CarbonImmutable::today();
 
         $month = $today->startOfMonth();
@@ -66,6 +69,7 @@ class BookingController extends Controller
         }
 
         return view('public.booking', [
+            'chambers'  => $chambers,
             'chamber'   => $chamber,
             'enabled'   => Setting::bool('booking_enabled', true)
                             && ! Setting::bool('holiday_mode'),
@@ -103,7 +107,7 @@ class BookingController extends Controller
     {
         $request->validate(['date' => ['required', 'date_format:Y-m-d']]);
 
-        $chamber = $this->chamber();
+        $chamber = Chamber::forPublic()->find($request->integer('chamber')) ?? $this->chamber();
         $date = CarbonImmutable::parse($request->string('date')->toString());
 
         $day = $this->slots->day($chamber, $date);

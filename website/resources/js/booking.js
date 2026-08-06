@@ -51,9 +51,10 @@ if (grid && slotWrap && form) {
         slotWrap.innerHTML = '<p class="text-center text-sm text-slate-400 py-4">…</p>';
 
         try {
-            const res = await fetch(`${slotWrap.dataset.slotsUrl}?date=${date}`, {
-                headers: { Accept: 'application/json' },
-            });
+            const res = await fetch(
+                `${slotWrap.dataset.slotsUrl}?date=${date}&chamber=${slotWrap.dataset.chamber || ''}`,
+                { headers: { Accept: 'application/json' } },
+            );
             if (!res.ok) throw new Error('slots');
 
             const data = await res.json();
