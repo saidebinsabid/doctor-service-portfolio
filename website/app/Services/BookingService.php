@@ -28,13 +28,13 @@ class BookingService
     public function book(Chamber $chamber, array $data): Appointment
     {
         $date = CarbonImmutable::parse($data['appointment_date']);
-        $time = substr($data['slot_time'], 0, 5);
+        $requestedTime = ! empty($data['slot_time']) ? substr($data['slot_time'], 0, 5) : null;
         $phone = normalize_bd_phone($data['patient_phone']);
 
         $this->guardLimits($phone, $data['ip_address'] ?? null);
 
         try {
-            $appointment = DB::transaction(function () use ($chamber, $date, $time, $phone, $data) {
+            $appointment = DB::transaction(function () use ($chamber, $date, $requestedTime, $phone, $data) {
 
                 /*
                 | ⭐ ডাবল-বুকিং প্রতিরোধ — প্রথম স্তর
@@ -50,8 +50,12 @@ class BookingService
                     ->lockForUpdate()
                     ->get(['id']);
 
+                /* সময় বাছাই করা থাকলে সেটাই; না থাকলে ওই দিনের পরের খালি সময়
+                   অটোমেটিক (লক নেওয়ার পর নির্ধারণ, যাতে রেস না হয়)। */
+                $time = $requestedTime ?? $this->firstOpenSlot($chamber, $date);
+
                 /* লক নেওয়ার পর আবার যাচাই — এই মুহূর্তের প্রকৃত অবস্থা */
-                if (! $this->slots->isAvailable($chamber, $date, $time)) {
+                if ($time === null || ! $this->slots->isAvailable($chamber, $date, $time)) {
                     throw new SlotUnavailableException;
                 }
 
@@ -216,6 +220,21 @@ class BookingService
                 throw new BookingLimitException(__('booking.limit_ip'));
             }
         }
+    }
+
+    /**
+     * ওই দিনের পরের (সবচেয়ে আগের) খালি সময় — রোগী সময় না বাছলে ব্যবহৃত হয়।
+     * কোনো খালি সময় না থাকলে null (দিন পূর্ণ)।
+     */
+    protected function firstOpenSlot(Chamber $chamber, CarbonImmutable $date): ?string
+    {
+        foreach ($this->slots->day($chamber, $date)['slots'] as $slot) {
+            if ($slot['available'] ?? false) {
+                return $slot['time'];
+            }
+        }
+
+        return null;
     }
 
     /**

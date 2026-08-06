@@ -16,7 +16,7 @@ class StoreBookingRequest extends FormRequest
     {
         return [
             'appointment_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
-            'slot_time'        => ['required', 'date_format:H:i'],
+            'slot_time'        => ['nullable', 'date_format:H:i'],
             'chamber_id'       => ['required', 'integer', 'exists:chambers,id'],
 
             'patient_name'     => ['required', 'string', 'min:2', 'max:100'],
@@ -46,7 +46,9 @@ class StoreBookingRequest extends FormRequest
     {
         $this->merge([
             'patient_phone' => normalize_bd_phone($this->input('patient_phone')),
-            'slot_time'     => substr((string) $this->input('slot_time'), 0, 5),
+            'slot_time'     => $this->input('slot_time')
+                ? substr((string) $this->input('slot_time'), 0, 5)
+                : null,   // সময় না বাছলে null — book() ওই দিনের পরের খালি সময় অটো বসাবে
         ]);
     }
 

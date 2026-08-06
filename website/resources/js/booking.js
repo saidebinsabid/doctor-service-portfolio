@@ -38,7 +38,7 @@ if (grid && slotWrap && form) {
         const date = link.dataset.date;
         fDate.value = date;
         fTime.value = '';
-        submit.disabled = true;
+        submit.disabled = false;   // সময় ঐচ্ছিক — তারিখ বাছলেই জমা দেওয়া যায় (না বাছলে অটো সময়)
         summary?.classList.remove('hidden');
         setSummary('time', '—');
         setSummary('serial', '—');
@@ -111,7 +111,7 @@ if (grid && slotWrap && form) {
 
         if (!form.patient_name.value.trim()) problems.push(form.dataset.errName);
         else if (!/^01[3-9]\d{8}$/.test(phone)) problems.push(form.dataset.errPhone);
-        else if (!fTime.value) problems.push(form.dataset.errTime);
+        /* সময় ঐচ্ছিক — না বাছলে সার্ভার ওই দিনের পরের খালি সময় অটো বসিয়ে দেয় */
 
         if (problems.length) {
             e.preventDefault();

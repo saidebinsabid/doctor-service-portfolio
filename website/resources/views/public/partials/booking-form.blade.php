@@ -76,6 +76,9 @@
         {{-- বাটন নির্দেশনা --}}
         <p class="text-xs text-slate-500 text-center">
             {{ $en ? 'Press the button to confirm your serial.' : 'সিরিয়াল নিশ্চিত করতে বাটনটি চাপুন।' }}
+            {{ $en
+                ? "If you don't pick a time, we'll assign the next open slot that day."
+                : 'সময় না বাছলে ওই দিনের পরের খালি সময়টি দিয়ে দেব।' }}
         </p>
 
         <button type="submit" id="booking-submit" class="btn btn-primary w-full !py-3.5"
