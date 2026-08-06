@@ -101,17 +101,24 @@
 
                     @foreach($calendar as $d)
                         @if($d['selectable'])
+                            {{-- খোলা তারিখ — ক্লিকযোগ্য (খালি-সিরিয়াল সংখ্যা আর দেখানো হয় না, ক্লায়েন্টের অনুরোধে) --}}
                             <a href="{{ route('booking.create', ['month' => $month->format('Y-m'), 'date' => $d['date']]) }}"
                                class="cal-day" data-date="{{ $d['date'] }}"
                                aria-pressed="{{ $selected && $selected->toDateString() === $d['date'] ? 'true' : 'false' }}"
                                title="{{ $d['label'] }}" aria-label="{{ $d['label'] }}">
                                 <span class="text-[0.95rem] leading-none">{{ $d['day_bn'] }}</span>
-                                <span class="cal-meta">{{ $d['open_bn'] }}</span>
                             </a>
+                        @elseif($d['status'] === \App\Services\SlotService::FULL)
+                            {{-- সব সিরিয়াল শেষ — লাল "booked" --}}
+                            <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
+                                  style="background:#fef2f2;border-color:#fecaca">
+                                <span class="text-[0.95rem] leading-none text-slate-500">{{ $d['day_bn'] }}</span>
+                                <span class="text-[0.58rem] font-bold text-red-600 leading-none mt-0.5">{{ __('booking.booked') }}</span>
+                            </span>
                         @else
-                            <span class="cal-day pointer-events-none opacity-100"
-                                  aria-disabled="true" title="{{ $d['label'] }}"
-                                  style="background:var(--color-slate-50);border-color:var(--color-slate-100);color:var(--color-slate-300)">
+                            {{-- অতীত/বন্ধ — আগে অস্পষ্ট (fade) ছিল, একটু গাঢ় করে স্পষ্ট করা হলো --}}
+                            <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
+                                  style="background:var(--color-slate-50);border-color:var(--color-slate-100);color:var(--color-slate-400)">
                                 <span class="text-[0.95rem] leading-none">{{ $d['day_bn'] }}</span>
                             </span>
                         @endif
@@ -119,15 +126,13 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4 pt-4
-                            border-t border-brand-100 text-[0.7rem] text-slate-500">
+                            border-t border-brand-100 text-[0.72rem] text-slate-600">
                     <span class="flex items-center gap-1.5">
-                        <span class="w-3 h-3 rounded border-[1.5px] border-brand-100 bg-white"></span>
+                        <span class="w-3 h-3 rounded border-[1.5px] border-brand-200 bg-white"></span>
                         {{ __('booking.legend_open') }}</span>
                     <span class="flex items-center gap-1.5">
-                        <span class="w-3 h-3 rounded bg-slate-100"></span>{{ __('booking.legend_closed') }}</span>
-                    <span class="flex items-center gap-1.5">
-                        <span class="w-3 h-3 rounded bg-brand-900"></span>{{ __('booking.legend_picked') }}</span>
-                    <span class="w-full text-[0.68rem] text-slate-400">{{ __('booking.legend_count') }}</span>
+                        <span class="w-3 h-3 rounded bg-red-50 border border-red-300"></span>
+                        <span class="text-red-600 font-semibold">{{ __('booking.booked') }}</span></span>
                 </div>
 
                 {{-- ---------- ধাপ ২: সময় ---------- --}}
