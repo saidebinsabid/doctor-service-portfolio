@@ -39,9 +39,15 @@
         <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
             <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ $feeNotice }}</p>
             @if($bkashNo = Setting::get('bkash_number'))
-                <p class="mt-2 text-base font-extrabold text-red-700 tracking-wide">
-                    {{ __('common.bkash') }}: {{ $bkashNo }}
-                </p>
+                {{-- ট্যাপ করলে বিকাশ নম্বরটি কপি হয় (JS হ্যান্ডলার app.js-এ) --}}
+                <button type="button" data-copy="{{ $bkashNo }}"
+                        class="mt-2 inline-flex items-center gap-2 text-base font-extrabold text-red-700
+                               hover:text-red-800 active:scale-[.98] transition">
+                    <span>{{ __('common.bkash') }}: {{ $bkashNo }}</span>
+                    <span data-copy-label data-copied-text="{{ __('common.copied') }}"
+                          class="text-[0.62rem] font-semibold text-red-600 bg-red-50 border border-red-300
+                                 rounded-full px-2 py-0.5 whitespace-nowrap">{{ __('common.copy') }}</span>
+                </button>
             @endif
         </div>
     @endif

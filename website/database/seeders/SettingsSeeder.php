@@ -172,7 +172,7 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'bkash_number', 'group' => 'fees', 'type' => 'text', 'sort_order' => 60,
                 'label_bn' => 'বিকাশ নম্বর (পেমেন্টের জন্য)', 'label_en' => 'bKash number (for payment)',
-                'value_bn' => '01327084433', 'value_en' => '01327084433',
+                'value_bn' => '01327804433', 'value_en' => '01327804433',
             ],
             [
                 'key' => 'fee_notice', 'group' => 'fees', 'type' => 'textarea', 'sort_order' => 70,

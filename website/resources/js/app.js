@@ -114,3 +114,37 @@ if (spyLinks.length) {
     window.addEventListener('resize', onScroll, { passive: true });
     update();
 }
+
+/* ─── ট্যাপ করলে নম্বর কপি (ফি বক্সের বিকাশ নম্বর) ───
+   [data-copy] বাটনে ক্লিক করলে ভেতরের লেখা ক্লিপবোর্ডে কপি হয়,
+   আর [data-copy-label] অংশে ক্ষণিকের জন্য "কপি হয়েছে ✓" দেখায়। */
+function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (_) { /* উপেক্ষা */ }
+    document.body.removeChild(ta);
+}
+
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+
+    const text = btn.dataset.copy;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else {
+        fallbackCopy(text);
+    }
+
+    const label = btn.querySelector('[data-copy-label]');
+    if (label && !label.dataset.busy) {
+        label.dataset.busy = '1';
+        const prev = label.textContent;
+        label.textContent = label.dataset.copiedText || 'কপি হয়েছে ✓';
+        setTimeout(() => { label.textContent = prev; delete label.dataset.busy; }, 1600);
+    }
+});
