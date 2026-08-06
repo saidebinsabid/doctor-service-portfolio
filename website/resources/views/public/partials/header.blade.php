@@ -25,12 +25,10 @@
                 <span class="grid place-items-center w-10 h-10 rounded-xl bg-brand-900 text-white shrink-0">
                     <x-icon name="stetho" class="w-5 h-5"/>
                 </span>
-                <span class="min-w-0">
-                    <span class="block font-bold text-brand-900 leading-tight truncate text-[0.95rem]">
-                        {{ Setting::get('doctor_short') }}</span>
-                    <span class="block text-[0.7rem] text-slate-500 leading-tight truncate">
-                        {{ Setting::get('degrees') }}</span>
-                </span>
+                {{-- ক্লায়েন্টের অনুরোধে হেডারে নাম/ডিগ্রির বদলে বড় লাল "শিশু ডাক্তার"
+                     (পুরো নাম ও ডিগ্রি নিচে হিরোতেই আছে) --}}
+                <span class="font-extrabold text-red-600 leading-tight truncate text-lg sm:text-xl">
+                    {{ __('common.childDoctor') }}</span>
             </a>
 
             <nav class="hidden lg:flex items-center gap-1" aria-label="{{ __('nav.menu') }}">
