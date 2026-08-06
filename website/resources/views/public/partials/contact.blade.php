@@ -8,8 +8,9 @@
             'href' => 'tel:' . Setting::get('hotline'),
         ] : null,
         Setting::get('whatsapp') ? [
+            // ক্লায়েন্টের অনুরোধে WhatsApp নম্বরটি লুকানো — শুধু ক্লিক করলেই চ্যাট খোলে
             'icon' => 'phone', 'tone' => 'green', 'label' => __('common.whatsapp'),
-            'value' => Setting::get('whatsapp'),
+            'value' => __('common.clickToChat'),
             'href' => 'https://wa.me/' . intl_bd_phone(Setting::get('whatsapp')),
         ] : null,
         Setting::get('email') ? [
