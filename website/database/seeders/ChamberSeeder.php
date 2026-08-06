@@ -59,5 +59,28 @@ class ChamberSeeder extends Seeder
                 $row + ['is_active' => true],
             );
         }
+
+        /* ---------- দ্বিতীয় চেম্বার — APON Healthcare, বসুন্ধরা ----------
+           ক্লায়েন্টের অনুরোধে ইবনে সিনার পরে। প্রতিদিন বিকাল ৫টা – রাত ৮টা।
+           (অনলাইন বুকিং প্রাইমারি চেম্বার থেকে; এখানে ফোনে যোগাযোগ।) */
+        $apon = Chamber::updateOrCreate(
+            ['name_bn' => 'অ্যাপন হেলথকেয়ার লিমিটেড, বসুন্ধরা'],
+            [
+                'name_en'    => 'APON Healthcare Ltd., Bashundhara',
+                'address_bn' => 'বসুন্ধরা, ঢাকা',
+                'address_en' => 'Bashundhara, Dhaka',
+                'hotline'    => '01327804433',
+                'map_query'  => 'APON Healthcare Bashundhara Dhaka',
+                'is_active'  => true,
+                'sort_order' => 20,
+            ],
+        );
+
+        foreach (range(0, 6) as $dow) {
+            Schedule::updateOrCreate(
+                ['chamber_id' => $apon->id, 'day_of_week' => $dow],
+                ['start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 8, 'max_serials' => 25, 'is_active' => true],
+            );
+        }
     }
 }
