@@ -56,6 +56,7 @@
 
 @include('public.partials.notice-bar')
 @include('public.partials.header')
+@include('public.partials.closed-banner')
 
 <main id="main">
     @yield('content')

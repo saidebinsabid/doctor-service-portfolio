@@ -139,6 +139,7 @@
     "booking.limit_phone": "This mobile number has already booked :count serials today. Please call the chamber if you need more.",
     "booking.limit_ip": "Too many bookings in a short time. Please try again shortly.",
     "booking.holiday_mode": "Online booking is paused at the moment. Please call the chamber for a serial.",
+    "booking.chamber_closed": "The chamber is currently closed. Please call the hotline for a serial.",
     "booking.disabled": "Online booking is temporarily unavailable. Please call the hotline.",
     "booking.invalid_date": "That date is not valid.",
 
