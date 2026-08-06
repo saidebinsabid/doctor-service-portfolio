@@ -106,20 +106,20 @@
                                class="cal-day" data-date="{{ $d['date'] }}"
                                aria-pressed="{{ $selected && $selected->toDateString() === $d['date'] ? 'true' : 'false' }}"
                                title="{{ $d['label'] }}" aria-label="{{ $d['label'] }}">
-                                <span class="text-[0.95rem] leading-none">{{ $d['day_bn'] }}</span>
+                                <span class="text-[1.05rem] leading-none font-semibold">{{ $d['day_bn'] }}</span>
                             </a>
                         @elseif($d['status'] === \App\Services\SlotService::FULL)
                             {{-- সব সিরিয়াল শেষ — লাল "booked" --}}
                             <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
                                   style="background:#fef2f2;border-color:#fecaca">
-                                <span class="text-[0.95rem] leading-none text-slate-500">{{ $d['day_bn'] }}</span>
+                                <span class="text-[1.05rem] leading-none font-semibold text-slate-500">{{ $d['day_bn'] }}</span>
                                 <span class="text-[0.58rem] font-bold text-red-600 leading-none mt-0.5">{{ __('booking.booked') }}</span>
                             </span>
                         @else
                             {{-- অতীত/বন্ধ — আগে অস্পষ্ট (fade) ছিল, একটু গাঢ় করে স্পষ্ট করা হলো --}}
                             <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
                                   style="background:var(--color-slate-50);border-color:var(--color-slate-100);color:var(--color-slate-400)">
-                                <span class="text-[0.95rem] leading-none">{{ $d['day_bn'] }}</span>
+                                <span class="text-[1.05rem] leading-none font-semibold">{{ $d['day_bn'] }}</span>
                             </span>
                         @endif
                     @endforeach

@@ -7,9 +7,6 @@
 
         <div class="relative grid lg:grid-cols-[1.2fr_.8fr] gap-8 items-center">
             <div class="text-white">
-                <p class="eyebrow !bg-white/15 !text-sky2-100">
-                    <x-icon name="clock" class="w-3.5 h-3.5"/> {{ __('nav.book') }}
-                </p>
                 <h2 class="text-2xl md:text-3xl !text-white font-extrabold">{{ __('booking.title') }}</h2>
                 <p class="mt-3 text-white/80 text-[0.97rem] leading-relaxed max-w-lg">
                     {{ __('booking.sub') }}

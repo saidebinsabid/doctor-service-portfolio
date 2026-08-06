@@ -50,14 +50,14 @@
 
         <div class="grid sm:grid-cols-2 gap-3.5">
             <div>
-                <label class="label req" for="f-name">{{ __('booking.patient_name') }}</label>
+                <label class="label req !text-red-600" for="f-name">{{ __('booking.patient_name') }}</label>
                 <input class="input" id="f-name" name="patient_name" required maxlength="100"
                        value="{{ old('patient_name') }}"
                        placeholder="{{ $en ? "Enter the child's name" : 'শিশুর নাম লিখুন' }}">
                 @error('patient_name')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
             </div>
             <div>
-                <label class="label req" for="f-phone">{{ __('booking.phone') }}</label>
+                <label class="label req !text-red-600" for="f-phone">{{ __('booking.phone') }}</label>
                 <input class="input" id="f-phone" name="patient_phone" type="tel" required
                        inputmode="numeric" value="{{ old('patient_phone') }}"
                        placeholder="{{ $en ? 'Enter mobile number' : 'মোবাইল নম্বর লিখুন' }}">
