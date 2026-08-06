@@ -17,24 +17,42 @@ use App\Models\Setting;
  */
 class MessageBuilder
 {
+    /**
+     * সিরিয়াল স্লিপের কম্প্যাক্ট রূপ (ক্লায়েন্টের অনুরোধে — ইবনে সিনার SMS-এর মতো):
+     *   ডা. আবু সুফিয়ান — সিরিয়াল: ১৪
+     *   [চেম্বারের নাম]
+     *   [ঠিকানা / রুম]
+     *   [তারিখ (বার), সময়]
+     *   হটলাইন: [নম্বর]
+     *
+     * @return array<int, string>
+     */
+    protected function compactSlip(Appointment $a): array
+    {
+        $hotline = $a->chamber->hotline ?: Setting::get('hotline');
+
+        return array_values(array_filter([
+            Setting::get('doctor_short') . ' — ' . __('booking.f_serial') . ': ' . bn_number($a->serial_no),
+            $a->chamber->name,
+            $a->chamber->address,
+            fmt_date($a->appointment_date) . ' (' . fmt_day($a->appointment_date) . '), ' . fmt_time($a->slotHm()),
+            $hotline ? __('chm.hotline') . ': ' . $hotline : null,
+        ]));
+    }
+
     /** রোগী যে বার্তাটি চেম্বারের নম্বরে পাঠাবেন (Phase 1) */
     public function patientToChamber(Appointment $a): string
     {
         return $this->withLocale($a, function () use ($a) {
-            $lines = [];
-
-            $lines[] = Setting::get('whatsapp_greeting')
-                ?: __('booking.wa_greeting');
-            $lines[] = '';
-
-            foreach ($this->details($a) as $label => $value) {
-                $lines[] = '▸ ' . $label . ': ' . $value;
-            }
-
-            $lines[] = '';
-            $lines[] = __('booking.wa_thanks');
-
-            return implode("\n", $lines);
+            return implode("\n", array_merge(
+                [
+                    Setting::get('whatsapp_greeting') ?: __('booking.wa_greeting'),
+                    '',
+                    __('booking.f_patient') . ': ' . $a->patient_name . ' — ' . $a->patient_phone,
+                ],
+                $this->compactSlip($a),
+                ['', __('booking.wa_thanks')],
+            ));
         });
     }
 
@@ -42,24 +60,11 @@ class MessageBuilder
     public function confirmationToPatient(Appointment $a): string
     {
         return $this->withLocale($a, function () use ($a) {
-            $lines = [];
-
-            $lines[] = __('booking.msg_confirmed_head', [
-                'name' => $a->patient_name,
-            ]);
-            $lines[] = '';
-
-            foreach ($this->details($a) as $label => $value) {
-                $lines[] = '▸ ' . $label . ': ' . $value;
-            }
-
-            $lines[] = '';
-            $lines[] = $a->chamber->name;
-            $lines[] = $a->chamber->address;
-            $lines[] = '';
-            $lines[] = __('booking.arrive_early');
-
-            return implode("\n", $lines);
+            return implode("\n", array_merge(
+                [__('booking.msg_confirmed_head', ['name' => $a->patient_name]), ''],
+                $this->compactSlip($a),
+                ['', __('booking.arrive_early')],
+            ));
         });
     }
 
