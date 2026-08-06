@@ -95,14 +95,18 @@
                     @endif
                 </div>
 
-                {{-- ছবির নিচে চেম্বারের নাম ও ঠিকানা (ক্লায়েন্টের অনুরোধে) --}}
-                <p class="mt-8 sm:mt-7 text-center text-sky2-100 text-sm font-medium
-                          flex items-center justify-center gap-1.5">
-                    <x-icon name="pin" class="w-4 h-4 shrink-0"/>
-                    {{ app()->getLocale() === 'en'
-                        ? 'Ibn Sina Diagnostic, Badda, Dhaka'
-                        : 'ইবনে সিনা ডায়াগনস্টিক, বাড্ডা, ঢাকা' }}
-                </p>
+                {{-- ছবির নিচে চেম্বারের নাম ও ঠিকানা — chamber রেকর্ড থেকে ডাইনামিক।
+                     অ্যাডমিন → চেম্বার থেকে নাম/ঠিকানা যেকোনো সময় বদলানো যায়। --}}
+                @if($chamber ?? null)
+                    <div class="mt-8 sm:mt-7 text-center text-sky2-100">
+                        <p class="text-sm font-semibold flex items-center justify-center gap-1.5">
+                            <x-icon name="pin" class="w-4 h-4 shrink-0"/> {{ $chamber->name }}
+                        </p>
+                        @if($chamber->address)
+                            <p class="mt-1 text-xs text-sky2-100/85 leading-snug">{{ $chamber->address }}</p>
+                        @endif
+                    </div>
+                @endif
             </div>
 
         </div>

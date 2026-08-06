@@ -30,6 +30,7 @@ class ServiceSeeder extends Seeder
             ['shield',   'orange',  'লিভার, জন্ডিস ও পরিপাকতন্ত্রের রোগ',                   'Liver, jaundice & gastrointestinal diseases'],
             ['heart',    'red',     'হৃদরোগ, রক্তস্বল্পতা ও রক্তের বিভিন্ন রোগ',              'Cardiac disease, anaemia & blood disorders'],
             ['syringe',  'emerald', 'টিকাদান, বৃদ্ধি ও বিকাশের নিয়মিত ফলো-আপ',            'Immunisation, growth & development follow-up'],
+            ['shield',   'rose',    'সকল প্রকার চর্ম রোগ',                                 'All kinds of skin diseases'],
             ['stetho',   'brand',   'শিশুদের সকল সাধারণ ও জটিল রোগের আধুনিক চিকিৎসা',      'Modern treatment of all common & complex child diseases'],
         ];
 

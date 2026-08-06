@@ -15,8 +15,8 @@ class ChamberSeeder extends Seeder
             ['name_bn' => 'ইবনে সিনা ডায়াগনস্টিক অ্যান্ড কনসালটেশন সেন্টার, বাড্ডা'],
             [
                 'name_en'    => 'Ibn Sina Diagnostic & Consultation Center, Badda',
-                'address_bn' => 'বাড়ি-চ-৭২/১, প্রগতি সরণি, উত্তর বাড্ডা, ঢাকা-১২১২',
-                'address_en' => 'House-Cha-72/1, Progoti Sharani, North Badda, Dhaka-1212',
+                'address_bn' => 'উত্তর বাড্ডা, ঢাকা · ১ নং বিল্ডিং, রুম ৭০৫',
+                'address_en' => 'North Badda, Dhaka · Building 1, Room 705',
                 'hotline'    => '09610009614',
                 'map_query'  => 'Ibn Sina Diagnostic and Consultation Center, '
                     . 'Progoti Sharani, North Badda, Dhaka 1212',
