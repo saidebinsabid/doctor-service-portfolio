@@ -17,7 +17,7 @@
     {{-- ২. অপারেটরকে কল (হলুদ) --}}
     @if($hotline = Setting::get('hotline'))
         <a href="tel:{{ $hotline }}"
-           class="btn btn-yellow w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
+           class="btn btn-primary w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
             <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
         </a>
     @endif

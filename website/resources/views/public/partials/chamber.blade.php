@@ -51,7 +51,7 @@
                 <p class="text-xs text-slate-500 mb-2">{{ __('chm.hotline') }}</p>
                 <div class="flex flex-wrap gap-2.5">
                     @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
-                        <a href="tel:{{ $hotline }}" class="btn btn-yellow !py-2.5 !text-sm whitespace-normal text-center leading-snug">
+                        <a href="tel:{{ $hotline }}" class="btn btn-primary !py-2.5 !text-sm whitespace-normal text-center leading-snug">
                             <x-icon name="phone" class="w-4 h-4 shrink-0"/> {{ __('common.callOperator') }}
                         </a>
                     @endif

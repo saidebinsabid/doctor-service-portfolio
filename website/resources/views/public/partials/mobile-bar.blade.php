@@ -4,7 +4,7 @@
      বাংলাদেশে ৮৫%+ দর্শক মোবাইল থেকে আসেন — কল ও সিরিয়াল
      সবসময় হাতের নাগালে থাকাটাই সবচেয়ে কাজে দেয়। --}}
 <div class="mobile-bar no-print">
-    <a href="tel:{{ Setting::get('hotline') }}" class="btn btn-yellow !px-2 !py-2.5 !text-xs">
+    <a href="tel:{{ Setting::get('hotline') }}" class="btn btn-primary !px-2 !py-2.5 !text-xs">
         <x-icon name="phone" class="w-4 h-4"/> {{ __('common.call') }}</a>
 
     <a href="https://wa.me/{{ intl_bd_phone(Setting::get('whatsapp')) }}"

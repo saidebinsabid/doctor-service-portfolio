@@ -27,7 +27,7 @@
                         ? __('booking.holiday_mode') : __('booking.disabled') }}
                 </p>
                 @if($hotline = \App\Models\Setting::get('hotline'))
-                    <a href="tel:{{ $hotline }}" class="btn btn-yellow mt-5 whitespace-normal text-center leading-snug">
+                    <a href="tel:{{ $hotline }}" class="btn btn-primary mt-5 whitespace-normal text-center leading-snug">
                         <x-icon name="phone" class="w-4 h-4 shrink-0"/> {{ __('common.callOperator') }}
                     </a>
                 @endif
