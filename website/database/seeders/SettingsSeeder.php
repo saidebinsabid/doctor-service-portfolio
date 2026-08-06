@@ -78,13 +78,14 @@ class SettingsSeeder extends Seeder
                     . 'কলেজের সাবেক অধ্যাপক ও অধ্যক্ষ। আইসিডিডিআর,বি-তে গবেষণা এবং দেশের '
                     . 'শীর্ষস্থানীয় মেডিকেল কলেজগুলোতে অধ্যাপনার অভিজ্ঞতা নিয়ে নবজাতক থেকে '
                     . 'কিশোর বয়স পর্যন্ত শিশুদের সাধারণ ও জটিল রোগের আধুনিক, প্রমাণভিত্তিক '
-                    . 'চিকিৎসা ও পরামর্শ প্রদান করেন।',
+                    . 'চিকিৎসা ও পরামর্শ প্রদান করেন। অপ্রয়োজনে কোন এন্টিবায়োটিক দেন না।',
                 'value_en' => 'A physician with extensive professional experience in child health. '
                     . 'Founder Principal of Habiganj Medical College and former Professor and '
                     . 'Principal of Brahmanbaria Medical College. With a background in research at '
                     . 'icddr,b and teaching at leading medical colleges of the country, he provides '
                     . 'modern, evidence-based treatment and counselling for common and complex '
-                    . 'childhood illnesses — from newborns through adolescence.',
+                    . 'childhood illnesses — from newborns through adolescence. '
+                    . 'He never prescribes antibiotics unnecessarily.',
             ],
             [
                 'key' => 'doctor_photo', 'group' => 'doctor', 'type' => 'image', 'sort_order' => 90,

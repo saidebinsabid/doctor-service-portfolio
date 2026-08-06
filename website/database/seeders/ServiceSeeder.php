@@ -48,6 +48,21 @@ class ServiceSeeder extends Seeder
             );
         }
 
+        /* মৃগী/এপিলেপ্সি — বর্ণনাসহ সাধারণ সেবা (ক্লায়েন্টের অনুরোধে) */
+        Service::updateOrCreate(
+            ['title_bn' => 'মৃগী / এপিলেপ্সি (Epilepsy)'],
+            [
+                'title_en'      => 'Epilepsy',
+                'description_bn' => 'যেকোন ধরণের কঠিন মৃগী — ছোট-বড় সকল বয়সের হঠাৎ অজ্ঞান হয়ে যাওয়ার আধুনিক চিকিৎসা।',
+                'description_en' => 'All types of severe epilepsy — modern care for sudden fainting at any age.',
+                'icon'          => 'pulse',
+                'tone'          => 'blue',
+                'is_special'    => false,
+                'sort_order'    => 75,
+                'is_active'     => true,
+            ],
+        );
+
         /* ---------- বিশেষ চিকিৎসা (৪টি) ----------
            প্রচারপত্রে এগুলো আলাদা হাইলাইট বক্সে ছিল — ডাক্তারের
            ইউনিক সেলিং পয়েন্ট, তাই ওয়েবসাইটেও আলাদা সেকশনে। */
