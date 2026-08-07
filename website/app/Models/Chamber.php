@@ -10,10 +10,10 @@ class Chamber extends Model
 {
     use HasTranslations, Orderable;
 
-    protected array $translatable = ['name', 'address'];
+    protected array $translatable = ['name', 'short_name', 'address'];
 
     protected $fillable = [
-        'name_bn', 'name_en', 'address_bn', 'address_en',
+        'name_bn', 'name_en', 'short_name_bn', 'short_name_en', 'address_bn', 'address_en',
         'hotline', 'map_query', 'lat', 'lng', 'is_active', 'sort_order',
     ];
 
@@ -24,6 +24,14 @@ class Chamber extends Model
             'lat' => 'float',
             'lng' => 'float',
         ];
+    }
+
+    /** ছোট জায়গার জন্য সংক্ষিপ্ত নাম; না থাকলে পুরো নাম */
+    public function shortLabel(): string
+    {
+        $short = $this->short_name; // translatable — চলমান ভাষা, না থাকলে ''
+
+        return filled($short) ? $short : $this->name;
     }
 
     public function schedules()

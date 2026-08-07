@@ -371,7 +371,9 @@
     inset-inline: 0;
     z-index: 40;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* বাটনের সংখ্যা অনুযায়ী সমান কলাম (২টি বা ৩টি) */
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     gap: .5rem;
     padding: .55rem .75rem calc(.55rem + env(safe-area-inset-bottom));
     background: rgb(255 255 255 / .92);

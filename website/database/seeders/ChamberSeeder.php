@@ -15,6 +15,8 @@ class ChamberSeeder extends Seeder
             ['name_bn' => 'ইবনে সিনা ডায়াগনস্টিক অ্যান্ড কনসালটেশন সেন্টার, বাড্ডা'],
             [
                 'name_en'    => 'Ibn Sina Diagnostic & Consultation Center, Badda',
+                'short_name_bn' => 'ইবনে সিনা, বাড্ডা',
+                'short_name_en' => 'Ibn Sina, Badda',
                 'address_bn' => 'উত্তর বাড্ডা, ঢাকা · ১ নং বিল্ডিং, রুম ৭০৫',
                 'address_en' => 'North Badda, Dhaka · Building 1, Room 705',
                 'hotline'    => '09610009614',
@@ -67,6 +69,8 @@ class ChamberSeeder extends Seeder
             ['name_bn' => 'অ্যাপন হেলথকেয়ার লিমিটেড, বসুন্ধরা'],
             [
                 'name_en'    => 'APON Healthcare Ltd., Bashundhara',
+                'short_name_bn' => 'আপন হেলথকেয়ার, বসুন্ধরা',
+                'short_name_en' => 'APON Healthcare, Bashundhara',
                 'address_bn' => 'বসুন্ধরা, ঢাকা (এভারকেয়ার এর পাশে)',
                 'address_en' => 'Bashundhara, Dhaka (beside Evercare)',
                 'hotline'    => '09610987121',
