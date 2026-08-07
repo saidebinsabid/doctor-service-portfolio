@@ -24,13 +24,12 @@ return new class extends Migration
             }
         });
 
-        /* বিদ্যমান দুই চেম্বারের সংক্ষিপ্ত নাম বসিয়ে দেওয়া (একবারই) */
-        DB::table('chambers')
-            ->where('name_bn', 'ইবনে সিনা ডায়াগনস্টিক অ্যান্ড কনসালটেশন সেন্টার, বাড্ডা')
+        /* বিদ্যমান দুই চেম্বারের সংক্ষিপ্ত নাম বসিয়ে দেওয়া (একবারই)।
+           হটলাইন (ASCII) দিয়ে ম্যাচ — নামের ইউনিকোড এনকোডিং-নির্ভরতা এড়াতে। */
+        DB::table('chambers')->where('hotline', '09610009614')
             ->update(['short_name_bn' => 'ইবনে সিনা, বাড্ডা', 'short_name_en' => 'Ibn Sina, Badda']);
 
-        DB::table('chambers')
-            ->where('name_bn', 'অ্যাপন হেলথকেয়ার লিমিটেড, বসুন্ধরা')
+        DB::table('chambers')->where('hotline', '09610987121')
             ->update(['short_name_bn' => 'আপন হেলথকেয়ার, বসুন্ধরা', 'short_name_en' => 'APON Healthcare, Bashundhara']);
     }
 
