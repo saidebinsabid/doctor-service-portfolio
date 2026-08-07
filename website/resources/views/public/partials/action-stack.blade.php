@@ -5,14 +5,35 @@
      এক জায়গায় বদলালেই দুটোই আপডেট হয়। দুটোই গাঢ় ব্যাকগ্রাউন্ড। --}}
 <div class="flex flex-col gap-3 w-full max-w-sm">
 
-    {{-- ১. অনলাইনে সিরিয়াল বুক (লাল) + নির্দেশনা --}}
-    <a href="{{ route('booking.create') }}" class="btn btn-primary w-full !py-3.5 justify-center">
-        <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
-    </a>
-    <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
-        <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
-        {{ __('common.bookGuide') }}
-    </p>
+    {{-- ১. অনলাইনে সিরিয়াল বুক।
+         একাধিক চেম্বার হলে প্রতিটির আলাদা বাটন (আলাদা রঙ, চেম্বারের নাম লেখা) —
+         ক্লিক করলে সরাসরি সেই চেম্বারের ক্যালেন্ডারে যায়। --}}
+    @php $bookChambers = ($chambers ?? collect())->filter()->values(); @endphp
+    @if($bookChambers->count() > 1)
+        <p class="text-xs text-white/75 flex items-start gap-1.5 mb-0.5">
+            <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
+            {{ __('common.bookGuideMulti') }}
+        </p>
+        @foreach($bookChambers as $bc)
+            <a href="{{ route('booking.create', ['chamber' => $bc->id]) }}"
+               class="btn {{ $loop->index % 2 === 0 ? 'btn-ch-1' : 'btn-ch-2' }} w-full !py-3
+                      justify-center whitespace-normal text-center leading-snug">
+                <x-icon name="clock" class="w-5 h-5 shrink-0"/>
+                <span class="flex flex-col leading-tight">
+                    <span class="font-bold">{{ $bc->name }}</span>
+                    <span class="text-[0.72rem] font-normal opacity-90">{{ __('common.bookNow') }}</span>
+                </span>
+            </a>
+        @endforeach
+    @else
+        <a href="{{ route('booking.create') }}" class="btn btn-primary w-full !py-3.5 justify-center">
+            <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
+        </a>
+        <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
+            <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
+            {{ __('common.bookGuide') }}
+        </p>
+    @endif
 
     {{-- ২. অপারেটরকে কল (হলুদ) --}}
     @if($hotline = Setting::get('hotline'))

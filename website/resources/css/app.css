@@ -167,6 +167,18 @@
   }
   .btn-deepblue:hover { background: #1e40af; }
 
+  /* একাধিক চেম্বারের বুকিং বাটন — চেম্বার সিলেক্টরের রঙের সাথে মিল (নীল / সবুজ) */
+  .btn-ch-1 {
+    background: #2e8bc0; color: #fff;
+    box-shadow: 0 8px 20px -8px rgb(46 139 192 / .6);
+  }
+  .btn-ch-1:hover { background: #2477a8; }
+  .btn-ch-2 {
+    background: #059669; color: #fff;
+    box-shadow: 0 8px 20px -8px rgb(5 150 105 / .6);
+  }
+  .btn-ch-2:hover { background: #047857; }
+
   /* ---------- সেকশন ---------- */
   .section { padding-block: 3.5rem; }
   @media (min-width: 768px) { .section { padding-block: 5rem; } }

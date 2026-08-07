@@ -76,10 +76,11 @@ class ChamberSeeder extends Seeder
             ],
         );
 
+        /* APON — প্রতি ৫ মিনিট পর পর স্লট (ক্লায়েন্টের অনুরোধে) */
         foreach (range(0, 6) as $dow) {
             Schedule::updateOrCreate(
                 ['chamber_id' => $apon->id, 'day_of_week' => $dow],
-                ['start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 8, 'max_serials' => 25, 'is_active' => true],
+                ['start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 5, 'max_serials' => 25, 'is_active' => true],
             );
         }
     }
