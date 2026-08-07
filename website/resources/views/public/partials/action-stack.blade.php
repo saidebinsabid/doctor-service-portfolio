@@ -20,6 +20,7 @@
                       justify-center whitespace-normal text-center leading-snug">
                 <x-icon name="clock" class="w-5 h-5 shrink-0"/>
                 <span class="flex flex-col leading-tight">
+                    <span class="text-[0.68rem] font-semibold opacity-90">{{ __('chm.number', ['n' => bn_number($loop->iteration)]) }}</span>
                     <span class="font-bold">{{ $bc->name }}</span>
                     <span class="text-[0.72rem] font-normal opacity-90">{{ __('common.bookNow') }}</span>
                 </span>

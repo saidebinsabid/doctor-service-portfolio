@@ -1,29 +1,49 @@
 @php
     use App\Models\Setting;
 
-    $cards = array_values(array_filter([
-        Setting::get('hotline') ? [
-            'icon' => 'phone', 'tone' => 'brand', 'label' => __('chm.hotline'),
-            'value' => Setting::get('hotline'),
-            'href' => 'tel:' . Setting::get('hotline'),
-        ] : null,
-        Setting::get('whatsapp') ? [
-            // ক্লায়েন্টের অনুরোধে WhatsApp নম্বরটি লুকানো — শুধু ক্লিক করলেই চ্যাট খোলে
+    $allChambers = ($chambers ?? collect([$chamber ?? null]))->filter();
+
+    $cards = [];
+
+    // প্রতিটি চেম্বারের নিজস্ব হটলাইন — নাম ও সময়সহ (ক্লায়েন্টের অনুরোধে)
+    foreach ($allChambers as $c) {
+        if ($hot = ($c->hotline ?: Setting::get('hotline'))) {
+            $hours = collect(group_schedules($c->schedules))
+                ->map(fn ($g) => fmt_time($g['start']) . '–' . fmt_time($g['end']))
+                ->unique()->implode(' / ');
+            $cards[] = [
+                'icon' => 'phone', 'tone' => 'brand',
+                'label' => __('chm.hotline') . ' — ' . $c->name,
+                'value' => $hot,
+                'sub'   => $hours,
+                'href'  => 'tel:' . $hot,
+            ];
+        }
+    }
+
+    if (Setting::get('whatsapp')) {
+        // ক্লায়েন্টের অনুরোধে WhatsApp নম্বরটি লুকানো — শুধু ক্লিক করলেই চ্যাট খোলে
+        $cards[] = [
             'icon' => 'phone', 'tone' => 'green', 'label' => __('common.whatsapp'),
             'value' => __('common.clickToChat'),
             'href' => 'https://wa.me/' . intl_bd_phone(Setting::get('whatsapp')),
-        ] : null,
-        Setting::get('email') ? [
+        ];
+    }
+    if (Setting::get('email')) {
+        $cards[] = [
             'icon' => 'mail', 'tone' => 'sky', 'label' => __('common.email'),
             'value' => Setting::get('email'),
             'href' => 'mailto:' . Setting::get('email'),
-        ] : null,
-        $chamber ? [
-            'icon' => 'pin', 'tone' => 'rose', 'label' => __('chm.address'),
-            'value' => $chamber->address,
-            'href' => $chamber->mapDirectionsUrl(),
-        ] : null,
-    ]));
+        ];
+    }
+    // প্রতিটি চেম্বারের ঠিকানা (ম্যাপে যেতে)
+    foreach ($allChambers as $c) {
+        $cards[] = [
+            'icon' => 'pin', 'tone' => 'rose', 'label' => __('chm.address') . ' — ' . $c->name,
+            'value' => $c->address,
+            'href' => $c->mapDirectionsUrl(),
+        ];
+    }
 @endphp
 
 <div class="container-x">
@@ -44,6 +64,9 @@
                     <span class="block text-xs text-slate-500">{{ $c['label'] }}</span>
                     <span class="block font-semibold text-brand-900 text-[0.9rem] mt-0.5 break-words">
                         {{ $c['value'] }}</span>
+                    @if(!empty($c['sub']))
+                        <span class="block text-[0.72rem] text-slate-500 mt-0.5">{{ $c['sub'] }}</span>
+                    @endif
                 </span>
             </a>
         @endforeach

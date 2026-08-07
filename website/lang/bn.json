@@ -67,6 +67,7 @@
     "chm.schedule": "চেম্বারের সময়",
     "chm.address": "ঠিকানা",
     "chm.hotline": "সিরিয়ালের জন্য হটলাইন",
+    "chm.number": "চেম্বার :n",
     "chm.serialLimit": "প্রতিদিন সর্বোচ্চ :count টি সিরিয়াল প্রদান করা হয়",
 
     "gal.eyebrow": "গ্যালারি",

@@ -14,11 +14,21 @@
             @php
                 $groups = group_schedules($chamber->schedules);
                 $maxSerials = collect($groups)->max('max') ?? 25;
+                /* চেম্বার ১ = নীল, চেম্বার ২ = সবুজ (বুকিং বাটন/সিলেক্টরের রঙের সাথে মিল) */
+                $chamberBadge = [
+                    'bg-sky2-100 text-sky2-800 border-sky2-300',
+                    'bg-emerald-100 text-emerald-800 border-emerald-300',
+                    'bg-amber-100 text-amber-800 border-amber-300',
+                ];
             @endphp
 
             <div class="grid lg:grid-cols-2 gap-6">
 
                 <div class="card p-5 sm:p-6">
+                    <span class="inline-block mb-2 text-[0.72rem] font-bold px-2.5 py-0.5 rounded-full border
+                                 {{ $chamberBadge[$loop->index % 3] }}">
+                        {{ __('chm.number', ['n' => bn_number($loop->iteration)]) }}
+                    </span>
                     <h3 class="text-lg leading-snug">{{ $chamber->name }}</h3>
 
                     <p class="mt-3 flex items-start gap-2.5 text-sm text-slate-600">

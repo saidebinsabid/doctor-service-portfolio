@@ -65,6 +65,8 @@
                             <span class="grid place-items-center w-9 h-9 rounded-lg shrink-0 {{ $p['icon'] }}">
                                 <x-icon name="pin" class="w-4.5 h-4.5"/></span>
                             <span class="min-w-0">
+                                <span class="block text-[0.68rem] font-bold text-slate-500 leading-none mb-0.5">
+                                    {{ __('chm.number', ['n' => bn_number($loop->iteration)]) }}</span>
                                 <span class="block font-bold text-brand-900 text-sm leading-snug">{{ $c->name }}</span>
                                 <span class="block text-xs text-slate-500 mt-0.5">{{ $c->address }}</span>
                             </span>

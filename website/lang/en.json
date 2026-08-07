@@ -67,6 +67,7 @@
     "chm.schedule": "Chamber Hours",
     "chm.address": "Address",
     "chm.hotline": "Hotline for serial",
+    "chm.number": "Chamber :n",
     "chm.serialLimit": "A maximum of :count serials are issued each day",
 
     "gal.eyebrow": "Gallery",
