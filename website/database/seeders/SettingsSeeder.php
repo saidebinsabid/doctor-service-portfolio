@@ -233,6 +233,20 @@ class SettingsSeeder extends Seeder
                 'value_bn' => 'আসসালামু আলাইকুম। আমি অনলাইনে সিরিয়াল বুক করেছি।',
                 'value_en' => 'Assalamu Alaikum. I have booked a serial online.',
             ],
+            [
+                'key' => 'notify_whatsapp', 'group' => 'booking', 'type' => 'text', 'sort_order' => 50,
+                'label_bn' => 'বুকিং নোটিফিকেশন WhatsApp নম্বর (ডাক্তার/চেম্বার)',
+                'label_en' => 'Booking-notification WhatsApp (doctor/chamber)',
+                'hint_bn' => 'নতুন বুকিং হলে এই নম্বরে অটো WhatsApp যাবে। নিচের API key-ও লাগবে। খালি রাখলে বন্ধ।',
+                'value_bn' => '', 'value_en' => '',
+            ],
+            [
+                'key' => 'callmebot_apikey', 'group' => 'booking', 'type' => 'text', 'sort_order' => 60,
+                'label_bn' => 'CallMeBot API key (ফ্রি WhatsApp নোটিফিকেশন)',
+                'label_en' => 'CallMeBot API key (free WhatsApp notifications)',
+                'hint_bn' => 'ফ্রি: উপরের নম্বর থেকে CallMeBot-এর WhatsApp-এ মেসেজ পাঠিয়ে key নিন — callmebot.com/blog/free-api-whatsapp-messages',
+                'value_bn' => '', 'value_en' => '',
+            ],
         ];
     }
 }

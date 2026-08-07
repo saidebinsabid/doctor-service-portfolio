@@ -5,6 +5,8 @@ namespace App\Services\Notifications;
 use App\Mail\AppointmentCreatedMail;
 use App\Models\Appointment;
 use App\Models\MessageLog;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -20,6 +22,7 @@ class NotificationDispatcher
     public function __construct(
         protected WhatsAppChannel $whatsapp,
         protected SmsChannel $sms,
+        protected MessageBuilder $messages,
     ) {
     }
 
@@ -27,6 +30,7 @@ class NotificationDispatcher
     {
         $this->whatsapp->sendCreated($appointment);
         $this->mailAdmin($appointment);
+        $this->whatsappAdmin($appointment);   // ডাক্তারের নম্বরে অটো WhatsApp (ফ্রি, কনফিগার থাকলে)
     }
 
     public function appointmentConfirmed(Appointment $appointment): void
@@ -76,6 +80,42 @@ class NotificationDispatcher
         } catch (\Throwable $e) {
             /* ইমেইল না গেলেও রোগীর বুকিং নষ্ট হবে না */
             Log::error('অ্যাডমিন ইমেইল ব্যর্থ: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * নতুন বুকিং হলে ডাক্তারের নম্বরে স্বয়ংক্রিয় WhatsApp — CallMeBot (ফ্রি)।
+     *
+     * সেটআপ (একবার): অ্যাডমিন → সেটিংস-এ ডাক্তারের নম্বর ও CallMeBot API key
+     * বসালেই চালু। দুটোর যেকোনোটি খালি থাকলে কিছুই হয় না (বুকিং অটুট)।
+     * পেইড গেটওয়ে লাগে না; শুধু ডাক্তারের নিজের নম্বরে যায়।
+     */
+    protected function whatsappAdmin(Appointment $appointment): void
+    {
+        $number = trim((string) Setting::get('notify_whatsapp'));
+        $apikey = trim((string) Setting::get('callmebot_apikey'));
+
+        if (blank($number) || blank($apikey)) {
+            return;
+        }
+
+        try {
+            Http::timeout(8)->get('https://api.callmebot.com/whatsapp.php', [
+                'phone'  => intl_bd_phone($number),
+                'text'   => $this->messages->newBookingToAdmin($appointment),
+                'apikey' => $apikey,
+            ]);
+
+            MessageLog::create([
+                'appointment_id' => $appointment->id,
+                'channel'   => 'whatsapp',
+                'recipient' => $number,
+                'template'  => 'admin_new_booking',
+                'status'    => 'sent',
+            ]);
+        } catch (\Throwable $e) {
+            /* না গেলেও রোগীর বুকিং নষ্ট হবে না */
+            Log::error('অ্যাডমিন WhatsApp (CallMeBot) ব্যর্থ: ' . $e->getMessage());
         }
     }
 
