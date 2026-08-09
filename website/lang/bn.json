@@ -7,6 +7,8 @@
     "nav.book": "সিরিয়াল নিন",
     "nav.menu": "মেনু",
     "nav.status": "সিরিয়াল দেখুন",
+    "nav.login": "লগইন",
+    "nav.dashboard": "ড্যাশবোর্ড",
 
     "common.call": "কল করুন",
     "common.callConfirm": "কল করে সিরিয়াল নিশ্চিত হতে পারেন",

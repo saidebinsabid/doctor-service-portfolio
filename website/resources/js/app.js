@@ -20,22 +20,40 @@ if (header) {
     onScroll();
 }
 
-/* ---------- মোবাইল মেনু ---------- */
+/* ---------- মোবাইল ডান-সাইড ড্রয়ার মেনু ---------- */
 const menuToggle = document.getElementById('menu-toggle');
 const mobileNav = document.getElementById('mobile-nav');
+const menuClose = document.getElementById('menu-close');
+const mobileOverlay = document.getElementById('mobile-nav-overlay');
 
-if (menuToggle && mobileNav) {
-    menuToggle.addEventListener('click', () => {
-        const hidden = mobileNav.classList.toggle('hidden');
-        menuToggle.setAttribute('aria-expanded', String(!hidden));
+if (menuToggle && mobileNav && mobileOverlay) {
+    const openMenu = () => {
+        mobileNav.classList.remove('translate-x-full');
+        mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        mobileNav.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+    };
+
+    const closeMenu = () => {
+        mobileNav.classList.add('translate-x-full');
+        mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+    };
+
+    menuToggle.addEventListener('click', openMenu);
+    menuClose?.addEventListener('click', closeMenu);
+    mobileOverlay.addEventListener('click', closeMenu);
+
+    /* লিংকে ক্লিক করলে ড্রয়ার বন্ধ হবে */
+    mobileNav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+
+    /* Esc চাপলে বন্ধ */
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
     });
-
-    mobileNav.querySelectorAll('a').forEach((a) =>
-        a.addEventListener('click', () => {
-            mobileNav.classList.add('hidden');
-            menuToggle.setAttribute('aria-expanded', 'false');
-        }),
-    );
 }
 
 /* ---------- নোটিশ বন্ধ করা ----------

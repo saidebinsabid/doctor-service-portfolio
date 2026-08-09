@@ -7,6 +7,8 @@
     "nav.book": "Book a Serial",
     "nav.menu": "Menu",
     "nav.status": "Check Serial",
+    "nav.login": "Login",
+    "nav.dashboard": "Dashboard",
 
     "common.call": "Call Now",
     "common.callConfirm": "Confirm your serial by calling",

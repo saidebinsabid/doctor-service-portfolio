@@ -70,15 +70,54 @@
             </div>
         </div>
 
-        <nav id="mobile-nav" class="lg:hidden hidden border-t border-brand-100 py-2">
-            @foreach($nav as [$href, $label])
-                <a href="{{ $href }}"
-                   class="block px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700
-                          hover:bg-brand-50">{{ $label }}</a>
-            @endforeach
-            <a href="{{ route('booking.status') }}"
-               class="block px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-brand-50">
-                {{ __('nav.status') }}</a>
-        </nav>
     </div>
 </header>
+
+{{-- মোবাইল ডান-সাইড ড্রয়ার মেনু।
+     ইচ্ছে করেই <header>-এর বাইরে — হেডারের backdrop-blur একটি stacking context
+     তৈরি করে, ভেতরে রাখলে ড্রয়ার অন্য fixed উপাদানের নিচে চাপা পড়ত।
+     ডান দিক থেকে soft-slide, full-height, প্রয়োজনমতো প্রস্থ। নিয়ন্ত্রণ: app.js --}}
+<div id="mobile-nav-overlay"
+     class="lg:hidden fixed inset-0 z-50 bg-brand-900/40 backdrop-blur-sm
+            opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<aside id="mobile-nav" aria-hidden="true" aria-label="{{ __('nav.menu') }}"
+       class="lg:hidden fixed top-0 right-0 z-50 h-dvh w-4/5 max-w-[18rem] bg-white shadow-2xl
+              flex flex-col translate-x-full transition-transform duration-300 ease-out">
+
+    {{-- ড্রয়ার শিরোনাম + বন্ধ বাটন --}}
+    <div class="flex items-center justify-between px-4 h-[4.5rem] border-b border-brand-100 shrink-0">
+        <span class="font-extrabold text-red-600 text-lg">{{ __('common.childDoctor') }}</span>
+        <button type="button" id="menu-close" class="p-2 -mr-2 rounded-lg hover:bg-brand-50"
+                aria-label="{{ __('common.close') }}">
+            <svg class="w-6 h-6 text-brand-900" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+    </div>
+
+    {{-- লিংকসমূহ (স্ক্রলযোগ্য) --}}
+    <nav class="flex-1 overflow-y-auto px-3 py-3">
+        @foreach($nav as [$href, $label])
+            <a href="{{ $href }}"
+               class="block px-3 py-3 rounded-lg text-[0.95rem] font-medium text-slate-700
+                      hover:bg-brand-50 transition">{{ $label }}</a>
+        @endforeach
+        <a href="{{ route('booking.status') }}"
+           class="block px-3 py-3 rounded-lg text-[0.95rem] font-medium text-slate-700
+                  hover:bg-brand-50 transition">{{ __('nav.status') }}</a>
+        <a href="{{ route('booking.create') }}"
+           class="block px-3 py-3 rounded-lg text-[0.95rem] font-semibold text-sky2-700
+                  hover:bg-sky2-50 transition">{{ __('nav.book') }}</a>
+    </nav>
+
+    {{-- নিচে অ্যাডমিন/ডক্টর লগইন বাটন --}}
+    <div class="px-3 py-4 border-t border-brand-100 shrink-0">
+        <a href="{{ auth()->check() ? route('admin.dashboard') : route('admin.login') }}"
+           class="btn btn-outline w-full !py-3 justify-center">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+            {{ auth()->check() ? __('nav.dashboard') : __('nav.login') }}
+        </a>
+    </div>
+</aside>
