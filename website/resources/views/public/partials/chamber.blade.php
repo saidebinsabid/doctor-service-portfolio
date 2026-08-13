@@ -70,12 +70,6 @@
                                     {{ __('chm.callOperator', ['name' => $chamber->shortLabel()]) }}
                                 </a>
                             @endif
-                            @if($wa = Setting::get('whatsapp'))
-                                <a href="https://wa.me/{{ intl_bd_phone($wa) }}" target="_blank" rel="noopener"
-                                   class="btn btn-wa !py-2.5 !text-sm whitespace-normal text-center leading-snug">
-                                    <x-icon name="phone" class="w-4 h-4 shrink-0"/> {{ __('common.whatsapp') }}
-                                </a>
-                            @endif
                         </div>
                     </div>
                 </div>
