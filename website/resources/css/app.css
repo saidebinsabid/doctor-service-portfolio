@@ -37,7 +37,7 @@
   --color-wa-700: #128c7e;
 
   /* ফন্ট — প্রোটোটাইপে Google Fonts, প্রোডাকশনে সেলফ-হোস্টেড হবে */
-  --font-bn: "Hind Siliguri", "Noto Sans Bengali", "Nirmala UI", sans-serif;
+  --font-bn: "Noto Sans Bengali", "Hind Siliguri", "Nirmala UI", "SolaimanLipi", sans-serif;
   --font-en: "Inter", system-ui, -apple-system, sans-serif;
 
   --shadow-card: 0 1px 2px rgb(27 58 107 / 0.04), 0 8px 24px -8px rgb(27 58 107 / 0.12);
