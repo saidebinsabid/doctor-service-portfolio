@@ -93,6 +93,12 @@ class SettingsSeeder extends Seeder
                 'hint_bn' => 'বর্গাকার ছবি দিন, ন্যূনতম ৮০০×৮০০ পিক্সেল। ⚠️ এখনো দেওয়া হয়নি।',
                 'value_bn' => null,                                       // ⚠️ ডেমো
             ],
+            [
+                'key' => 'about_photo', 'group' => 'doctor', 'type' => 'image', 'sort_order' => 95,
+                'label_bn' => 'পরিচিতি বিভাগের ছবি (ফ্লায়ার/পোস্টার)', 'label_en' => 'About-section image (flyer/poster)',
+                'hint_bn' => '"ডাক্তার সম্পর্কে" অংশের বিবরণের নিচে দেখানো হয় — পোর্ট্রেট আকৃতি ভালো মানায়।',
+                'value_bn' => null,
+            ],
 
             /* ==================== যোগাযোগ ==================== */
             [

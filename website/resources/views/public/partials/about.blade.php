@@ -11,6 +11,16 @@
                 <p class="mt-4 text-slate-600 leading-relaxed">{{ $intro }}</p>
             @endif
 
+            {{-- বিবরণের নিচের ফাঁকা জায়গায় পরিচিতি/ফ্লায়ার ছবি —
+                 অ্যাডমিন → সেটিংস → ডাক্তারের পরিচয় থেকে বদলানো যায়।
+                 আসল আকৃতি (৭০৯×৯০৮) width/height-এ দিয়ে লেআউট-শিফট এড়ানো হয়েছে। --}}
+            @if($aboutPhoto = Setting::get('about_photo'))
+                <img src="{{ Storage::url($aboutPhoto) }}"
+                     alt="{{ Setting::get('doctor_name') }} — {{ __('about.title') }}"
+                     width="709" height="908" loading="lazy"
+                     class="mt-6 w-full max-w-sm h-auto rounded-2xl border border-brand-100 shadow-sm mx-auto lg:mx-0">
+            @endif
+
             {{-- ⚠️ ফি ডিফল্টভাবে দেখানো হয় না।
                  প্রকৃত ফি না জানা পর্যন্ত ভুল সংখ্যা প্রকাশ্যে গেলে রোগী
                  সেই টাকা নিয়ে চেম্বারে এসে বিব্রত হতেন। অ্যাডমিন প্যানেল
