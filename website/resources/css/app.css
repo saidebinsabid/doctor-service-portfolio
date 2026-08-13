@@ -126,6 +126,17 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 
+  /* উপরের rule এর ব্যতিক্রম: হিরোর ভিতরে যদি নেস্টেড সাদা কার্ড/বক্স থাকে
+     (যেমন ছবির নিচের চেম্বার-চিপ), তার লেখাগুলো আবার গাঢ় নীলে ফিরিয়ে
+     আনি — সাদা bg-এ সাদা লেখা যেন না হয়। */
+  section.bg-brand-900 .card,
+  section.bg-brand-900 .card *,
+  section.bg-brand-900 .bg-white,
+  section.bg-brand-900 .bg-white * {
+    color: var(--color-brand-900) !important;
+    text-shadow: none !important;
+  }
+
   /* মোবাইলে extra: সব ফন্ট ~২px বড় (rem-ভিত্তিক ইউটিলিটি সমানুপাতে বাড়ে) */
   @media (max-width: 767px) {
     html { font-size: 18px; }
