@@ -72,21 +72,26 @@ class MessageBuilder
                 ?: Setting::raw('doctor_short', 'bn')
                 ?: 'Doctor';
 
-            $place = $a->chamber->getAttributeValue('short_name_en')
+            /* SMS-এ ভবন-সহ সংক্ষিপ্ত venue; না থাকলে সাধারণ short label */
+            $place = $a->chamber->getAttributeValue('sms_venue')
+                ?: $a->chamber->getAttributeValue('short_name_en')
                 ?: $a->chamber->getAttributeValue('name_en')
                 ?: $a->chamber->getAttributeValue('name_bn');
 
-            $address = $a->chamber->getAttributeValue('address_en')
-                ?: $a->chamber->getAttributeValue('address_bn');
-
             $hotline = $a->chamber->hotline ?: Setting::get('hotline');
+
+            /* পুরো URL (https://) — মোবাইলে স্বয়ংক্রিয়ভাবে ক্লিকযোগ্য হয় */
+            $website = rtrim((string) config('app.url'), '/');
+            if (! preg_match('~^https?://~', $website)) {
+                $website = 'https://drabusufian.com';
+            }
 
             $parts = array_filter([
                 'Appointment ' . $place . '.',
-                $address ? $address . '.' : null,
                 $doctor . ' Serial: ' . $a->serial_no . '.',
                 $a->appointment_date->format('d/m/y') . ' ' . date('h:i A', strtotime($a->slotHm())) . '.',
-                $hotline ? 'Hotline: ' . $hotline : null,
+                $hotline ? 'Hotline: ' . $hotline . '.' : null,
+                $website,
             ]);
 
             return implode(' ', $parts);

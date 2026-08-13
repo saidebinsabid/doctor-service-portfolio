@@ -14,7 +14,7 @@ class Chamber extends Model
 
     protected $fillable = [
         'name_bn', 'name_en', 'short_name_bn', 'short_name_en', 'address_bn', 'address_en',
-        'hotline', 'map_query', 'lat', 'lng', 'is_active', 'sort_order',
+        'hotline', 'map_query', 'lat', 'lng', 'is_active', 'sort_order', 'sms_venue',
     ];
 
     protected function casts(): array
