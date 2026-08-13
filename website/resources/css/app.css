@@ -56,7 +56,8 @@
 
   body {
     font-family: var(--font-bn);
-    color: var(--color-slate-700);
+    /* accessibility: বেস টেক্সট ধূসর নয়, একদম কালো — কম-দৃষ্টি রোগীর জন্যও পড়া সহজ */
+    color: #000;
     background: #fff;
     -webkit-font-smoothing: antialiased;
   }
@@ -85,28 +86,39 @@
   }
 
   /* ================================================================
-     মোবাইলে সব জায়গায় ফন্ট ~২px বড় (ক্লায়েন্টের অনুরোধে) —
-     rem-ভিত্তিক সব সাইজ (text-xs/sm/base + padding/height) সমানুপাতে বাড়ে।
-     সাথে ম্লান ধূসর লেখাগুলো গাঢ় নীলে বদলানো, যাতে ছোট স্ক্রিনে
-     আলো/রোদে পড়া সহজ হয়।
+     Accessibility — সব ডিভাইসে (ক্লায়েন্টের অনুরোধে):
+     ধূসর/হালকা-নীল লেখা সব একদম কালো, যেন কম-দৃষ্টিসম্পন্ন রোগীও
+     সহজে পড়তে পারেন। design-critical গাঢ় নীল (brand-800/900) অটুট।
      ================================================================ */
+  .text-slate-300,
+  .text-slate-400,
+  .text-slate-500,
+  .text-slate-600,
+  .text-slate-700,
+  .text-brand-400,
+  .text-brand-500,
+  .text-brand-600,
+  .text-sky2-100,
+  .text-sky2-200,
+  .text-sky2-300,
+  .text-sky2-400,
+  .text-sky2-500,
+  .text-sky2-600 { color: #000 !important; }
+
+  /* গাঢ় ব্যাকগ্রাউন্ডে সাদা লেখাগুলোর অস্বচ্ছতা কমানো, যেন সব ঠিকঠাক দেখা যায় */
+  .text-white\/45,
+  .text-white\/50,
+  .text-white\/60,
+  .text-white\/65,
+  .text-white\/70,
+  .text-white\/75,
+  .text-white\/80,
+  .text-white\/85,
+  .text-white\/90 { color: #fff !important; }
+
+  /* মোবাইলে extra: সব ফন্ট ~২px বড় (rem-ভিত্তিক ইউটিলিটি সমানুপাতে বাড়ে) */
   @media (max-width: 767px) {
     html { font-size: 18px; }
-
-    /* হালকা ধূসর → গাঢ় নীল (কনট্রাস্ট বেশি) */
-    .text-slate-300 { color: var(--color-brand-700) !important; }
-    .text-slate-400,
-    .text-slate-500,
-    .text-slate-600 { color: var(--color-brand-800) !important; }
-
-    /* গাঢ় ব্যাকগ্রাউন্ডে সাদা লেখাগুলোর অস্বচ্ছতা কমানো,
-       যেন কম-উজ্জ্বল স্ক্রিনে হারিয়ে না যায় */
-    .text-white\/60,
-    .text-white\/65,
-    .text-white\/70,
-    .text-white\/75,
-    .text-white\/80,
-    .text-white\/85 { color: rgb(255 255 255 / 0.98) !important; }
   }
 }
 
