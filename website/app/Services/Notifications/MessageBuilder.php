@@ -56,6 +56,43 @@ class MessageBuilder
         });
     }
 
+    /**
+     * নতুন বুকিং হলে রোগীর ফোনে যাওয়া SMS (ক্লায়েন্টের চাওয়া ইবনে সিনার নমুনার মতো)।
+     *
+     * ইচ্ছে করেই **ইংরেজিতে (Latin)** — বাংলা/ইউনিকোড SMS প্রতি সেগমেন্টে মাত্র
+     * ৭০ ক্যারেক্টার, ইংরেজি ১৬০; এতে প্রতি বুকিংয়ে ২–৩ গুণ বেশি SMS (খরচ) লাগত।
+     *
+     * নমুনা:
+     *   Appointment Ibn Sina, Badda. Dr. Abu Sufian Serial: 14. 06/08/26 11:18 AM. Hotline: 09610009614
+     */
+    public function bookedToPatient(Appointment $a): string
+    {
+        return $this->withLocale($a, function () use ($a) {
+            $doctor = Setting::raw('doctor_short', 'en')
+                ?: Setting::raw('doctor_short', 'bn')
+                ?: 'Doctor';
+
+            $place = $a->chamber->getAttributeValue('short_name_en')
+                ?: $a->chamber->getAttributeValue('name_en')
+                ?: $a->chamber->getAttributeValue('name_bn');
+
+            $address = $a->chamber->getAttributeValue('address_en')
+                ?: $a->chamber->getAttributeValue('address_bn');
+
+            $hotline = $a->chamber->hotline ?: Setting::get('hotline');
+
+            $parts = array_filter([
+                'Appointment ' . $place . '.',
+                $address ? $address . '.' : null,
+                $doctor . ' Serial: ' . $a->serial_no . '.',
+                $a->appointment_date->format('d/m/y') . ' ' . date('h:i A', strtotime($a->slotHm())) . '.',
+                $hotline ? 'Hotline: ' . $hotline : null,
+            ]);
+
+            return implode(' ', $parts);
+        }, forceLocale: 'en');
+    }
+
     /** চেম্বার থেকে রোগীর কাছে যাওয়া নিশ্চিতকরণ (Phase 2 / SMS) */
     public function confirmationToPatient(Appointment $a): string
     {

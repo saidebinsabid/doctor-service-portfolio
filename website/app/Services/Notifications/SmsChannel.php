@@ -4,35 +4,39 @@ namespace App\Services\Notifications;
 
 use App\Models\Appointment;
 use App\Models\MessageLog;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * SMS — ঐচ্ছিক ও পেইড।
+ * SMS চ্যানেল — বাংলাদেশি প্রোভাইডার sms.net.bd (পেইড)।
  *
- * ⚠️ SMS ও WhatsApp সম্পূর্ণ আলাদা দুটি মাধ্যম। SMS পাঠালে সেটি
- *    রোগীর WhatsApp-এ যায় না, WhatsApp বার্তাও SMS-এ যায় না।
+ * অ্যাডমিন → সেটিংস → বুকিং সেকশন থেকে API key + (ঐচ্ছিক) Sender ID
+ * বসালেই চালু হয়ে যায়; কোনো .env এডিট লাগে না। খালি রাখলে ফিচারটি
+ * নীরবে বন্ধ থাকে — বুকিং স্বাভাবিকভাবে চলবে।
  *
- * চালু করতে হলে:
- *   ১. বাংলাদেশি গেটওয়ে অ্যাকাউন্ট (BulkSMSBD, Alpha Net, MIM SMS…)
- *      — প্রতিষ্ঠানের নামে খুলতে হয়
- *   ২. Sender ID (মাস্কিং) অনুমোদন — ৩–৭ কর্মদিবস
- *   ৩. .env-এ SMS_ENABLED=true এবং API তথ্য
- *
- * বেশিরভাগ বাংলাদেশি গেটওয়ে একই ধাঁচের GET/POST API দেয়, তাই
- * নিচের গঠনটি সামান্য বদলেই যেকোনো প্রোভাইডারে চলবে।
+ * এন্ডপয়েন্ট: https://api.sms.net.bd/sendsms
+ * প্যারামিটার: api_key, msg, to, sender_id (ঐচ্ছিক)
+ * সাফল্য প্রতিক্রিয়া: JSON { "error": 0, ... }; ননজিরো = ব্যর্থ।
  */
 class SmsChannel
 {
+    /** sms.net.bd-এর SMS পাঠানোর এন্ডপয়েন্ট */
+    protected const ENDPOINT = 'https://api.sms.net.bd/sendsms';
+
     public function __construct(protected MessageBuilder $messages)
     {
     }
 
     public function enabled(): bool
     {
-        return (bool) config('site.sms.enabled')
-            && filled(config('site.sms.api_url'))
-            && filled(config('site.sms.api_key'));
+        return filled(Setting::get('sms_api_key'));
+    }
+
+    /** নতুন বুকিং হওয়ামাত্র রোগীকে সিরিয়াল-স্লিপ পাঠায় (Phase 2 — ক্লায়েন্টের অনুরোধে) */
+    public function sendCreated(Appointment $appointment): void
+    {
+        $this->send($appointment, 'booked', $this->messages->bookedToPatient($appointment));
     }
 
     public function sendConfirmed(Appointment $appointment): void
@@ -53,34 +57,41 @@ class SmsChannel
     protected function send(Appointment $appointment, string $template, string $body): void
     {
         if (! $this->enabled()) {
-            return;                       // চুপচাপ বাদ — SMS চালু না থাকলে কিছু হবে না
+            return;
         }
 
+        $to = normalize_bd_phone($appointment->patient_phone);
+        $params = array_filter([
+            'api_key'   => Setting::get('sms_api_key'),
+            'msg'       => $body,
+            'to'        => $to,
+            'sender_id' => Setting::get('sms_sender_id') ?: null,
+        ], fn ($v) => filled($v));
+
         try {
-            $response = Http::timeout(15)->asForm()->post(config('site.sms.api_url'), [
-                'api_key'   => config('site.sms.api_key'),
-                'senderid'  => config('site.sms.sender_id'),
-                'number'    => normalize_bd_phone($appointment->patient_phone),
-                'message'   => $body,
-            ]);
+            $response = Http::timeout(15)->asForm()->post(self::ENDPOINT, $params);
+            $json = $response->json();
+
+            /* sms.net.bd: error=0 → সফল, ননজিরো → ব্যর্থ */
+            $ok = $response->successful() && (is_array($json) ? ((int) ($json['error'] ?? -1) === 0) : false);
 
             MessageLog::create([
                 'appointment_id' => $appointment->id,
                 'channel'   => 'sms',
-                'recipient' => $appointment->patient_phone,
+                'recipient' => $to,
                 'template'  => $template,
                 'body'      => $body,
-                'status'    => $response->successful() ? 'sent' : 'failed',
-                'provider_response' => $response->body(),
-                'sent_at'   => $response->successful() ? now() : null,
+                'status'    => $ok ? 'sent' : 'failed',
+                'provider_response' => mb_substr($response->body(), 0, 2000),
+                'sent_at'   => $ok ? now() : null,
             ]);
         } catch (\Throwable $e) {
-            Log::error('SMS পাঠাতে ব্যর্থ: ' . $e->getMessage());
+            Log::error('SMS পাঠাতে ব্যর্থ (sms.net.bd): ' . $e->getMessage());
 
             MessageLog::create([
                 'appointment_id' => $appointment->id,
                 'channel'   => 'sms',
-                'recipient' => $appointment->patient_phone,
+                'recipient' => $to,
                 'template'  => $template,
                 'body'      => $body,
                 'status'    => 'failed',

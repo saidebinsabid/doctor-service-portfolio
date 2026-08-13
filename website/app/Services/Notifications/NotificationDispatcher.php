@@ -29,6 +29,7 @@ class NotificationDispatcher
     public function appointmentCreated(Appointment $appointment): void
     {
         $this->whatsapp->sendCreated($appointment);
+        $this->sms->sendCreated($appointment);   // রোগীর ফোনে অটো SMS (পেইড, sms.net.bd; কনফিগার থাকলে)
         $this->mailAdmin($appointment);
         $this->whatsappAdmin($appointment);   // ডাক্তারের নম্বরে অটো WhatsApp (ফ্রি, কনফিগার থাকলে)
     }

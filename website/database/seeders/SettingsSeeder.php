@@ -253,6 +253,20 @@ class SettingsSeeder extends Seeder
                 'hint_bn' => 'ফ্রি: উপরের নম্বর থেকে CallMeBot-এর WhatsApp-এ মেসেজ পাঠিয়ে key নিন — callmebot.com/blog/free-api-whatsapp-messages',
                 'value_bn' => '', 'value_en' => '',
             ],
+            [
+                'key' => 'sms_api_key', 'group' => 'booking', 'type' => 'text', 'sort_order' => 70,
+                'label_bn' => 'রোগীর ফোনে অটো SMS — sms.net.bd API key',
+                'label_en' => 'Patient auto-SMS — sms.net.bd API key',
+                'hint_bn' => 'sms.net.bd → API পেজ থেকে "Generate Key" চেপে key নিন এবং এখানে বসান। খালি থাকলে ফিচারটি বন্ধ, বুকিং স্বাভাবিক চলবে।',
+                'value_bn' => '', 'value_en' => '',
+            ],
+            [
+                'key' => 'sms_sender_id', 'group' => 'booking', 'type' => 'text', 'sort_order' => 80,
+                'label_bn' => 'SMS Sender ID (মাস্কিং — ঐচ্ছিক)',
+                'label_en' => 'SMS Sender ID (mask — optional)',
+                'hint_bn' => 'sms.net.bd থেকে অনুমোদিত আপনার Sender ID (যেমন: DrAbuSufian)। না থাকলে খালি রাখুন — নন-মাস্ক নম্বর থেকে যাবে।',
+                'value_bn' => '', 'value_en' => '',
+            ],
         ];
     }
 }
