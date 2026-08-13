@@ -71,6 +71,7 @@
     "chm.address": "Address",
     "chm.hotline": "Hotline for serial",
     "chm.number": "Chamber :n",
+    "chm.callOperator": ":name — click this button to talk to the operator",
     "chm.serialLimit": "A maximum of :count serials are issued each day",
 
     "gal.eyebrow": "Gallery",

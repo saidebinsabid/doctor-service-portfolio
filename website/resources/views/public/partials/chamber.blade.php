@@ -66,7 +66,8 @@
                         <div class="flex flex-wrap gap-2.5">
                             @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
                                 <a href="tel:{{ $hotline }}" class="btn btn-primary !py-2.5 !text-sm whitespace-normal text-center leading-snug">
-                                    <x-icon name="phone" class="w-4 h-4 shrink-0"/> {{ __('common.callOperator') }}
+                                    <x-icon name="phone" class="w-4 h-4 shrink-0"/>
+                                    {{ __('chm.callOperator', ['name' => $chamber->shortLabel()]) }}
                                 </a>
                             @endif
                             @if($wa = Setting::get('whatsapp'))

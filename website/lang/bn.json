@@ -71,6 +71,7 @@
     "chm.address": "ঠিকানা",
     "chm.hotline": "সিরিয়ালের জন্য হটলাইন",
     "chm.number": "চেম্বার :n",
+    "chm.callOperator": ":name — অপারেটরের সাথে কথা বলার জন্য এই বাটনে ক্লিক করুন",
     "chm.serialLimit": "প্রতিদিন সর্বোচ্চ :count টি সিরিয়াল প্রদান করা হয়",
 
     "gal.eyebrow": "গ্যালারি",
