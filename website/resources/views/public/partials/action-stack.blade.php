@@ -36,8 +36,23 @@
         </p>
     @endif
 
-    {{-- ২. অপারেটরকে কল (হলুদ) --}}
-    @if($hotline = Setting::get('hotline'))
+    {{-- ২. চেম্বার-ভিত্তিক অপারেটর কল (লাল)।
+         একাধিক চেম্বার হলে প্রতিটির আলাদা লাল বাটন — ক্লিক করলে সেই চেম্বারের
+         অপারেটরের নম্বর সরাসরি ডায়াল-লিস্টে আসে। --}}
+    @if($bookChambers->count() > 1)
+        @foreach($bookChambers as $bc)
+            @if($bc->hotline)
+                <a href="tel:{{ $bc->hotline }}"
+                   class="btn btn-primary w-full !py-3 justify-center whitespace-normal text-center leading-snug">
+                    <x-icon name="phone" class="w-5 h-5 shrink-0"/>
+                    <span class="flex flex-col leading-tight">
+                        <span class="font-bold">{{ $bc->shortLabel() }}</span>
+                        <span class="text-[0.72rem] font-normal opacity-90">{{ __('common.callOperatorMulti') }}</span>
+                    </span>
+                </a>
+            @endif
+        @endforeach
+    @elseif($hotline = Setting::get('hotline'))
         <a href="tel:{{ $hotline }}"
            class="btn btn-primary w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
             <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
