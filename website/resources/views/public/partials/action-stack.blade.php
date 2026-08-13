@@ -10,8 +10,12 @@
          ক্লিক করলে সরাসরি সেই চেম্বারের ক্যালেন্ডারে যায়। --}}
     @php $bookChambers = ($chambers ?? collect())->filter()->values(); @endphp
     @if($bookChambers->count() > 1)
-        <p class="text-xs text-white/75 flex items-start gap-1.5 mb-0.5">
-            <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
+        {{-- হিন্ট লাইনটি ছোট ও ম্লান ছিল বলে চোখে পড়ত না — ক্লায়েন্টের অনুরোধে
+             একটু বড় ফন্ট + হালকা সাদা পিলে গাঢ় নীল অক্ষরে বসানো হলো, যাতে
+             গাঢ় হিরো ব্যাকগ্রাউন্ডেই স্পষ্ট দেখা যায়। --}}
+        <p class="text-sm font-semibold text-brand-900 bg-white rounded-lg
+                  px-3 py-2 flex items-start gap-1.5 mb-1 shadow-sm">
+            <x-icon name="clock" class="w-4 h-4 shrink-0 mt-0.5 text-brand-900"/>
             {{ __('common.bookGuideMulti') }}
         </p>
         @foreach($bookChambers as $bc)
