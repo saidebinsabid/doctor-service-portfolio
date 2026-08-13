@@ -87,25 +87,15 @@
 
   /* ================================================================
      Accessibility — সব ডিভাইসে (ক্লায়েন্টের অনুরোধে):
-     ধূসর/হালকা-নীল লেখা সব একদম কালো, যেন কম-দৃষ্টিসম্পন্ন রোগীও
-     সহজে পড়তে পারেন। design-critical গাঢ় নীল (brand-800/900) অটুট।
+     হালকা লেখা সব একদম কালো, যেন কম-দৃষ্টিসম্পন্ন রোগীও পড়তে পারেন।
      ================================================================ */
   .text-slate-300,
   .text-slate-400,
   .text-slate-500,
   .text-slate-600,
-  .text-slate-700,
-  .text-brand-400,
-  .text-brand-500,
-  .text-brand-600,
-  .text-sky2-100,
-  .text-sky2-200,
-  .text-sky2-300,
-  .text-sky2-400,
-  .text-sky2-500,
-  .text-sky2-600 { color: #000 !important; }
+  .text-slate-700 { color: #000 !important; }
 
-  /* গাঢ় ব্যাকগ্রাউন্ডে সাদা লেখাগুলোর অস্বচ্ছতা কমানো, যেন সব ঠিকঠাক দেখা যায় */
+  /* গাঢ় ব্যাকগ্রাউন্ডে সাদা লেখাগুলোর অস্বচ্ছতা কমানো (contrast বেশি) */
   .text-white\/45,
   .text-white\/50,
   .text-white\/60,
@@ -115,6 +105,24 @@
   .text-white\/80,
   .text-white\/85,
   .text-white\/90 { color: #fff !important; }
+
+  /* ================================================================
+     গ্রেডিয়েন্ট হিরোর ভিতরের সব লেখা সবসময় সাদা + subtle text-shadow
+     (গ্রেডিয়েন্টের যেকোনো shade-এ পড়া যায়) — ক্লায়েন্টের অনুরোধে।
+     বাটনের টেক্সট (নিজের রঙ আছে) — অটুট।
+     ================================================================ */
+  section.bg-brand-900 h1,
+  section.bg-brand-900 h2,
+  section.bg-brand-900 h3,
+  section.bg-brand-900 p,
+  section.bg-brand-900 dt,
+  section.bg-brand-900 dd,
+  section.bg-brand-900 li,
+  section.bg-brand-900 .eyebrow,
+  section.bg-brand-900 span:not(.btn):not(.icon-bubble):not([class*="bg-"]) {
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
 
   /* মোবাইলে extra: সব ফন্ট ~২px বড় (rem-ভিত্তিক ইউটিলিটি সমানুপাতে বাড়ে) */
   @media (max-width: 767px) {

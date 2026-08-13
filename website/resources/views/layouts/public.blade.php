@@ -39,7 +39,11 @@
      ⚠️ প্রোডাকশনে সেলফ-হোস্টেড ও সাবসেট করলে বাংলাদেশ থেকে ~৪০০ms দ্রুত হবে --}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{{-- non-blocking Google Fonts: swap-in when ready, don't hold the first paint --}}
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
+      onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 

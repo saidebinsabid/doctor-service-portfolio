@@ -28,10 +28,17 @@ class NotificationDispatcher
 
     public function appointmentCreated(Appointment $appointment): void
     {
-        $this->whatsapp->sendCreated($appointment);
-        $this->sms->sendCreated($appointment);   // রোগীর ফোনে অটো SMS (পেইড, sms.net.bd; কনফিগার থাকলে)
-        $this->mailAdmin($appointment);
-        $this->whatsappAdmin($appointment);   // ডাক্তারের নম্বরে অটো WhatsApp (ফ্রি, কনফিগার থাকলে)
+        /* WhatsApp link ছাড়া অন্যগুলো external HTTP call — সাথে সাথে
+           চালালে রোগীর বুকিং ফর্ম "সাবমিটিং…" অবস্থায় ২–৪ সেকেন্ড
+           আটকে থাকে। সেগুলো response পাঠানোর পরে চালানো হয় (ব্যবহারকারী
+           তাৎক্ষণিক success পেজ দেখেন, notify গুলো background-এ যায়)। */
+        $this->whatsapp->sendCreated($appointment);   // শুধু wa.me লিংক বানানো — instant
+
+        app()->terminating(function () use ($appointment) {
+            $this->mailAdmin($appointment);
+            $this->sms->sendCreated($appointment);        // sms.net.bd
+            $this->whatsappAdmin($appointment);           // CallMeBot
+        });
     }
 
     public function appointmentConfirmed(Appointment $appointment): void
