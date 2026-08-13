@@ -296,15 +296,11 @@
     border-color: var(--color-sky2-400);
     background: var(--color-sky2-50);
   }
-  .cal-day[aria-pressed="true"] {
-    background: var(--color-brand-900);
-    border-color: var(--color-brand-900);
-    color: #fff;
-  }
-  /* নির্বাচিত তারিখে হোভার করলে যেন সাদা লেখা হালকা ব্যাকগ্রাউন্ডে হারিয়ে না যায় */
+  /* নির্বাচিত তারিখ — ক্লায়েন্টের অনুরোধে লাল (আগে গাঢ় নীল ছিল) */
+  .cal-day[aria-pressed="true"],
   .cal-day[aria-pressed="true"]:hover {
-    background: var(--color-brand-900);
-    border-color: var(--color-brand-900);
+    background: #dc2626;
+    border-color: #dc2626;
     color: #fff;
   }
   .cal-day:disabled {
