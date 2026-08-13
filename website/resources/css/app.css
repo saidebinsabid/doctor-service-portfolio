@@ -301,6 +301,12 @@
     border-color: var(--color-brand-900);
     color: #fff;
   }
+  /* নির্বাচিত তারিখে হোভার করলে যেন সাদা লেখা হালকা ব্যাকগ্রাউন্ডে হারিয়ে না যায় */
+  .cal-day[aria-pressed="true"]:hover {
+    background: var(--color-brand-900);
+    border-color: var(--color-brand-900);
+    color: #fff;
+  }
   .cal-day:disabled {
     background: var(--color-slate-50);
     border-color: var(--color-slate-100);

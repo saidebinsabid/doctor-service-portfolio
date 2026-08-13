@@ -15,29 +15,6 @@
             : 'শুধু নাম ও মোবাইল নম্বর দিলেই সিরিয়াল পাবেন।' }}
     </p>
 
-    {{-- নির্বাচিত তারিখ ও সময়ের সারাংশ — সময় বাছাই করলে JS ভরে দেয় --}}
-    <div id="booking-summary"
-         class="rounded-xl bg-brand-50 border border-brand-100 p-4 mb-5 {{ $selected ? '' : 'hidden' }}">
-        <p class="text-xs font-semibold text-brand-700 mb-2.5">{{ __('booking.summary') }}</p>
-        <dl class="grid grid-cols-3 gap-3 text-center">
-            <div>
-                <dt class="text-[0.68rem] text-slate-500">{{ __('booking.f_date') }}</dt>
-                <dd class="text-sm font-bold text-brand-900 mt-0.5" data-summary="date">
-                    {{ $selected ? bn_number($selected->format('j')) . ' ' .
-                        ($en ? $selected->format('M') : bn_months()[$selected->month - 1]) : '—' }}
-                </dd>
-            </div>
-            <div>
-                <dt class="text-[0.68rem] text-slate-500">{{ __('booking.f_time') }}</dt>
-                <dd class="text-sm font-bold text-brand-900 mt-0.5" data-summary="time">—</dd>
-            </div>
-            <div>
-                <dt class="text-[0.68rem] text-slate-500">{{ __('booking.f_serial') }}</dt>
-                <dd class="text-sm font-bold text-brand-900 mt-0.5" data-summary="serial">—</dd>
-            </div>
-        </dl>
-    </div>
-
     <form method="POST" action="{{ route('booking.store') }}" id="booking-form"
           class="space-y-3.5" novalidate
           data-err-name="{{ __('validation_custom.name_required') }}"
@@ -86,10 +63,11 @@
             <x-icon name="clock" class="w-4.5 h-4.5"/> {{ __('booking.submit') }}
         </button>
 
-        {{-- সরাসরি ফোনে সিরিয়াল --}}
-        @if($hotline = Setting::get('hotline'))
+        {{-- সরাসরি ফোনে সিরিয়াল — যে চেম্বার নির্বাচিত, তার নিজস্ব হটলাইন ও নাম --}}
+        @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
             <a href="tel:{{ $hotline }}" class="btn btn-primary w-full !py-3 justify-center whitespace-normal text-center leading-snug">
-                <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/> {{ __('common.callOperator') }}
+                <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/>
+                {{ __('chm.callOperator', ['name' => $chamber->shortLabel()]) }}
             </a>
         @endif
 
