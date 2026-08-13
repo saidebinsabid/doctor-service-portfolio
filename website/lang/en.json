@@ -69,7 +69,7 @@
     "chm.sub": "Book your serial online, or call the hotline directly",
     "chm.schedule": "Chamber Hours",
     "chm.address": "Address",
-    "chm.hotline": "Hotline for serial",
+    "chm.hotline": "Call Hotline number for serial",
     "chm.number": "Chamber :n",
     "chm.callOperator": ":name — click this button to talk to the operator",
     "chm.serialLimit": "A maximum of :count serials are issued each day",
