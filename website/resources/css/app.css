@@ -237,6 +237,18 @@
   }
   .btn-ch-2:hover { background: #047857; }
 
+  /* --------- Safety: রঙিন সব বাটনের টেক্সট সবসময় সাদা ----------
+     সাম্প্রতিক accessibility CSS ভুলবশত ভেতরের span-এর রঙ কেড়ে নিতে
+     পারে (উদাহরণ: text-slate-500 override, body-color inherit) — এই
+     rule দিয়ে সব রঙিন বাটন ও তাদের সন্তানদের সাদা রঙ নিশ্চিত করা।
+     btn-outline (সাদা bg) বাদ, কারণ ওটার টেক্সট গাঢ় নীল হওয়ারই কথা। */
+  .btn-primary, .btn-primary *,
+  .btn-wa, .btn-wa *,
+  .btn-ch-1, .btn-ch-1 *,
+  .btn-ch-2, .btn-ch-2 *,
+  .btn-deepblue, .btn-deepblue *,
+  .btn-ghost, .btn-ghost * { color: #fff !important; }
+
   /* ---------- সেকশন ---------- */
   .section { padding-block: 3.5rem; }
   @media (min-width: 768px) { .section { padding-block: 5rem; } }
