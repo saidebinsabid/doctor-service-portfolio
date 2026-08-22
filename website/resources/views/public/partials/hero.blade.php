@@ -41,9 +41,11 @@
                     <p class="mt-5 text-white/85 leading-relaxed max-w-xl text-[0.97rem]">{{ $tagline }}</p>
                 @endif
 
-                {{-- সব অ্যাকশন বাটন এক স্ট্যাকে (শেয়ার্ড পার্শিয়াল) --}}
+                {{-- সব অ্যাকশন বাটন (শেয়ার্ড পার্শিয়াল)।
+                     heroGrid=true → ডেস্কটপে ২ কলাম গ্রিডে বসে (বাঁ পাশ যেন লম্বা
+                     লিস্ট না হয়)। মোবাইলে single-column অপরিবর্তিত। --}}
                 <div class="mt-7">
-                    @include('public.partials.action-stack')
+                    @include('public.partials.action-stack', ['heroGrid' => true])
                 </div>
             </div>
 
@@ -71,18 +73,9 @@
                         @endif
                     </div>
 
-                    @if($chamber ?? null)
-                        <div class="absolute -bottom-4 -left-2 sm:left-2 bg-white rounded-xl shadow-lg
-                                    px-4 py-2.5 border border-brand-100 flex items-center gap-2.5">
-                            <span class="grid place-items-center w-8 h-8 rounded-lg bg-wa-500/10 text-wa-700">
-                                <x-icon name="pin" class="w-4 h-4"/></span>
-                            <div class="leading-tight">
-                                <p class="text-[0.7rem] text-slate-500">{{ __('chm.eyebrow') }}</p>
-                                <p class="text-[0.8rem] font-bold text-brand-900">
-                                    {{ Str::limit($chamber->name, 22) }}</p>
-                            </div>
-                        </div>
-                    @endif
+                    {{-- ছবির উপরে ভাসমান চেম্বার-ব্যাজ সরানো হয়েছে (ক্লায়েন্টের অনুরোধে) —
+                         ছবির উপরে কোনো টেক্সট বা শেপ থাকবে না। চেম্বারের নাম/ঠিকানা
+                         ছবির নিচে দেখানো হয় (পরের ব্লকে)। --}}
                 </div>
 
                 {{-- ছবির নিচে চেম্বারের নাম ও ঠিকানা — chamber রেকর্ড থেকে ডাইনামিক।

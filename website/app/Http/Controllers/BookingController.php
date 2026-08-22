@@ -69,18 +69,56 @@ class BookingController extends Controller
         }
 
         return view('public.booking', [
-            'chambers'  => $chambers,
-            'chamber'   => $chamber,
-            'enabled'   => Setting::bool('booking_enabled', true)
+            'chambers'    => $chambers,
+            'chamber'     => $chamber,
+            'enabled'     => Setting::bool('booking_enabled', true)
                             && ! Setting::bool('holiday_mode'),
-            'calendar'  => $this->calendarData($chamber, $month),
-            'month'     => $month,
-            'prevMonth' => $month->gt($today->startOfMonth()) ? $month->subMonth()->format('Y-m') : null,
-            'nextMonth' => $month->lt($today->addDays(config('site.booking.advance_days'))->startOfMonth())
-                            ? $month->addMonth()->format('Y-m') : null,
-            'selected'  => $selected,
-            'day'       => $day,
+            /* ক্লায়েন্টের অনুরোধে সরল বুকিং — পুরো মাসের ক্যালেন্ডার নয়,
+               শুধু সামনের কয়েকটি খোলা তারিখ (আজ/কাল/পরশু) বাটন হিসেবে। */
+            'dateOptions' => $this->nextOpenDates($chamber),
         ]);
+    }
+
+    /**
+     * সামনের কয়েকটি খোলা তারিখ — আজ / আগামীকাল / পরশু ...
+     *
+     * ক্লায়েন্ট চেয়েছেন রোগী যেন সরাসরি ৩টি তারিখ দেখে বেছে নিতে পারে,
+     * সময় বাছার দরকার নেই (সাবমিট করলে ওই দিনের পরের খালি সিরিয়াল অটো বসে)।
+     * কোনো দিন বন্ধ থাকলে সেটি বাদ দিয়ে পরের খোলা দিন দেখানো হয়, যাতে
+     * বাটনে ক্লিক করে বুকিং কখনো ব্যর্থ না হয়।
+     *
+     * @return array<int, array{date: string, label: string, sub: string}>
+     */
+    protected function nextOpenDates(Chamber $chamber, int $count = 3): array
+    {
+        $today = CarbonImmutable::today();
+        $max = (int) config('site.booking.advance_days', 30);
+        $en = app()->getLocale() === 'en';
+        $out = [];
+
+        for ($i = 0; $i <= $max && count($out) < $count; $i++) {
+            $d = $today->addDays($i);
+
+            if ($this->slots->day($chamber, $d)['status'] !== SlotService::OPEN) {
+                continue;
+            }
+
+            $out[] = [
+                'date'  => $d->toDateString(),
+                'label' => match ($i) {
+                    0       => $en ? 'Today'     : 'আজ',
+                    1       => $en ? 'Tomorrow'  : 'আগামীকাল',
+                    2       => $en ? 'Day after' : 'পরশু',
+                    default => fmt_day($d),
+                },
+                /* সংক্ষিপ্ত তারিখ (বছর ছাড়া, সংক্ষিপ্ত দিন) — যাতে সারিটা এক লাইনে
+                   থাকে ও পুরো ফর্ম এক স্ক্রিনে আঁটে */
+                'sub'   => fmt_day($d, true) . ', ' . bn_number($d->format('j')) . ' '
+                            . ($en ? $d->format('M') : bn_months()[$d->month - 1]),
+            ];
+        }
+
+        return $out;
     }
 
     /**

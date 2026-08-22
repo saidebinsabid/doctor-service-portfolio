@@ -116,7 +116,7 @@
     "booking.visit_type": "Type of visit",
     "booking.problem": "Brief description of the problem",
     "booking.problem_hint": "e.g. fever and cough for three days",
-    "booking.submit": "Confirm Serial",
+    "booking.submit": "Submit",
 
     "booking.ok_title": "Serial Booked",
     "booking.ok_sub": "Please save the details below. Show your booking code when you arrive.",

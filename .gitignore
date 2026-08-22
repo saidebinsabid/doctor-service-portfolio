@@ -16,3 +16,7 @@ vendor/
 Thumbs.db
 desktop.ini
 *.log
+
+# লোকাল-only ও tooling junk (কমিট করা হবে না)
+/start-website.bat
+/system-commandline-sentinel-files/

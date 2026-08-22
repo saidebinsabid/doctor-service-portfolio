@@ -116,7 +116,7 @@
     "booking.visit_type": "ভিজিটের ধরন",
     "booking.problem": "সমস্যা সংক্ষেপে",
     "booking.problem_hint": "যেমন: তিন দিন ধরে জ্বর ও কাশি",
-    "booking.submit": "সিরিয়াল নিশ্চিত করুন",
+    "booking.submit": "সাবমিট করুন",
 
     "booking.ok_title": "সিরিয়াল নেওয়া হয়েছে",
     "booking.ok_sub": "নিচের তথ্যগুলো সংরক্ষণ করুন। চেম্বারে আসার সময় বুকিং কোডটি দেখাবেন।",

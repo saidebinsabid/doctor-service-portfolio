@@ -1,222 +1,163 @@
 @extends('layouts.public')
 
-@section('title', __('booking.title') . ' — ' . \App\Models\Setting::get('doctor_short'))
+@php use App\Models\Setting; $en = app()->getLocale() === 'en'; @endphp
+
+@section('title', ($en ? 'Book a Serial' : 'সিরিয়াল নিন') . ' — ' . Setting::get('doctor_short'))
 
 @section('content')
-<section class="section">
-    <div class="container-x">
-
-        <div class="section-head">
-            <p class="eyebrow"><x-icon name="clock" class="w-3.5 h-3.5"/> {{ __('nav.book') }}</p>
-            <h1 class="section-title">{{ __('booking.title') }}</h1>
-            <p class="section-sub">{{ __('booking.sub') }}</p>
-        </div>
+{{-- মোবাইলে কমপ্যাক্ট (এক স্ক্রিনে), ডেস্কটপে খোলামেলা — sm: দিয়ে আলাদা।
+     মোবাইলের মান (prefix ছাড়া) অপরিবর্তিত। --}}
+<section class="pt-2 pb-8 sm:pt-10 sm:pb-16">
+    <div class="container-x max-w-lg mx-auto">
 
         @if(session('error'))
-            <div class="max-w-2xl mx-auto mb-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3
+            <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3
                         text-sm text-red-700">{{ session('error') }}</div>
         @endif
 
         @unless($enabled)
-            {{-- অ্যাডমিন বুকিং বন্ধ রাখলে ক্যালেন্ডারই দেখানো হয় না --}}
-            <div class="max-w-xl mx-auto card p-8 text-center">
+            {{-- অ্যাডমিন বুকিং বন্ধ রাখলে ফর্মই দেখানো হয় না --}}
+            <div class="card p-8 text-center">
                 <span class="icon-bubble bg-amber-50 text-amber-600 !w-14 !h-14 mx-auto">
                     <x-icon name="clock" class="w-7 h-7"/></span>
                 <p class="mt-4 text-slate-600">
-                    {{ \App\Models\Setting::bool('holiday_mode')
-                        ? __('booking.holiday_mode') : __('booking.disabled') }}
+                    {{ Setting::bool('holiday_mode') ? __('booking.holiday_mode') : __('booking.disabled') }}
                 </p>
-                @if($hotline = \App\Models\Setting::get('hotline'))
-                    <a href="tel:{{ $hotline }}" class="btn btn-primary mt-5 whitespace-normal text-center leading-snug">
-                        <x-icon name="phone" class="w-4 h-4 shrink-0"/> {{ __('common.callOperator') }}
+                @if($hotline = ($chamber->hotline ?? Setting::get('hotline')))
+                    <a href="tel:{{ $hotline }}" class="btn btn-primary mt-5">
+                        <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($hotline) }}
                     </a>
                 @endif
             </div>
         @else
 
-        {{-- একাধিক চেম্বার — প্রথমে হসপিটাল বাছাই। বাছাই করলে ওই চেম্বারের
-             নিজস্ব ক্যালেন্ডার ও সময়সূচি দেখায় (রোগীর জন্য সবচেয়ে সহজ)। --}}
-        @if($chambers->count() > 1)
-            @php
-                /* প্রতিটি চেম্বার আলাদা রঙে (ক্লায়েন্টের অনুরোধে)।
-                   লিটারেল ক্লাস-স্ট্রিং — Tailwind ফাইল স্ক্যান করে এগুলো তৈরি করে। */
-                $chamberPalette = [
-                    ['idle' => 'border-sky2-200 hover:border-sky2-400',   'active' => 'border-sky2-500 bg-sky2-50',    'icon' => 'bg-sky2-500 text-white'],
-                    ['idle' => 'border-emerald-200 hover:border-emerald-400', 'active' => 'border-emerald-500 bg-emerald-50', 'icon' => 'bg-emerald-600 text-white'],
-                    ['idle' => 'border-amber-200 hover:border-amber-400', 'active' => 'border-amber-500 bg-amber-50',    'icon' => 'bg-amber-500 text-white'],
-                ];
-            @endphp
-            <div class="card p-4 sm:p-5 mb-6">
-                <p class="font-bold text-brand-900 flex items-center gap-2">
-                    <span class="grid place-items-center w-7 h-7 rounded-lg bg-brand-900 text-white shrink-0">
-                        <x-icon name="pin" class="w-4 h-4"/></span>
-                    {{ __('booking.pick_chamber') }}
-                </p>
-                <p class="text-xs text-slate-500 mt-1 mb-3 ms-9">{{ __('booking.pick_chamber_hint') }}</p>
-                <div class="grid sm:grid-cols-2 gap-3">
+        <div class="card p-4 sm:p-8">
+
+            {{-- কেন্দ্রীভূত শিরোনাম — ডেস্কটপে বড় --}}
+            <h1 class="text-xl sm:text-3xl font-extrabold text-brand-900 text-center">
+                {{ $en ? 'Appointment Form' : 'সিরিয়াল নিন' }}
+            </h1>
+
+            {{-- একাধিক চেম্বার হলে ছোট সুইচার --}}
+            @if($chambers->count() > 1)
+                <div class="grid grid-cols-2 gap-2 sm:gap-3 mt-2.5 sm:mt-5">
                     @foreach($chambers as $c)
-                        @php
-                            $active = $c->id === $chamber->id;
-                            $p = $chamberPalette[$loop->index % count($chamberPalette)];
-                        @endphp
                         <a href="{{ route('booking.create', ['chamber' => $c->id]) }}"
-                           class="rounded-xl border-2 p-3.5 flex items-start gap-3 transition
-                                  {{ $active ? $p['active'] : $p['idle'] }}">
-                            <span class="grid place-items-center w-9 h-9 rounded-lg shrink-0 {{ $p['icon'] }}">
-                                <x-icon name="pin" class="w-4.5 h-4.5"/></span>
-                            <span class="min-w-0">
-                                <span class="block text-[0.68rem] font-bold text-slate-500 leading-none mb-0.5">
-                                    {{ __('chm.number', ['n' => bn_number($loop->iteration)]) }}</span>
-                                <span class="block font-bold text-brand-900 text-sm leading-snug">{{ $c->name }}</span>
-                                <span class="block text-xs text-slate-500 mt-0.5">{{ $c->address }}</span>
-                            </span>
+                           class="rounded-lg border-2 px-3 py-1.5 sm:py-3 text-center text-sm sm:text-base font-semibold leading-tight transition
+                                  {{ $c->id === $chamber->id
+                                        ? 'border-brand-500 bg-brand-50 text-brand-900'
+                                        : 'border-brand-100 text-slate-500 hover:border-brand-300' }}">
+                            {{ $c->shortLabel() }}
                         </a>
                     @endforeach
                 </div>
-            </div>
-        @endif
+            @endif
 
-        <div class="grid lg:grid-cols-2 gap-6 items-start">
+            @if(empty($dateOptions))
+                {{-- সামনের ৩০ দিনে কোনো খোলা তারিখ নেই — বিরল, তবু নিরাপদ বার্তা --}}
+                <p class="mt-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+                    {{ $en ? 'No open dates right now. Please call.' : 'এই মুহূর্তে কোনো খোলা তারিখ নেই। অনুগ্রহ করে ফোন করুন।' }}
+                </p>
+                @if($hotline = ($chamber->hotline ?? Setting::get('hotline')))
+                    <a href="tel:{{ $hotline }}" class="btn btn-primary w-full mt-3">
+                        <x-icon name="phone" class="w-4 h-4"/> {{ bn_number($hotline) }}</a>
+                @endif
+            @else
 
-            {{-- ================= ধাপ ১ ও ২: তারিখ ও সময় ================= --}}
-            <div class="card p-4 sm:p-5">
+            <form method="POST" action="{{ route('booking.store') }}" id="booking-form" class="mt-3 sm:mt-6 space-y-2 sm:space-y-4"
+                  novalidate
+                  data-err-name="{{ __('validation_custom.name_required') }}"
+                  data-err-phone="{{ __('validation_custom.phone_invalid') }}">
+                @csrf
+                <input type="hidden" name="chamber_id" value="{{ $chamber->id }}">
 
-                <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-3 mb-4">
-                    <p class="font-bold text-brand-900 flex items-center gap-2">
-                        <span class="grid place-items-center w-7 h-7 rounded-lg bg-brand-900
-                                     text-white text-xs font-bold shrink-0">{{ bn_number(1) }}</span>
-                        {{ __('booking.step1') }}
-                    </p>
+                {{-- ধাপ ১: তারিখ নির্বাচন — স্ট্যাক করা সারি।
+                     নির্বাচিত = নীল + সাদা টিক, বাকিগুলো = হালকা সবুজ + ডট।
+                     রেডিও বাটন, তাই জাভাস্ক্রিপ্ট ছাড়াও কাজ করে। --}}
+                <div>
+                    <label class="block text-sm sm:text-base font-semibold text-brand-900 mb-1 sm:mb-2">
+                        {{ $en ? 'Select Date' : 'তারিখ নির্বাচন করুন' }}</label>
 
-                    <div class="flex items-center gap-1 ms-auto">
-                        @if($prevMonth)
-                            <a href="{{ route('booking.create', ['month' => $prevMonth, 'chamber' => $chamber->id]) }}"
-                               class="p-1.5 rounded-lg hover:bg-brand-50" aria-label="{{ __('booking.prev_month') }}">
-                                <svg class="w-5 h-5 text-brand-900" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                    <path d="m15 18-6-6 6-6"/></svg>
-                            </a>
-                        @else
-                            <span class="p-1.5 opacity-25"><svg class="w-5 h-5 text-brand-900"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                                stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></span>
-                        @endif
-
-                        <span class="text-sm font-semibold text-brand-900 min-w-[6.5rem]
-                                     sm:min-w-[8.5rem] text-center">
-                            {{ (app()->getLocale() === 'en' ? $month->format('F') : bn_months()[$month->month - 1]) }}
-                            {{ bn_number($month->year) }}
-                        </span>
-
-                        @if($nextMonth)
-                            <a href="{{ route('booking.create', ['month' => $nextMonth, 'chamber' => $chamber->id]) }}"
-                               class="p-1.5 rounded-lg hover:bg-brand-50" aria-label="{{ __('booking.next_month') }}">
-                                <svg class="w-5 h-5 text-brand-900" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                    <path d="m9 18 6-6-6-6"/></svg>
-                            </a>
-                        @else
-                            <span class="p-1.5 opacity-25"><svg class="w-5 h-5 text-brand-900"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                                stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></span>
-                        @endif
+                    <div class="space-y-1 sm:space-y-2">
+                        @foreach($dateOptions as $opt)
+                            <label class="flex items-center gap-3 px-4 py-2 sm:py-3.5 rounded-lg cursor-pointer transition
+                                          bg-green-50 text-slate-700
+                                          has-[:checked]:bg-sky2-500 has-[:checked]:text-white
+                                          has-[:checked]:shadow-sm">
+                                <input type="radio" name="appointment_date" value="{{ $opt['date'] }}"
+                                       class="peer sr-only" required
+                                       {{ (old('appointment_date', $dateOptions[0]['date']) === $opt['date']) ? 'checked' : '' }}>
+                                {{-- ডট (অনির্বাচিত) --}}
+                                <span class="w-5 h-5 rounded-full border-2 border-slate-300 grid place-items-center
+                                             shrink-0 peer-checked:hidden">
+                                    <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                </span>
+                                {{-- টিক (নির্বাচিত) --}}
+                                <svg class="w-5 h-5 shrink-0 hidden peer-checked:block" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="3"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6 9 17l-5-5"/></svg>
+                                {{-- আজ/কাল আগে (বোল্ড), তারপর সংক্ষিপ্ত তারিখ — এক লাইনে --}}
+                                <span class="text-sm sm:text-base leading-tight">
+                                    <span class="font-bold">{{ $opt['label'] }}</span><span class="font-normal opacity-80"> · {{ $opt['sub'] }}</span>
+                                </span>
+                            </label>
+                        @endforeach
                     </div>
                 </div>
 
-                {{-- বারের নাম --}}
-                <div class="grid grid-cols-7 gap-1 mb-1.5">
-                    @foreach(range(0, 6) as $dow)
-                        <div class="text-center text-[0.68rem] font-semibold text-slate-400 py-1">
-                            {{ app()->getLocale() === 'en'
-                                ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][$dow]
-                                : bn_days(true)[$dow] }}
-                        </div>
-                    @endforeach
+                {{-- ধাপ ২: রোগীর নাম (আইকনসহ) --}}
+                <div class="relative">
+                    <input class="input pe-11" id="f-name" name="patient_name" required maxlength="100"
+                           value="{{ old('patient_name') }}"
+                           aria-label="{{ __('booking.patient_name') }}"
+                           placeholder="{{ __('booking.patient_name') }} *">
+                    <span class="absolute end-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <x-icon name="users" class="w-5 h-5"/>
+                    </span>
+                    @error('patient_name')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- তারিখের ঘর --}}
-                <div class="grid grid-cols-7 gap-1" id="calendar-grid">
-                    @php $lead = (int) $month->startOfMonth()->format('w'); @endphp
-                    @for($i = 0; $i < $lead; $i++)
-                        <div></div>
-                    @endfor
-
-                    @foreach($calendar as $d)
-                        @if($d['selectable'])
-                            {{-- খোলা তারিখ — ক্লিকযোগ্য (খালি-সিরিয়াল সংখ্যা আর দেখানো হয় না, ক্লায়েন্টের অনুরোধে) --}}
-                            <a href="{{ route('booking.create', ['month' => $month->format('Y-m'), 'date' => $d['date'], 'chamber' => $chamber->id]) }}"
-                               class="cal-day" data-date="{{ $d['date'] }}"
-                               aria-pressed="{{ $selected && $selected->toDateString() === $d['date'] ? 'true' : 'false' }}"
-                               title="{{ $d['label'] }}" aria-label="{{ $d['label'] }}">
-                                <span class="text-[1.05rem] leading-none font-semibold">{{ $d['day_bn'] }}</span>
-                            </a>
-                        @elseif($d['status'] === \App\Services\SlotService::FULL)
-                            {{-- সব সিরিয়াল শেষ — লাল "booked" --}}
-                            <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
-                                  style="background:#fef2f2;border-color:#fecaca">
-                                <span class="text-[1.05rem] leading-none font-semibold text-slate-500">{{ $d['day_bn'] }}</span>
-                                <span class="text-[0.58rem] font-bold text-red-600 leading-none mt-0.5">{{ __('booking.booked') }}</span>
-                            </span>
-                        @else
-                            {{-- অতীত/বন্ধ — আগে অস্পষ্ট (fade) ছিল, একটু গাঢ় করে স্পষ্ট করা হলো --}}
-                            <span class="cal-day pointer-events-none" aria-disabled="true" title="{{ $d['label'] }}"
-                                  style="background:var(--color-slate-50);border-color:var(--color-slate-100);color:var(--color-slate-400)">
-                                <span class="text-[1.05rem] leading-none font-semibold">{{ $d['day_bn'] }}</span>
-                            </span>
-                        @endif
-                    @endforeach
+                {{-- ধাপ ৩: মোবাইল নম্বর (আইকনসহ) --}}
+                <div class="relative">
+                    <input class="input pe-11" id="f-phone" name="patient_phone" type="tel" required
+                           inputmode="numeric" value="{{ old('patient_phone') }}"
+                           aria-label="{{ __('booking.phone') }}"
+                           placeholder="{{ __('booking.phone') }} *">
+                    <span class="absolute end-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
+                        <x-icon name="phone" class="w-5 h-5"/>
+                    </span>
+                    @error('patient_phone')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-4 pt-4
-                            border-t border-brand-100 text-[0.72rem] text-slate-600">
-                    <span class="flex items-center gap-1.5">
-                        <span class="w-3 h-3 rounded border-[1.5px] border-brand-200 bg-white"></span>
-                        {{ __('booking.legend_open') }}</span>
-                    <span class="flex items-center gap-1.5">
-                        <span class="w-3 h-3 rounded bg-red-50 border border-red-300"></span>
-                        <span class="text-red-600 font-semibold">{{ __('booking.booked') }}</span></span>
-                </div>
+                {{-- হানিপট: বট এই ঘরটি পূরণ করে, মানুষ দেখতেই পায় না --}}
+                <input type="text" name="website" tabindex="-1" autocomplete="off"
+                       class="hidden" aria-hidden="true">
 
-                {{-- ---------- ধাপ ২: সময় ---------- --}}
-                <div id="slot-wrap" class="mt-5 pt-5 border-t border-brand-100"
-                     data-slots-url="{{ route('booking.slots') }}"
-                     data-chamber="{{ $chamber->id }}"
-                     data-step-two="{{ bn_number(2) }}"
-                     data-step-two-label="{{ __('booking.step2') }}">
-                    @if(! $selected)
-                        <p class="text-center text-sm text-slate-400 py-3">
-                            {{ __('booking.pick_date_first') }}</p>
-                    @elseif($day && $day['status'] === \App\Services\SlotService::OPEN)
-                        <p class="font-bold text-brand-900 flex items-center gap-2 mb-1">
-                            <span class="grid place-items-center w-7 h-7 rounded-lg bg-brand-900
-                                         text-white text-xs font-bold">{{ bn_number(2) }}</span>
-                            {{ __('booking.step2') }}
-                        </p>
-                        <p class="text-xs text-slate-500 mb-3 ms-9">
-                            {{ fmt_day($selected) }}, {{ fmt_date($selected) }}</p>
+                <p id="form-error" class="hidden text-sm text-red-600 bg-red-50 border border-red-200
+                                          rounded-lg px-3 py-2"></p>
 
-                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
-                            @foreach($day['slots'] as $slot)
-                                <button type="button" class="slot"
-                                        data-time="{{ $slot['time'] }}"
-                                        data-serial="{{ $slot['serial'] }}"
-                                        aria-pressed="{{ old('slot_time') === $slot['time'] ? 'true' : 'false' }}"
-                                        @disabled(! $slot['available'])>
-                                    {{ fmt_time($slot['time']) }}
-                                </button>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-center text-sm text-slate-400 py-3">
-                            {{ $day['reason'] ?? __('booking.full') }}</p>
-                    @endif
-                </div>
-            </div>
+                {{-- সাবমিট — ক্লিক করলেই অটো সিরিয়াল বসে যায় (সময় বাছতে হয় না) --}}
+                <button type="submit" id="booking-submit" class="btn btn-primary w-full !py-3.5 !text-base">
+                    {{ __('booking.submit') }}
+                </button>
 
-            {{-- ================= ধাপ ৩: রোগীর তথ্য ================= --}}
-            @include('public.partials.booking-form')
+                {{-- সরাসরি ফোনে সিরিয়াল নিতে চাইলে।
+                     whitespace-normal দিয়ে .btn-এর nowrap ওভাররাইড — নইলে লম্বা লেখা
+                     র‍্যাপ না হয়ে কার্ডের বাইরে বেরিয়ে যায়। --}}
+                @if($hotline = ($chamber->hotline ?? Setting::get('hotline')))
+                    <a href="tel:{{ $hotline }}"
+                       class="btn btn-outline w-full !py-2.5 justify-center whitespace-normal
+                              text-center leading-snug !text-sm">
+                        <x-icon name="phone" class="w-4 h-4 shrink-0"/>
+                        <span>{{ $en ? 'Or call to book' : 'অথবা ফোনে সিরিয়াল নিন' }} · {{ bn_number($hotline) }}</span>
+                    </a>
+                @endif
+            </form>
 
+            @endif
         </div>
+
         @endunless
 
     </div>
@@ -224,5 +165,32 @@
 @endsection
 
 @push('scripts')
-@vite('resources/js/booking.js')
+<script>
+/* ছোট সুবিধা: দুইবার চাপ দিয়ে দুটি সিরিয়াল নেওয়া ঠেকানো + দ্রুত ভুল-বার্তা।
+   জাভাস্ক্রিপ্ট বন্ধ থাকলেও ফর্ম সার্ভারে যাচাই হয়ে ঠিকই কাজ করে। */
+(function () {
+    const form = document.getElementById('booking-form');
+    if (!form) return;
+    const submit = document.getElementById('booking-submit');
+    const errorBox = document.getElementById('form-error');
+
+    form.addEventListener('submit', function (e) {
+        const phone = (form.patient_phone.value || '').replace(/\D/g, '');
+        let problem = '';
+        if (!form.patient_name.value.trim()) problem = form.dataset.errName;
+        else if (!/^01[3-9]\d{8}$/.test(phone)) problem = form.dataset.errPhone;
+
+        if (problem) {
+            e.preventDefault();
+            errorBox.textContent = problem;
+            errorBox.classList.remove('hidden');
+            errorBox.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            return;
+        }
+        errorBox.classList.add('hidden');
+        submit.disabled = true;
+        submit.classList.add('opacity-70');
+    });
+})();
+</script>
 @endpush

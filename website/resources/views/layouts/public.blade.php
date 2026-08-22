@@ -67,7 +67,13 @@
 </main>
 
 @include('public.partials.footer')
-@include('public.partials.mobile-bar')
+
+{{-- বুকিং ফর্ম পেজে (/booking, /en/booking) নিচের ফিক্সড চেম্বার-বার দেখানো হয় না
+     (ক্লায়েন্টের অনুরোধে) — ওখানে রোগী এমনিতেই সিরিয়াল নিচ্ছেন, বারটি অপ্রয়োজনীয়।
+     পাথ দিয়ে চেক (রুট নাম নয়), যাতে locale-প্রিফিক্স ও রিস্ট্রাকচারেও নির্ভরযোগ্য থাকে। --}}
+@unless(request()->is('booking') || request()->is('*/booking'))
+    @include('public.partials.mobile-bar')
+@endunless
 
 @stack('scripts')
 </body>

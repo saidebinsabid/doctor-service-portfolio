@@ -29,30 +29,27 @@ class ChamberSeeder extends Seeder
 
         /*
         |----------------------------------------------------------------------
-        | সময়সূচি — ✅ ভিজিটিং কার্ড অনুযায়ী (ক্লায়েন্টের সিদ্ধান্ত, ০১ আগস্ট ২০২৬)
+        | সময়সূচি — মিটিং আপডেট অনুযায়ী (ক্লায়েন্টের সিদ্ধান্ত, ২২ আগস্ট ২০২৬)
         |----------------------------------------------------------------------
-        |   শনিবার – বৃহস্পতিবার : ১০:৩০ AM – ২:০০ PM
+        |   শনিবার – বৃহস্পতিবার : ১০:০০ AM – ২:০০ PM
         |   শুক্রবার             : ৫:০০ PM – ৮:০০ PM
         |
-        | প্রতিদিন সর্বোচ্চ ২৫টি সিরিয়াল (✅ প্রচারপত্র)।
+        | ✅ সিরিয়াল সময় সকাল ১০:০০ থেকে শুরু, ৫ মিনিট অন্তর
+        |    (১ম ১০:০০, ২য় ১০:০৫, ৩য় ১০:১০ …)
+        | ✅ প্রতিদিন সর্বোচ্চ ৪০টি সিরিয়াল
         |
-        | স্লটের দৈর্ঘ্য সেখান থেকেই হিসাব করা:
-        |   শনি–বৃহস্পতি : ২১০ মিনিট ÷ ২৫ ≈ ৮ মিনিট
-        |   শুক্রবার     : ১৮০ মিনিট ÷ ২৫ ≈ ৭ মিনিট
-        |
-        | ⚠️ প্রতি রোগীর জন্য ৭–৮ মিনিট বেশ কম। ডাক্তার চাইলে অ্যাডমিন
-        |    প্যানেল থেকে দিনভিত্তিক সিরিয়াল সংখ্যা কমাতে পারবেন —
-        |    কোডে কিছু বদলাতে হবে না।
+        | রোগী সময় বাছে না — সাবমিট করলে পরের খালি সিরিয়াল অটোমেটিক বসে।
+        | সবই অ্যাডমিন প্যানেল থেকে বদলানো যায়।
         */
         $schedules = [
             /* day_of_week: 0=রবি … 6=শনি */
-            ['day_of_week' => 6, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // শনি
-            ['day_of_week' => 0, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // রবি
-            ['day_of_week' => 1, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // সোম
-            ['day_of_week' => 2, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // মঙ্গল
-            ['day_of_week' => 3, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // বুধ
-            ['day_of_week' => 4, 'start_time' => '10:30', 'end_time' => '14:00', 'slot_minutes' => 8, 'max_serials' => 25], // বৃহস্পতি
-            ['day_of_week' => 5, 'start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 7, 'max_serials' => 25], // শুক্র
+            ['day_of_week' => 6, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // শনি
+            ['day_of_week' => 0, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // রবি
+            ['day_of_week' => 1, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // সোম
+            ['day_of_week' => 2, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // মঙ্গল
+            ['day_of_week' => 3, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // বুধ
+            ['day_of_week' => 4, 'start_time' => '10:00', 'end_time' => '14:00', 'slot_minutes' => 5, 'max_serials' => 40], // বৃহস্পতি
+            ['day_of_week' => 5, 'start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 5, 'max_serials' => 40], // শুক্র
         ];
 
         foreach ($schedules as $row) {
@@ -80,11 +77,12 @@ class ChamberSeeder extends Seeder
             ],
         );
 
-        /* APON — প্রতি ৫ মিনিট পর পর স্লট (ক্লায়েন্টের অনুরোধে) */
+        /* APON — বিকাল ৫টা – রাত ৮টা, ৫ মিনিট অন্তর, সর্বোচ্চ ৪০ সিরিয়াল।
+           (৩ ঘণ্টায় ৫ মিনিট অন্তর = বাস্তবে ৩৬টি আঁটে; সময় বাড়ালে ৪০ হবে।) */
         foreach (range(0, 6) as $dow) {
             Schedule::updateOrCreate(
                 ['chamber_id' => $apon->id, 'day_of_week' => $dow],
-                ['start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 5, 'max_serials' => 25, 'is_active' => true],
+                ['start_time' => '17:00', 'end_time' => '20:00', 'slot_minutes' => 5, 'max_serials' => 40, 'is_active' => true],
             );
         }
     }

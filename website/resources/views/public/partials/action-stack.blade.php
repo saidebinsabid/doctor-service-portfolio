@@ -1,9 +1,14 @@
-@php use App\Models\Setting; @endphp
+@php use App\Models\Setting; $heroGrid = $heroGrid ?? false; @endphp
 
-{{-- সব অ্যাকশন বাটন একসাথে, একটার পর একটা (ক্লায়েন্টের অনুরোধে)।
-     হিরো ও বুকিং সেকশন — দুই জায়গাতেই এই একই পার্শিয়াল ব্যবহার হয়, তাই
-     এক জায়গায় বদলালেই দুটোই আপডেট হয়। দুটোই গাঢ় ব্যাকগ্রাউন্ড। --}}
-<div class="flex flex-col gap-3 w-full max-w-sm">
+{{-- সব অ্যাকশন বাটন একসাথে (ক্লায়েন্টের অনুরোধে)।
+     হিরো ও বুকিং সেকশন — দুই জায়গাতেই এই একই পার্শিয়াল ব্যবহার হয়।
+
+     heroGrid=true (শুধু হিরো থেকে পাঠানো) → ডেস্কটপে ২ কলাম গ্রিড, যাতে বাঁ পাশ
+     লম্বা লিস্ট না হয়। মোবাইলে ও বুকিং সেকশনে single-column অপরিবর্তিত (flex-col)।
+     full-width আইটেম (হিন্ট, WhatsApp, নোট, ফি) দুই কলাম জুড়ে বসে ($span)। --}}
+@php $span = $heroGrid ? 'sm:col-span-2' : ''; @endphp
+<div class="flex flex-col gap-3 w-full max-w-sm
+            {{ $heroGrid ? 'sm:grid sm:grid-cols-2 sm:content-start sm:max-w-2xl' : '' }}">
 
     {{-- ১. অনলাইনে সিরিয়াল বুক।
          একাধিক চেম্বার হলে প্রতিটির আলাদা বাটন (আলাদা রঙ, চেম্বারের নাম লেখা) —
@@ -14,7 +19,7 @@
              একটু বড় ফন্ট + হালকা সাদা পিলে গাঢ় নীল অক্ষরে বসানো হলো, যাতে
              গাঢ় হিরো ব্যাকগ্রাউন্ডেই স্পষ্ট দেখা যায়। --}}
         <p class="text-sm font-semibold text-brand-900 bg-white rounded-lg
-                  px-3 py-2 flex items-start gap-1.5 mb-1 shadow-sm">
+                  px-3 py-2 flex items-start gap-1.5 mb-1 shadow-sm {{ $span }}">
             <x-icon name="clock" class="w-4 h-4 shrink-0 mt-0.5 text-brand-900"/>
             {{ __('common.bookGuideMulti') }}
         </p>
@@ -31,10 +36,10 @@
             </a>
         @endforeach
     @else
-        <a href="{{ route('booking.create') }}" class="btn btn-primary w-full !py-3.5 justify-center">
+        <a href="{{ route('booking.create') }}" class="btn btn-primary w-full !py-3.5 justify-center {{ $span }}">
             <x-icon name="clock" class="w-5 h-5"/> {{ __('common.bookNow') }}
         </a>
-        <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5">
+        <p class="-mt-1 text-xs text-white/70 flex items-start gap-1.5 {{ $span }}">
             <x-icon name="clock" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-sky2-200"/>
             {{ __('common.bookGuide') }}
         </p>
@@ -58,7 +63,7 @@
         @endforeach
     @elseif($hotline = Setting::get('hotline'))
         <a href="tel:{{ $hotline }}"
-           class="btn btn-primary w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
+           class="btn btn-primary w-full !py-3.5 justify-center whitespace-normal text-center leading-snug {{ $span }}">
             <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
         </a>
     @endif
@@ -67,17 +72,17 @@
     @if($wa = Setting::get('whatsapp'))
         <a href="https://wa.me/{{ intl_bd_phone($wa) }}?text={{ rawurlencode(__('common.msgDoctorPrefill')) }}"
            target="_blank" rel="noopener"
-           class="btn btn-deepblue w-full !py-3.5 justify-center whitespace-normal text-center leading-snug">
+           class="btn btn-deepblue w-full !py-3.5 justify-center whitespace-normal text-center leading-snug {{ $span }}">
             <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.msgDoctor') }}
         </a>
-        <p class="-mt-1 text-xs text-white/70 text-center leading-relaxed">{{ __('common.msgDoctorNote') }}</p>
+        <p class="-mt-1 text-xs text-white/70 text-center leading-relaxed {{ $span }}">{{ __('common.msgDoctorNote') }}</p>
     @endif
 
     {{-- ৪. ফি ও বিকাশ তথ্য — সাদা বক্স, লাল লেখা।
          লেখা ও বিকাশ নম্বর দুটোই অ্যাডমিন সেটিংস থেকে আসে (Settings → ভিজিট ফি),
          তাই ক্লায়েন্ট নিজে যেকোনো সময় বদলাতে পারবেন। সেটিং খালি থাকলে বক্সটি দেখাবে না। --}}
     @if($feeNotice = Setting::get('fee_notice'))
-        <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm">
+        <div class="rounded-xl bg-white border border-red-200 px-4 py-3.5 text-center shadow-sm {{ $span }}">
             <p class="text-sm font-semibold text-red-600 leading-relaxed">{{ $feeNotice }}</p>
             @if($bkashNo = Setting::get('bkash_number'))
                 {{-- ট্যাপ করলে বিকাশ নম্বরটি কপি হয় (JS হ্যান্ডলার app.js-এ) --}}
