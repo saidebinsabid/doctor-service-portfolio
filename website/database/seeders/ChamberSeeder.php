@@ -17,6 +17,8 @@ class ChamberSeeder extends Seeder
                 'name_en'    => 'Ibn Sina Diagnostic & Consultation Center, Badda',
                 'short_name_bn' => 'ইবনে সিনা, বাড্ডা',
                 'short_name_en' => 'Ibn Sina, Badda',
+                /* SMS-এ রুম নম্বরসহ venue (ক্লায়েন্টের অনুরোধ) */
+                'sms_venue'  => 'Ibn Sina, Badda, Room 705',
                 'address_bn' => 'উত্তর বাড্ডা, ঢাকা · ১ নং বিল্ডিং, রুম ৭০৫',
                 'address_en' => 'North Badda, Dhaka · Building 1, Room 705',
                 'hotline'    => '09610009614',

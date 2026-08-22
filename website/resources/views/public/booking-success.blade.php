@@ -30,6 +30,8 @@
                         [__('booking.f_time'),   fmt_time($a->slotHm()), false],
                         [__('booking.f_patient'), $a->patient_name, false],
                         [__('booking.f_chamber'), $a->chamber->name, false],
+                        {{-- ঠিকানা (রুম নম্বরসহ) — ইবনে সিনার ক্ষেত্রে রুম ৭০৫ এখানেই দেখা যাবে --}}
+                        [__('chm.address'), $a->chamber->address, false],
                     ] as [$label, $value, $strong])
                         <div class="flex items-center justify-between gap-4 py-3">
                             <dt class="text-sm text-slate-500 shrink-0">{{ $label }}</dt>
