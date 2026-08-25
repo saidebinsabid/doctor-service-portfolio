@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "website",
+      "runtimeExecutable": "C:\\July\\tools\\php83\\php.exe",
+      "runtimeArgs": ["C:\\July\\Dr Abu Sufian\\website\\artisan", "serve", "--host=127.0.0.1", "--port=8000"],
+      "port": 8000
+    },
+    {
       "name": "prototype",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "http-server", "prototype", "-p", "5173", "-c-1", "--silent"],

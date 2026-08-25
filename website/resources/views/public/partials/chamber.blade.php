@@ -65,9 +65,14 @@
                         <p class="text-sm font-bold text-brand-900 mb-2">{{ __('chm.hotline') }}</p>
                         <div class="flex flex-wrap gap-2.5">
                             @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
+                                {{-- নামসহ লেখাটি তখনই, যখন নম্বরটি সত্যিই এই চেম্বারের।
+                                     হটলাইন ফাঁকা থাকলে উপরের ?: গ্লোবাল নম্বরে নামে —
+                                     তার উপর হাসপাতালের নাম বসালে রোগী ভুল বুঝতেন। --}}
                                 <a href="tel:{{ $hotline }}" class="btn btn-primary !py-3 !text-base font-bold whitespace-normal text-center leading-snug">
                                     <x-icon name="phone" class="w-4 h-4 shrink-0"/>
-                                    {{ __('chm.callOperator', ['name' => $chamber->shortLabel()]) }}
+                                    {{ $chamber->hotline
+                                        ? __('chm.callOperator', ['name' => $chamber->shortLabel()])
+                                        : __('common.callOperator') }}
                                 </a>
                             @endif
                         </div>

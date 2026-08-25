@@ -27,7 +27,11 @@
                 </span>
                 {{-- ক্লায়েন্টের অনুরোধে হেডারে নাম/ডিগ্রির বদলে বড় লাল "শিশু ডাক্তার"
                      (পুরো নাম ও ডিগ্রি নিচে হিরোতেই আছে) --}}
-                <span class="font-extrabold text-red-600 leading-tight truncate text-lg sm:text-xl">
+                {{-- truncate সরানো হলো: ইংরেজিতে লেবেল "Child Specialist" — ছোট ফোনে
+                     এক লাইনে না ধরায় "Child Sp…" হয়ে যেত; ক্লায়েন্ট চান পুরো লেবেল দেখা
+                     যাক, তাই দুই লাইনে ভাঙার অনুমতি। line-clamp-2 + leading-tight রাখা
+                     হয়েছে যেন ৪.৫rem-এর নির্দিষ্ট উচ্চতার বার কখনও ছাপিয়ে না যায়। --}}
+                <span class="min-w-0 font-extrabold text-red-600 leading-tight line-clamp-2 text-base sm:text-xl">
                     {{ __('common.childDoctor') }}</span>
             </a>
 
@@ -87,7 +91,9 @@
 
     {{-- ড্রয়ার শিরোনাম + বন্ধ বাটন --}}
     <div class="flex items-center justify-between px-4 h-[4.5rem] border-b border-brand-100 shrink-0">
-        <span class="font-extrabold text-red-600 text-lg">{{ __('common.childDoctor') }}</span>
+        {{-- হেডারের মতোই আচরণ: ইংরেজি লেবেল যেন কাটা না পড়ে, দুই লাইনে ভাঙতে দেওয়া --}}
+        <span class="min-w-0 font-extrabold text-red-600 leading-tight line-clamp-2 text-base sm:text-xl">
+            {{ __('common.childDoctor') }}</span>
         <button type="button" id="menu-close" class="p-2 -mr-2 rounded-lg hover:bg-brand-50"
                 aria-label="{{ __('common.close') }}">
             <svg class="w-6 h-6 text-brand-900" viewBox="0 0 24 24" fill="none"

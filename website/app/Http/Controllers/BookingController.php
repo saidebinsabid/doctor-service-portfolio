@@ -39,6 +39,20 @@ class BookingController extends Controller
            না বাছলে প্রথমটি। প্রতিটি চেম্বারের নিজস্ব সময়সূচি/ক্যালেন্ডার। */
         $chambers = Chamber::forPublic()->with('schedules')->get();
         $chamber = $chambers->firstWhere('id', $request->integer('chamber')) ?? $chambers->first();
+
+        /* অ্যাডমিন সব চেম্বার লুকিয়ে ফেললে বুক করার মতো কিছুই থাকে না —
+           সময়সূচি হিসাব করতে গিয়ে পাতা ভেঙে ফেলার বদলে ভিউয়ের চেনা
+           "বুকিং বন্ধ" কার্ডটিই দেখানো হয় (হটলাইন বাটনসহ), যাতে দুশ্চিন্তায়
+           থাকা অভিভাবক অন্তত ফোনে সিরিয়াল নিতে পারেন। */
+        if (! $chamber) {
+            return view('public.booking', [
+                'chambers'    => $chambers,
+                'chamber'     => null,
+                'enabled'     => false,
+                'dateOptions' => [],
+            ]);
+        }
+
         $today = CarbonImmutable::today();
 
         $month = $today->startOfMonth();
@@ -129,14 +143,27 @@ class BookingController extends Controller
     {
         $chamber = $this->chamber();
 
-        $month = $request->filled('month')
-            ? CarbonImmutable::createFromFormat('Y-m', $request->string('month')->toString())->startOfMonth()
-            : CarbonImmutable::today()->startOfMonth();
+        /* ঠিকানার ?month= যে কেউ হাতে বদলে দিতে পারেন। create()-এ এই একই
+           পার্সিং try/catch দিয়ে ঘেরা, কিন্তু এখানে ছিল না — ফলে ?month=abc
+           দিলেই গোটা এন্ডপয়েন্ট ৫০০ হয়ে যেত। ভুল মাস চুপচাপ উপেক্ষা করে
+           চলতি মাস দেখানোই নিরাপদ। */
+        $month = CarbonImmutable::today()->startOfMonth();
+
+        if ($request->filled('month')) {
+            try {
+                $month = CarbonImmutable::createFromFormat(
+                    'Y-m', $request->string('month')->toString()
+                )->startOfMonth();
+            } catch (\Throwable) {
+                /* ভুল মাস দিলে চলতি মাসেই থাকবে */
+            }
+        }
 
         return response()->json([
             'month' => $month->format('Y-m'),
             'label' => fmt_date($month->startOfMonth()),
-            'days'  => $this->calendarData($chamber, $month),
+            /* চেম্বার না থাকলে গোনার মতো দিনও নেই — খালি মাস ফেরে, ত্রুটি নয় */
+            'days'  => $chamber ? $this->calendarData($chamber, $month) : [],
         ]);
     }
 
@@ -147,6 +174,18 @@ class BookingController extends Controller
 
         $chamber = Chamber::forPublic()->find($request->integer('chamber')) ?? $this->chamber();
         $date = CarbonImmutable::parse($request->string('date')->toString());
+
+        /* একটিও খোলা চেম্বার না থাকলে হিসাব করার মতো সময়সূচিই নেই।
+           উত্তরের গড়ন অপরিবর্তিত রাখা হয়, যাতে সামনের জাভাস্ক্রিপ্ট
+           বন্ধ দিনের মতোই কারণটি দেখাতে পারে — ভাঙা ফেচ নয়। */
+        if (! $chamber) {
+            return response()->json([
+                'status'     => SlotService::CLOSED,
+                'reason'     => __('booking.disabled'),
+                'date_label' => fmt_date($date) . ' (' . fmt_day($date) . ')',
+                'slots'      => [],
+            ]);
+        }
 
         $day = $this->slots->day($chamber, $date);
 
@@ -171,7 +210,15 @@ class BookingController extends Controller
             return back()->withInput()->with('error', __('booking.disabled'));
         }
 
-        $chamber = Chamber::findOrFail($request->integer('chamber_id'));
+        /* চেম্বারটি এখনো সবার জন্য খোলা কি না — শুধু "আছে কি না" নয়।
+           রোগী ফর্ম খুলে রাখার পর ক্লায়েন্ট চেম্বারটি লুকিয়ে ফেললে আগে
+           findOrFail() নীরবে বন্ধ চেম্বারেই সিরিয়াল বসিয়ে দিত; আর সারিটি
+           মুছে ফেলা হলে ৪০৪। এখন দুই ক্ষেত্রেই ফর্মে ভদ্র বার্তা ফেরে। */
+        $chamber = Chamber::forPublic()->find($request->integer('chamber_id'));
+
+        if (! $chamber) {
+            return back()->withInput()->with('error', __('booking.disabled'));
+        }
 
         try {
             $appointment = $this->booking->book($chamber, [
@@ -251,9 +298,16 @@ class BookingController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    protected function chamber(): Chamber
+    /**
+     * ওয়েবসাইটে দেখানোর মতো প্রথম চেম্বার।
+     *
+     * ক্লায়েন্ট যেকোনো সময় সব চেম্বার নিষ্ক্রিয় করে দিতে পারেন; আগে
+     * firstOrFail() তখন গোটা পাতাকেই ৪০৪ বানিয়ে দিত। তাই এখন null ফেরে
+     * আর যারা ডাকছে তারা নিজেরাই ভদ্র বার্তা দেখায়।
+     */
+    protected function chamber(): ?Chamber
     {
-        return Chamber::forPublic()->firstOrFail();
+        return Chamber::forPublic()->first();
     }
 
     /** ক্যালেন্ডারে দেখানোর জন্য এক মাসের দিনভিত্তিক অবস্থা */

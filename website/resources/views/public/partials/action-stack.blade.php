@@ -61,11 +61,31 @@
                 </a>
             @endif
         @endforeach
-    @elseif($hotline = Setting::get('hotline'))
-        <a href="tel:{{ $hotline }}"
-           class="btn btn-primary w-full !py-3.5 justify-center whitespace-normal text-center leading-snug {{ $span }}">
-            <x-icon name="phone" class="w-5 h-5 shrink-0"/> {{ __('common.callOperator') }}
-        </a>
+    @else
+        {{-- গ্লোবাল hotline সেটিংটি সব চেম্বারের জন্য একটিই। ক্লায়েন্ট অ্যাডমিন থেকে
+             কোনো চেম্বার নিষ্ক্রিয় করলে ওই সেটিংয়ে পুরোনো হাসপাতালের নম্বরই থেকে
+             যায় — ফলে পাতায় এক হাসপাতাল দেখিয়ে ফোন যেত অন্য হাসপাতালে। তাই
+             দৃশ্যমান চেম্বারের নিজের নম্বর সবসময় আগে; সেটি ফাঁকা হলে তবেই গ্লোবাল।
+             একটিও সক্রিয় চেম্বার না থাকলে first() null দেয়, ?-> ক্র্যাশ ঠেকিয়ে
+             গ্লোবাল নম্বরেই নামিয়ে আনে। --}}
+        @php $soleChamber = $bookChambers->first(); @endphp
+        @if($hotline = ($soleChamber?->hotline ?: Setting::get('hotline')))
+            <a href="tel:{{ $hotline }}"
+               class="btn btn-primary w-full !py-3 justify-center whitespace-normal text-center leading-snug {{ $span }}">
+                <x-icon name="phone" class="w-5 h-5 shrink-0"/>
+                <span class="flex flex-col leading-tight">
+                    {{-- নম্বরটি একটি নির্দিষ্ট হাসপাতালের, তাই বাটনের লেখাও নির্দিষ্ট
+                         হওয়া দরকার — না হলে রোগী জানেন না কোথায় ফোন যাচ্ছে।
+                         তবে নামটি তখনই দেখাই যখন নম্বরটি সত্যিই এই চেম্বারের;
+                         হটলাইন ফাঁকা থাকলে উপরের ?: গ্লোবাল নম্বরে নেমে যায়, আর
+                         তার উপর হাসপাতালের নাম বসালে সেটিই ভুল তথ্য হতো। --}}
+                    @if($soleChamber?->hotline)
+                        <span class="font-bold">{{ $soleChamber->shortLabel() }}</span>
+                    @endif
+                    <span class="text-[0.72rem] font-normal opacity-90">{{ __('common.callOperatorMulti') }}</span>
+                </span>
+            </a>
+        @endif
     @endif
 
     {{-- ৩. জরুরি প্রয়োজনে স্যারকে WhatsApp মেসেজ (গাঢ় নীল) + নোট --}}

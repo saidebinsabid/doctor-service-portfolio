@@ -67,7 +67,11 @@
         @if($hotline = ($chamber->hotline ?: Setting::get('hotline')))
             <a href="tel:{{ $hotline }}" class="btn btn-primary w-full !py-3 justify-center whitespace-normal text-center leading-snug">
                 <x-icon name="phone" class="w-4.5 h-4.5 shrink-0"/>
-                {{ __('chm.callOperator', ['name' => $chamber->shortLabel()]) }}
+                {{-- নাম তখনই, যখন নম্বরটি এই চেম্বারেরই (নইলে গ্লোবাল নম্বরের
+                     উপর ভুল হাসপাতালের নাম বসে যেত) --}}
+                {{ $chamber->hotline
+                    ? __('chm.callOperator', ['name' => $chamber->shortLabel()])
+                    : __('common.callOperator') }}
             </a>
         @endif
 
