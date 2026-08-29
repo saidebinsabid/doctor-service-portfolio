@@ -11,6 +11,31 @@
                 <p class="mt-4 text-slate-600 leading-relaxed">{{ $intro }}</p>
             @endif
 
+            {{-- পরিচিতি ভিডিও — লিংক আসে সেটিং থেকে (অ্যাডমিন → সেটিংস →
+                 ডাক্তারের পরিচয়), তাই ক্লায়েন্ট যেকোনো সময় বদলাতে বা খালি করে
+                 লুকিয়ে ফেলতে পারেন। লিংকটি ইউটিউবের না হলে youtube_id() null
+                 দেয় আর ব্লকটি দেখানোই হয় না — ভাঙা iframe বসে না।
+
+                 youtube-nocookie: ভিডিও না চালানো পর্যন্ত ইউটিউব দর্শকের উপর
+                 ট্র্যাকিং কুকি বসায় না। loading="lazy" রাখা হয়েছে কারণ এটি
+                 পর্দার প্রথম অংশে নয় — স্ক্রল করে কাছে এলে তবেই লোড হবে,
+                 মোবাইল ইন্টারনেটে হোমপেজ ভারী হবে না। --}}
+            @if($aboutVideo = youtube_id(Setting::get('about_video')))
+                <figure class="mt-6">
+                    <figcaption class="flex items-center gap-2 text-sm font-bold text-brand-900 mb-2">
+                        <span class="text-sky2-600"><x-icon name="play" class="w-4 h-4"/></span>
+                        {{ __('about.video') }}
+                    </figcaption>
+                    <div class="aspect-video rounded-2xl overflow-hidden border border-brand-100
+                                shadow-sm bg-brand-900">
+                        <iframe class="w-full h-full" loading="lazy"
+                                src="https://www.youtube-nocookie.com/embed/{{ $aboutVideo }}"
+                                title="{{ Setting::get('doctor_name') }} — {{ __('about.video') }}"
+                                allowfullscreen
+                                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                </figure>
+            @endif
             {{-- বিবরণের নিচের ফাঁকা জায়গায় পরিচিতি/ফ্লায়ার ছবি —
                  অ্যাডমিন → সেটিংস → ডাক্তারের পরিচয় থেকে বদলানো যায়।
                  আসল আকৃতি (৭০৯×৯০৮) width/height-এ দিয়ে লেআউট-শিফট এড়ানো হয়েছে। --}}

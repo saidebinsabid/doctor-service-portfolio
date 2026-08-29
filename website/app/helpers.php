@@ -292,3 +292,27 @@ if (! function_exists('intl_bd_phone')) {
         return $local ? '88' . $local : '';
     }
 }
+
+if (! function_exists('youtube_id')) {
+    /**
+     * যেকোনো ইউটিউব লিংক থেকে ১১-অক্ষরের ভিডিও আইডি।
+     *
+     * watch?v=, youtu.be/, embed/, shorts/ — চারটি রূপই মেলে, আর
+     * "?si=..." জাতীয় শেয়ার-প্যারামিটার থাকলেও সমস্যা হয় না।
+     * আইডি না মিললে null — কলার তখন কিছুই দেখায় না, ভাঙা iframe নয়।
+     */
+    function youtube_id(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        preg_match(
+            '~(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})~',
+            $url,
+            $m
+        );
+
+        return $m[1] ?? null;
+    }
+}

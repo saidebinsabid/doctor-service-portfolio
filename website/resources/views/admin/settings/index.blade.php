@@ -39,6 +39,12 @@
                                     <label class="a-label">{{ $s->label_bn }}</label>
                                     <input type="number" name="{{ $n }}[bn]" value="{{ old("settings.{$s->key}.bn", $s->value_bn) }}" class="a-input max-w-xs">
 
+                                @elseif($s->type === 'url')
+                                    {{-- লিংকের ভাষাভেদ হয় না, তাই একটিই ঘর (bn) --}}
+                                    <label class="a-label">{{ $s->label_bn }}</label>
+                                    <input type="url" name="{{ $n }}[bn]" dir="ltr"
+                                           value="{{ old("settings.{$s->key}.bn", $s->value_bn) }}"
+                                           class="a-input" placeholder="https://youtu.be/...">
                                 @elseif($s->type === 'textarea')
                                     <label class="a-label">{{ $s->label_bn }}</label>
                                     <div class="grid sm:grid-cols-2 gap-3">

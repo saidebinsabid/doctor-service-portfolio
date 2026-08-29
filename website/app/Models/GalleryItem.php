@@ -35,19 +35,10 @@ class GalleryItem extends Model
             : $this->url();
     }
 
-    /** ইউটিউব লিংক থেকে ভিডিও আইডি বের করা */
+    /** ইউটিউব লিংক থেকে ভিডিও আইডি — রেগেক্সটি helpers.php-এ একবারই রাখা,
+        কারণ পরিচিতি সেকশনের ভিডিওও ঠিক একই নিয়মে পার্স হয় */
     public function youtubeId(): ?string
     {
-        if (! $this->youtube_url) {
-            return null;
-        }
-
-        preg_match(
-            '~(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})~',
-            $this->youtube_url,
-            $m
-        );
-
-        return $m[1] ?? null;
+        return youtube_id($this->youtube_url);
     }
 }
