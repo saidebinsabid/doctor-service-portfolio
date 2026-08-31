@@ -122,8 +122,8 @@ class SettingsSeeder extends Seeder
             [
                 'key' => 'website', 'group' => 'contact', 'type' => 'text', 'sort_order' => 40,
                 'label_bn' => 'ওয়েবসাইট', 'label_en' => 'Website',
-                'hint_bn' => '⚠️ ডোমেইনটি এখনো কেনা হয়নি',
-                'value_bn' => 'drabusufian.com',                          // ⚠️ ডেমো
+                'hint_bn' => null,
+                'value_bn' => 'drabusufian.com',
             ],
             [
                 'key' => 'facebook', 'group' => 'social', 'type' => 'text', 'sort_order' => 10,
