@@ -1,11 +1,11 @@
 {
   "name": "dr-abu-sufian-prototype",
   "version": "1.0.0",
-  "description": "ফ্রন্টএন্ড প্রোটোটাইপ — প্রফেসর ডা. আবু সুফিয়ান",
+  "description": "\u09ab\u09cd\u09b0\u09a8\u09cd\u099f\u098f\u09a8\u09cd\u09a1 \u09aa\u09cd\u09b0\u09cb\u099f\u09cb\u099f\u09be\u0987\u09aa \u2014 \u09aa\u09cd\u09b0\u09ab\u09c7\u09b8\u09b0 \u09a1\u09be. \u0986\u09ac\u09c1 \u09b8\u09c1\u09ab\u09bf\u09af\u09bc\u09be\u09a8",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/style.css --minify",
-    "dev": "tailwindcss -i ./src/input.css -o ./dist/style.css --watch",
+    "build": "node init && tailwindcss -i ./src/input.css -o ./dist/style.css --minify",
+    "dev": "node init && tailwindcss -i ./src/input.css -o ./dist/style.css --watch",
     "serve": "npx --yes http-server . -p 5173 -c-1"
   },
   "keywords": [],
